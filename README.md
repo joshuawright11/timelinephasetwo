@@ -10,7 +10,7 @@ Rendering: Base it off of C + K's rendering (Conner)
 
 Data Modeling: Event holds info, and label (or graphic to put in scene). (Kaylee)
 
-Data Storage: sqlite 
+Data Storage: sqlite (Josh)
 
 
 
