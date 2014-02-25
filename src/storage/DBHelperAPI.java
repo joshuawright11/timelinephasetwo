@@ -14,10 +14,10 @@ import model.Timeline;
  * remove and read the entire thing. (This would speed up database operations)
  * 
  * @author Josh Wright
- * Created: Jan 29, 2014
- * Package: backend
- *
- * Note: could be updated to have _id as parameters, it will make editing and adding stuff a lot easier (add _id to Timeline and TLEvent).
+ Created: Jan 29, 2014
+ Package: backend
+
+ Note: could be updated to have _id as parameters, it will make editing and adding stuff a lot easier (add _id to Timeline and TLEvent).
  *
  */
 public interface DBHelperAPI {

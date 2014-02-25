@@ -38,11 +38,11 @@ public interface TimelineAPI {
 	public boolean removeEvent(TLEvent event);
 	
 	/**
-	 * Swap an oldEvent out for a newEvent. Useful for updating an event whose data has changed
+	 * Swap an oldTLEvent out for a newTLEvent. Useful for updating an event whose data has changed
 	 * 
 	 * @param oldEventName the event to switch out
 	 * @param newEvent the event to switch in
-	 * @return whether the event was swapped successfully (false if oldEvent is not in the timeline)
+	 * @return whether the event was swapped successfully (false if oldTLEvent is not in the timeline)
 	 */
 	public boolean changeEvent(TLEvent oldEventName, TLEvent newEvent);
 	
@@ -80,7 +80,6 @@ public interface TimelineAPI {
 	 * @return axisLabel index
 	 */
 	public int getAxisLabelIndex();
-	
 	/**
 	 * Returns the actual axisLabel
 	 * 

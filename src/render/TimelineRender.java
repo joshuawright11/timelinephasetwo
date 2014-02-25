@@ -181,7 +181,7 @@ public class TimelineRender implements Runnable {
 				if(end > maxTime){ maxTime = end; }
 			}else if(event instanceof Atomic){
 				atomics.add((Atomic)event);
-				long date = ((Atomic) event).getDate().getTime();
+				long date = ((Atomic) event).getStartDate().getTime();
 				if(date < minTime){ minTime = date; }
 				if(date > maxTime){ maxTime = date; }
 			}
@@ -204,8 +204,8 @@ public class TimelineRender implements Runnable {
 			minTime = ((Duration)timeline.getEvents()[0]).getStartDate().getTime();
 			maxTime = ((Duration)timeline.getEvents()[0]).getEndDate().getTime();
 		}else{
-			minTime = ((Atomic)timeline.getEvents()[0]).getDate().getTime();
-			maxTime = ((Atomic)timeline.getEvents()[0]).getDate().getTime();
+			minTime = ((Atomic)timeline.getEvents()[0]).getStartDate().getTime();
+			maxTime = ((Atomic)timeline.getEvents()[0]).getStartDate().getTime();
 		}
 		return true;
 	}
@@ -354,7 +354,7 @@ public class TimelineRender implements Runnable {
 	private void renderAtomics() {
 		pushDown = 60; //where to put the event ( y - axis )
 		for(Atomic e : atomics){
-			int xPosition = getXPos(e.getDate());
+			int xPosition = getXPos(e.getStartDate());
 			AtomicLabel label = new AtomicLabel(e, xPosition, pushDown, model, eventLabels);
 			eventLabels.add(label);
 			group.getChildren().add(label);
@@ -393,7 +393,7 @@ public class TimelineRender implements Runnable {
 	private int getXPos(Date date) {
 		double units = getUnitsSinceStart(date);
 		int xPosition = (int)(units*unitWidth); 
-		//System.out.println("Event " + date.toString() + " is " +units+ " units after the start. It has an x offset of " +(int)(units*unitWidth)+ " pixels.");
+		//System.out.println("TLEvent " + date.toString() + " is " +units+ " units after the start. It has an x offset of " +(int)(units*unitWidth)+ " pixels.");
 		return xPosition;
 	}
 	

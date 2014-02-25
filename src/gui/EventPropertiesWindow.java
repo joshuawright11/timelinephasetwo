@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.sql.Date;
 
 /**
- * EventPropertiesWindow.java
+ * TLEventPropertiesWindow.java
  * @author Andrew Thompson
  */
 public class EventPropertiesWindow extends JFrame {
@@ -105,7 +105,8 @@ public class EventPropertiesWindow extends JFrame {
 				final String type = EventPropertiesWindow.this.type.getSelectedItem().toString();
 				final String startDate = EventPropertiesWindow.this.startDate.getText();
 				final String endDate = EventPropertiesWindow.this.endDate.getText();
-				final String category = EventPropertiesWindow.this.category.getText();
+				final String cats = EventPropertiesWindow.this.category.getText();
+                                final Category category = new Category(cats);
 				new Thread(new Runnable() {
 					public void run() {
 						if (type.equals("Atomic"))
@@ -140,7 +141,7 @@ public class EventPropertiesWindow extends JFrame {
 			public void run() {
 				final String eventName = event.getName();
 				if (event instanceof Atomic) {
-					final String date = ((Atomic)event).getDate().toString();
+					final String date = ((Atomic)event).getStartDate().toString();
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							title.setText(eventName);
@@ -174,7 +175,8 @@ public class EventPropertiesWindow extends JFrame {
 				final String type = EventPropertiesWindow.this.type.getSelectedItem().toString();
 				final String startDate = EventPropertiesWindow.this.startDate.getText();
 				final String endDate = EventPropertiesWindow.this.endDate.getText();
-				final String category = EventPropertiesWindow.this.category.getText();
+                                final String cats = EventPropertiesWindow.this.category.getText();
+                                final Category category = new Category(cats);
 				new Thread(new Runnable() {
 					public void run() {
 						if (type.equals("Atomic"))

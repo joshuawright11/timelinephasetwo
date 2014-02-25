@@ -13,42 +13,20 @@ import java.sql.Date;
  */
 public class Atomic extends TLEvent {
 	
-	/**
-	 * The date of the event
-	 */
-	private Date date;
-	
-	/**
-	 * Constructor for the name, category, and date
-	 * 
-	 * @param name the name of the event
-	 * @param category the event's category
-	 * @param date the date of the event
-	 */
-	public Atomic(String name, String category, Date date){
-		super(name, category);
-		this.setDate(date);
+        /**
+        * There is nothing special about Atomic events right now.
+        * To put anything else in this class apart from what's in TLEvent would be redundant.
+ We may choose to put an icon here.
+        */
+	public Atomic(String name, Category category, Date startDate){
+		super(name, startDate, category);
 	}
-	
-	/**
-	 * date getter
-	 * 
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-	/**
-	 * date setter
-	 * 
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	@Override
-	public String typeName() {
-		return "atomic";
-	}
+        
+                /**
+         * Saves the event to the database.
+         * TODO: insert the functionality for saving to the database.
+         */
+        public void save(){
+           //
+        }
 }

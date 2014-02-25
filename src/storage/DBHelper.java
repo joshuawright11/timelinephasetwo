@@ -215,9 +215,9 @@ public class DBHelper implements DBHelperAPI{
 				+"(?,?,?,NULL,?);";
 		PreparedStatement pstmt = connection.prepareStatement(INSERT_ATOMIC);
 		pstmt.setString(1, event.getName());
-		pstmt.setString(2, event.typeName());
-		pstmt.setDate(3, event.getDate());
-		pstmt.setString(4, event.getCategory());
+                pstmt.setString(2, "atomic");
+		pstmt.setDate(3, event.getStartDate());
+		pstmt.setString(4, event.getCategory().getName());
 		pstmt.executeUpdate();
 	}
 	
@@ -235,10 +235,10 @@ public class DBHelper implements DBHelperAPI{
 				+"(?,?,?,?,?);";
 		PreparedStatement pstmt = connection.prepareStatement(INSERT_DURATION);
 		pstmt.setString(1, event.getName());
-		pstmt.setString(2, event.typeName());
+		pstmt.setString(2, "duration");
 		pstmt.setDate(3, event.getStartDate());
 		pstmt.setDate(4, event.getEndDate());
-		pstmt.setString(5, event.getCategory());
+		pstmt.setString(5, event.getCategory().getName());
 		pstmt.executeUpdate();
 	}
 
@@ -278,21 +278,23 @@ public class DBHelper implements DBHelperAPI{
 					String type = resultSet.getString("type");
 					TLEvent event = null;
 					if(type.equals("atomic")){
-						String category = resultSet.getString("Category");
+						String cat = resultSet.getString("Category");
+                                                Category category = new Category(cat);
 						Date startDate = resultSet.getDate("startDate");
 						event = new Atomic(name, category, startDate); // TODO Get category from database.
 					}else if(type.equals("duration")){
-						String category = resultSet.getString("Category");
+                                                String cat = resultSet.getString("Category");
+                                                Category category = new Category(cat);
 						Date startDate = resultSet.getDate("startDate");
 						Date endDate = resultSet.getDate("endDate");
-						event = new Duration(name, category, startDate,endDate); // TODO Get category from database.
+						event = new Duration(name, category, startDate, endDate); // TODO Get category from database.
 					}else{
 						System.out.println("YOU DONE MESSED UP.");
 					}
 					events.add(event);
 				}
 				int label = getAxisLabel(timelineNames.get(j));
-				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[numEvents]), label);
+				Timeline timeline = new Timeline(timelineNames.get(j), events, label);
 				timelines[j] = timeline;
 			}
 			close();
