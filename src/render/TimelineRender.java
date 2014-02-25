@@ -1,21 +1,20 @@
 package render;
 
+import model.DurationLabel;
+import model.TLEventLabel;
+import model.AtomicLabel;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import model.TimelineMaker;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import model.Atomic;
-import model.Duration;
-import model.TLEvent;
-import model.Timeline;
+import model.*;
 import model.Timeline.AxisLabel;
 
 /**

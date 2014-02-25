@@ -10,7 +10,7 @@ public class TLEvent{
 	private String description, name;
         private Date startDate;
 	private Category category;
-        
+        private TLEventLabel label;
         /**
          * Constructor
          * 
@@ -98,6 +98,14 @@ public class TLEvent{
 		this.category = category;
 	}
         
+        public void setLabel(TLEventLabel label){
+            this.label = label;
+        }
+        
+        public TLEventLabel getLabel(){
+            return this.getLabel();
+        }
+        
         /**
          * Saves the event to the database.
          * TODO: insert the functionality for saving to the database.
@@ -105,5 +113,7 @@ public class TLEvent{
         public void save(){
             this.save();
         }
+        
+        
 
 }

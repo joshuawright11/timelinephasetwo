@@ -17,6 +17,7 @@ public class Duration extends TLEvent {
 	 * the date the event ends
 	 */
 	private Date endDate;
+        private DurationLabel label;
 	
 	/**
 	 * Constructor for the name, category, startDate, and endDate
@@ -31,6 +32,9 @@ public class Duration extends TLEvent {
 		this.endDate = endDate;
 	}
 	
+        public void setLabel(DurationLabel label){
+            this.label = label;
+        }
         /**
          * Method to return the end date of the TLEvent.
          * 
