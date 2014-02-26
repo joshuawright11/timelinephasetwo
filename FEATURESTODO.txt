@@ -1,0 +1,7 @@
+Features/Optimizations List (Add/Delete from this as you please)
+- "EditCategory" window with color
+- ImageIcons for events - uploadable (KAYLEY)
+- Zoom in/out
+- Descriptions for events that show hovered over the label on mouse over (CSS?)
+- Labels show at different heights/do not overlap
+- Font choice!
