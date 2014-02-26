@@ -14,11 +14,6 @@ import java.sql.Date;
 public class Duration extends TLEvent {
 	
 	/**
-	 * the date the event starts
-	 */
-	private Date startDate;
-	
-	/**
 	 * the date the event ends
 	 */
 	private Date endDate;
@@ -31,50 +26,29 @@ public class Duration extends TLEvent {
 	 * @param startDate the event startDate
 	 * @param endDate the event endDate
 	 */
-	public Duration(String name, String category, Date startDate, Date endDate){
-		super(name, category);
-		this.setStartDate(startDate);
-		this.setEndDate(endDate);
-	}
-	
-	/**
-	 * Get the startDate
-	 * 
-	 * @return the startDate
-	 */
-	public Date getStartDate() {
-		return startDate;
-	}
-	
-	/**
-	 * Set the startDate
-	 * 
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-	
-	/**
-	 * Get the endDate
-	 * 
-	 * @return the endDate
-	 */
-	public Date getEndDate() {
-		return endDate;
-	}
-	
-	/**
-	 * Set the endDate
-	 * 
-	 * @param endDate the endDate to set
-	 */
-	public void setEndDate(Date endDate) {
+	public Duration(String name, Category category, Date startDate, Date endDate){
+		super(name, startDate, category);
 		this.endDate = endDate;
 	}
 	
-	@Override
-	public String typeName() {
-		return "duration";
+        /**
+         * Method to return the end date of the TLEvent.
+         * 
+         * @return The end date.
+         */
+	public Date getEndDate(){
+            return endDate;
 	}
+        
+        public void setEndDate(Date endDate){
+            this.endDate = endDate;
+        }
+        
+        /**
+         * Saves the event to the database.
+         * TODO: insert the functionality for saving to the database.
+         */
+        public void save(){
+           //
+        }
 }

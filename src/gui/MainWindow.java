@@ -350,7 +350,7 @@ public class MainWindow extends JFrame {
 		// Set up event toolbar listeners.
 		addEventButton.addActionListener(new ActionListener() {
 			/**
-			 * Create a new EventPropertiesWindow for event addition.
+			 * Create a new TLEventPropertiesWindow for event addition.
 			 */
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable() {
@@ -367,7 +367,7 @@ public class MainWindow extends JFrame {
 		});
 		editEventButton.addActionListener(new ActionListener() {
 			/**
-			 * Create a new EventPropertiesWindow for event editing.
+			 * Create a new TLEventPropertiesWindow for event editing.
 			 */
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable() {
@@ -454,7 +454,7 @@ public class MainWindow extends JFrame {
 		// Set up menu item listeners.
 		newEventMenuItem.addActionListener(new ActionListener() {
 			/**
-			 * Create a new EventPropertiesWindow for event addition.
+			 * Create a new TLEventPropertiesWindow for event addition.
 			 */
 			public void actionPerformed(ActionEvent e) {
 				new Thread(new Runnable() {

@@ -5,13 +5,14 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Timeline.java
  * 
  * Timeline object to keep track of the different timelines in the project. Contains a name, ArrayList of TLEvents, AxisLabel (for rendering), 
- * and boolean, dirty, which is updated whenever the Timeline is changed. This can be used for deciding when to sync to the database, but is
- * currently not in use (we sync whenever certain buttons in the GUI are pressed). 
+ and boolean, dirty, which is updated whenever the Timeline is changed. This can be used for deciding when to sync to the database, but is
+ currently not in use (we sync whenever certain buttons in the GUI are pressed). 
  * 
  * @author Josh Wright and Andrew Thompson
  * Wheaton College, CS 335, Spring 2014
@@ -29,6 +30,8 @@ public class Timeline implements TimelineAPI{
 	 * Name of the timeline
 	 */
 	private String name;
+        
+        int id; //Unique timeline id for ease of SQL saving.
 	
 	/**
 	 * enum for keeping track of the potential units to render the timeline in
@@ -52,31 +55,43 @@ public class Timeline implements TimelineAPI{
 	 * whether the timeline has been changed since its last database sync
 	 */
 	private boolean dirty;
-	
+	private TimelineMaker timelineMaker;
 	/**
 	 * Constructor
 	 * 
 	 * @param name Timeline name
 	 */
-	public Timeline(String name){
-		this.name = name;
-		events = new ArrayList<TLEvent>();
-		axisLabel = AxisLabel.YEARS;
-		setDirty(true);
+	public Timeline(String name, TimelineMaker timelineMaker){
+            this.name = name;
+            events = new ArrayList<TLEvent>();
+            axisLabel = AxisLabel.YEARS;
+            setDirty(true);
+            this.timelineMaker = timelineMaker;
+            id = timelineMaker.getUniqueID();
 	}
+        
+        public Timeline(String name){
+            this.name = name;
+            events = new ArrayList<TLEvent>();
+            axisLabel = AxisLabel.YEARS;
+            setDirty(true);
+	}
+
 	
 	/**
 	 * Constructor for name and events
 	 * Sets axisLabel to YEARS by default
 	 * 
 	 * @param name Timeline name
-	 * @param events Events in timeline
+	 * @param events TLEvents in timeline
 	 */
-	public Timeline(String name, TLEvent[] events){
+	public Timeline(String name, TLEvent[] events, TimelineMaker timelineMaker){
 		this.name = name;
 		this.events = new ArrayList<TLEvent>(Arrays.asList(events));
 		axisLabel = AxisLabel.YEARS;
-		setDirty(true);
+            setDirty(true);
+            this.timelineMaker = timelineMaker;
+            id = timelineMaker.getUniqueID();        
 	}
 	
 	/**
@@ -97,13 +112,13 @@ public class Timeline implements TimelineAPI{
 	 * Constructor for name, events, and axisLabel
 	 * 
 	 * @param name Timeline name
-	 * @param events Events in timeline
+	 * @param events TLEvents in timeline
 	 * @param axisLabel Unit to render timeline in
 	 */
-	public Timeline(String name, TLEvent[] events, int axisLabel) {
+	public Timeline(String name, ArrayList<TLEvent> events, int axisLabel) {
 		this.name = name;
 		if(events != null)
-			this.events = new ArrayList<TLEvent>(Arrays.asList(events));
+			this.events = events;
 		else
 			this.events = new ArrayList<TLEvent>();
 		this.axisLabel = AXIS_LABELS[axisLabel];
@@ -117,6 +132,21 @@ public class Timeline implements TimelineAPI{
 				return true;
 		return false;
 	}
+        
+         /**
+         * Finds and returns an event
+         * 
+         * @param title The name of the event to return.
+         * @return The TLEvent found.
+         * @throws Exception If not found, throws this exception.
+         */
+        public TLEvent findEvent(String title) throws Exception{
+            for(int i = 0 ; i < events.size(); i++){
+                if(events.get(i).getName().equals(title))
+                    return events.get(i);
+            }
+            throw new Exception("Not found.");
+        }
 
 	@Override
 	public void addEvent(TLEvent event) {
@@ -180,4 +210,8 @@ public class Timeline implements TimelineAPI{
 	public AxisLabel getAxisLabel() {
 		return axisLabel;
 	}
+        
+        public Iterator<TLEvent> getEventIterator(){
+            return events.iterator();
+        }
 }

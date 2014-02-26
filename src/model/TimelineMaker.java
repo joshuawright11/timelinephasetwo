@@ -43,7 +43,7 @@ public class TimelineMaker {
 	 * The graphics object for displaying timelines in this application.
 	 */
 	private TimelineGraphics graphics;
-
+        int idCounter;
 	/**
 	 * Constructor.
 	 * Create a new TimelineMaker application model with database, graphics, and GUI components.
@@ -160,7 +160,7 @@ public class TimelineMaker {
 	/**
 	 * Set the selected timeline.
 	 * Find the timeline of the parameterized title and set selectedTimeline to it.
-	 * Update selectedTimeline, selectedEvent, and graphics.
+ Update selectedTimeline, selectedTLEvent, and graphics.
 	 * @param title of the timeline
 	 */
 	public void selectTimeline(String title) {
@@ -172,7 +172,7 @@ public class TimelineMaker {
 
 	/**
 	 * Add a timeline to this model.
-	 * Update selectedTimeline, selectedEvent, graphics, and database.
+	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param t the timeline to be added
 	 */
 	public void addTimeline(Timeline t) {
@@ -187,7 +187,7 @@ public class TimelineMaker {
 
 	/**
 	 * Remove a timeline from this model.
-	 * Update selectedTimeline, selectedEvent, graphics, and database.
+	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param t the timeline to be removed
 	 */
 	public void deleteTimeline() {
@@ -204,7 +204,7 @@ public class TimelineMaker {
 	/**
 	 * Edit the selected timeline.
 	 * Remove the selected timeline and replace it with the parameterized one.
-	 * Update selectedTimeline, selectedEvent, graphics, and database.
+ Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param t the new timeline
 	 */
 	public void editTimeline(Timeline t) {
@@ -227,7 +227,7 @@ public class TimelineMaker {
 
 	/**
 	 * Retrieve the currently selected event.
-	 * @return selectedEvent
+	 * @return selectedTLEvent
 	 */
 	public TLEvent getSelectedEvent() { 
 		return selectedEvent; 
@@ -244,7 +244,7 @@ public class TimelineMaker {
 
 	/**
 	 * Add an event to the selected timeline.
-	 * Update selectedTimeline, selectedEvent, graphics, and database.
+	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param e the new event
 	 */
 	public void addEvent(TLEvent e) {
@@ -261,7 +261,7 @@ public class TimelineMaker {
 
 	/**
 	 * Delete the selected event from the timeline.
-	 * Update selectedTimeline, selectedEvent, graphics, and database.
+	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 */
 	public void deleteEvent() {
 		if (selectedEvent != null && selectedTimeline != null && selectedTimeline.contains(selectedEvent)) {
@@ -278,7 +278,7 @@ public class TimelineMaker {
 	/**
 	 * Edit the selected event.
 	 * Remove the currently selected event from the timeline and replace it with the parameter.
-	 * Update selectedTimeline, selectedEvent, graphics, and database.
+ Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param e the new event
 	 */
 	public void editEvent(TLEvent e) {
@@ -301,5 +301,9 @@ public class TimelineMaker {
 		graphics.clearScreen();
 		graphics.renderTimeline(selectedTimeline);
 	}
+        
+        public int getUniqueID() {
+            return idCounter++;
+         }
 
 }

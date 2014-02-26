@@ -5,6 +5,8 @@ import model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * TimelinePropertiesWindow.java
@@ -149,8 +151,12 @@ public class TimelinePropertiesWindow extends JFrame {
 				final int axisLabelIndex = axisLabel.getSelectedIndex();
 				new Thread(new Runnable() {
 					public void run() {
-						TLEvent[] events = timeline.getEvents();
-						model.editTimeline(new Timeline(titleString, events, axisLabelIndex));
+                                            Iterator<TLEvent> e = timeline.getEventIterator();
+                                            ArrayList<TLEvent> ae = new ArrayList<TLEvent>();
+                                            while(e.hasNext()){
+                                                ae.add(e.next());
+                                            }
+                                            model.editTimeline(new Timeline(titleString, ae, axisLabelIndex));
 					}
 				}).start();
 				dispose();
