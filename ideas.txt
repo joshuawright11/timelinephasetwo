@@ -1,0 +1,7 @@
+This is where we can put some possible feature ideas for the project.
+
+Icons for items
+Duration events as background (so like a time period where something happened, like the church timeline)
+descriptions for events (mouse  over to display)
+manual length adjustment 
+label for axis
