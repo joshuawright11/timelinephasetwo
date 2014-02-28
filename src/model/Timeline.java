@@ -31,7 +31,7 @@ public class Timeline implements TimelineAPI{
 	 */
 	private String name;
         
-        int id; //Unique timeline id for ease of SQL saving.
+	private int id; //Unique timeline id for ease of SQL saving.
 	
 	/**
 	 * enum for keeping track of the potential units to render the timeline in
@@ -106,6 +106,13 @@ public class Timeline implements TimelineAPI{
 		this.axisLabel = AXIS_LABELS[axisLabel];
 		this.events = new ArrayList<TLEvent>();
 		dirty = true;
+	}
+	
+	public int getID(){
+		return id;
+	}
+	public void setID(int id){
+		this.id = id;
 	}
 	
 	/**
@@ -211,7 +218,7 @@ public class Timeline implements TimelineAPI{
 		return axisLabel;
 	}
         
-        public Iterator<TLEvent> getEventIterator(){
+        public Iterator<TLEvent> getEventIterator(){ // ?? you can iterate over arrays too...
             return events.iterator();
         }
 }
