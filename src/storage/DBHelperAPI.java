@@ -48,18 +48,11 @@ public interface DBHelperAPI {
 	public boolean editTimelineInfo(Timeline timeline);
 	
 	/**
-	 * Returns an array of all timelines currently in the database. The timelines have their events and any additional info built into them
-	 * 
-	 * @return array of all timelines in the database
-	 */
-	public Timeline[] getTimelines();
-	
-	/**
 	 * Saves an event to the table of its timeline.
 	 * 
 	 * @param event The event to save
 	 */
-	public void saveEvent(TLEvent event);
+	public void saveEvent(TLEvent event, String timelineName);
 	
 	/**
 	 * Removes an event from its timeline's table.
@@ -67,12 +60,20 @@ public interface DBHelperAPI {
 	 * @param event The event to remove
 	 * @return false if the event did not exist in the database
 	 */
-	public boolean removeEvent(TLEvent event);
+	public boolean removeEvent(TLEvent event, String timelineName);
 	
 	/**
-	 * Edit the details of a specified event
+	 * Edit the details of a specified event, in a specified timeline.
+	 * **This will need to be changed if events can be in multiple timelines at once.
 	 * 
 	 * @return false if the event did not exist in the database
 	 */
-	public boolean editEvent();
+	public boolean editEvent(TLEvent event, String timelineName);
+
+	/**
+	 * Returns an array of all timelines currently in the database. The timelines have their events and any additional info built into them
+	 * 
+	 * @return array of all timelines in the database
+	 */
+	public Timeline[] getTimelines();
 }

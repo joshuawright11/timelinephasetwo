@@ -12,14 +12,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import model.Timeline.AxisLabel;
 import model.*;
 
 /**
  * 
  * @author Josh Wright
  * Created: Jan 29, 2014
- * Package: backend
+ * Updated: March 1, 2014
+ * Package: storage
  *
  * Using SQL ideas and very minimal code from http://www.tutorialspoint.com/jdbc/jdbc-sample-code.htm
  *
@@ -110,67 +110,13 @@ public class DBHelper implements DBHelperAPI{
 	public boolean editTimelineInfo(Timeline timeline) {
 		open();
 		try {
-			writeTimelineInfo(timeline);
+			updateTimelineInfo(timeline);
 		} catch (SQLException e) {
 			close();
 			return false;
 		}
 		close();
 		return true;
-	}
-
-	@Override
-	public boolean saveTimeline(Timeline timeline) {
-		String tlName = timeline.getName(); 
-		open();
-		try {
-			statement.executeUpdate("CREATE TABLE "+tlName
-					+" ("+ID+",eventName TEXT, type TEXT, startDate DATETIME, endDate DATETIME, category TEXT);");
-			writeTimelineInfo(timeline);
-		} catch (SQLException e) {
-			if(e.getMessage().contains("already exists")) {
-				System.out.println("A timeline with that name already exists!");
-				return false;
-			}
-			e.printStackTrace();
-		}
-		setTimelineID(timeline);
-		if(timeline.getEvents() == null)
-			return true; // did not save any events, timeline still created
-		for(TLEvent event : timeline.getEvents()){
-			try {
-				if(event instanceof Atomic){
-					writeEvent((Atomic)event, tlName);
-				}else if(event instanceof Duration){
-					writeEvent((Duration)event, tlName);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}catch (NullPointerException e){
-				System.out.println("Nothing!");
-			}
-		}
-		close();
-		return true;
-	}
-	
-	private void setTimelineID(Timeline timeline) {
-		open();
-		try{
-			getID(timeline);
-		}catch(SQLException e){
-			
-		}
-		close();
-	}
-
-	private void getID(Timeline timeline) throws SQLException{
-		String SELECT_LABEL = "SELECT _id FROM timeline_info WHERE timelineName = ?;";
-		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
-		pstmt.setString(1, timeline.getName());
-		resultSet = pstmt.executeQuery();
-		int id = resultSet.getInt(1);
-		timeline.setID(id);
 	}
 
 	/**
@@ -190,9 +136,113 @@ public class DBHelper implements DBHelperAPI{
 	}
 	
 	/**
-	 * Uses prepared statements to remove the axisLabel from the timeline_info table
+	 * Syncs the database to this timeline's info. Uses id to access the timeline in the database
 	 * 
-	 * @param timelineName the name of the timeline to remove the axisLabel of
+	 * 
+	 * @param timeline the timeline to update
+	 * @throws SQLException because there are databases
+	 */
+	private void updateTimelineInfo(Timeline timeline) throws SQLException{
+		String UPDATE_NAME_LABEL = " UPDATE timeline_info SET timelineName=? WHERE _id=?;";
+		PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
+		pstmt.setString(1, timeline.getName());
+		pstmt.setInt(2, timeline.getID());
+		pstmt.executeUpdate();
+		
+		String UPDATE_AXIS_LABEL = " UPDATE timeline_info SET axisLabel=? WHERE _id=?;";
+		pstmt = connection.prepareStatement(UPDATE_AXIS_LABEL);
+		pstmt.setString(1, timeline.getAxisLabel().name());
+		pstmt.setInt(2, timeline.getID());
+		pstmt.executeUpdate();
+	}
+
+	@Override
+	public boolean saveTimeline(Timeline timeline) {
+		String tlName = timeline.getName(); 
+		open();
+		try {
+			statement.executeUpdate("CREATE TABLE "+tlName
+					+" ("+ID+",eventName TEXT, type TEXT, startDate DATETIME, endDate DATETIME, category TEXT);");
+			writeTimelineInfo(timeline);
+		} catch (SQLException e) {
+			if(e.getMessage().contains("already exists")) {
+				System.out.println("A timeline with that name already exists!");
+				close();
+				return false;
+			}
+			e.printStackTrace();
+		}
+		close();
+		setTimelineID(timeline);
+		if(timeline.getEvents() == null){
+			return true; // did not save any events, timeline still created
+		}
+		open();
+		for(TLEvent event : timeline.getEvents()){
+			try {
+				if(event instanceof Atomic){
+					writeEvent((Atomic)event, tlName);
+				}else if(event instanceof Duration){
+					writeEvent((Duration)event, tlName);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}catch (NullPointerException e){
+				System.out.println("Nothing!");
+			}
+		}
+		close();
+		return true;
+	}
+	
+	/**
+	 * Sets a timeline's id field to what its unique id in the timeline_info table is.
+	 * Must call this immediately after the timeline is first stored in the database. 
+	 * 
+	 * @param timeline the timeline whose id field is set
+	 */
+	private void setTimelineID(Timeline timeline) {
+		open();
+		try{
+			String SELECT_LABEL = "SELECT _id FROM timeline_info WHERE timelineName = ?;";
+			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+			pstmt.setString(1, timeline.getName());
+			resultSet = pstmt.executeQuery();
+			int id = resultSet.getInt(1);
+			timeline.setID(id);
+		}catch(SQLException e){
+			
+		}
+		close();
+	}
+
+	/**	
+	 * Gets the unique id for a timeline from the timeline_info table, based on the timeline's name. 
+	 * Must set this immediately after the timeline is first stored in the database. 
+	 * 
+	 * @param name the name of the timeline whose id will be returned
+	 * @return the id of the timeline
+	 * @throws SQLException because there are databases.
+	 */
+	private void setEventID(TLEvent event, String timelineName){
+		open();
+		try{
+			String SELECT_LABEL = "SELECT _id FROM "+timelineName+" WHERE eventName = ?;";
+			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+			pstmt.setString(1, event.getName());
+			resultSet = pstmt.executeQuery();
+			int id = resultSet.getInt(1);
+			event.setID(id);
+		}catch(SQLException e){
+			
+		}
+		close();
+	}
+
+	/**
+	 * Uses prepared statements to remove the timeline's info from the timeline_info table
+	 * 
+	 * @param id the id of the timeline to remove the info of
 	 * @throws SQLException because there are databases
 	 */
 	private void removeTimelineInfo(int id) throws SQLException{
@@ -270,7 +320,7 @@ public class DBHelper implements DBHelperAPI{
 	public boolean removeTimeline(Timeline timeline) {
 		open();
 		try {
-			statement.executeUpdate("DROP TABLE IF EXISTS'"+timeline.getName()+"';");
+			statement.executeUpdate("DROP TABLE IF EXISTS'"+timeline.getName()+"';"); // if exists is probably bad for this
 			removeTimelineInfo(timeline.getID());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -300,16 +350,16 @@ public class DBHelper implements DBHelperAPI{
 					String type = resultSet.getString("type");
 					TLEvent event = null;
 					if(type.equals("atomic")){
-						String cat = resultSet.getString("Category");
-                                                Category category = new Category(cat);
+						String cat = resultSet.getString("category");
+                        Category category = new Category(cat);
 						Date startDate = resultSet.getDate("startDate");
-						event = new Atomic(name, category, startDate); // TODO Get category from database.
+						event = new Atomic(name, category, startDate); // TODO Get category from database. Pretty sure this works...
 					}else if(type.equals("duration")){
-                                                String cat = resultSet.getString("Category");
-                                                Category category = new Category(cat);
+                        String cat = resultSet.getString("category");
+                        Category category = new Category(cat);
 						Date startDate = resultSet.getDate("startDate");
 						Date endDate = resultSet.getDate("endDate");
-						event = new Duration(name, category, startDate, endDate); // TODO Get category from database.
+						event = new Duration(name, category, startDate, endDate); // TODO Get category from database. Pretty sure this works...
 					}else{
 						System.out.println("YOU DONE MESSED UP.");
 					}
@@ -329,21 +379,71 @@ public class DBHelper implements DBHelperAPI{
 	}
 
 	@Override
-	public void saveEvent(TLEvent event) {
-		// TODO Auto-generated method stub
-		
+	public void saveEvent(TLEvent event, String timelineName) {
+		try{
+			if(event instanceof Atomic)
+				writeEvent((Atomic)event, timelineName);
+			else if(event instanceof Duration)
+				writeEvent((Duration)event, timelineName);
+			setEventID(event, timelineName);
+		}
+		catch(SQLException sql){
+			sql.printStackTrace();
+		}
 	}
 
 	@Override
-	public boolean removeEvent(TLEvent event) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeEvent(TLEvent event, String timelineName) {
+		open();
+		try{
+			String REMOVE_EVENT_LABEL = "DELETE FROM "+timelineName+" WHERE _id = ?;";
+			PreparedStatement pstmt = connection.prepareStatement(REMOVE_EVENT_LABEL);
+			pstmt.setInt(1, event.getID());
+			pstmt.executeUpdate();
+			close();
+			return true;
+		}catch(SQLException sql){
+			close();
+			return false;
+		}
 	}
 
 	@Override
-	public boolean editEvent() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean editEvent(TLEvent event, String timelineName) {
+		open();
+		try{
+			String UPDATE_NAME_LABEL = " UPDATE "+timelineName+" SET eventName=? WHERE _id=?;";
+			PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
+			pstmt.setString(1, event.getName());
+			pstmt.setInt(2, event.getID());
+			pstmt.executeUpdate();
+			
+			String UPDATE_STARTDATE_LABEL = " UPDATE "+timelineName+" SET startDate=? WHERE _id=?;";
+			pstmt = connection.prepareStatement(UPDATE_STARTDATE_LABEL);
+			pstmt.setDate(1, event.getStartDate());
+			pstmt.setInt(2, event.getID());
+			pstmt.executeUpdate();
+			
+			if(event instanceof Duration){
+				String UPDATE_ENDDATE_LABEL = " UPDATE "+timelineName+" SET endDate=? WHERE _id=?;";
+				pstmt = connection.prepareStatement(UPDATE_ENDDATE_LABEL);
+				pstmt.setDate(1, ((Duration)event).getEndDate());
+				pstmt.setInt(2, event.getID());
+				pstmt.executeUpdate();
+			}
+			
+			String UPDATE_CATEGORY_LABEL = " UPDATE "+timelineName+" SET category=? WHERE _id=?;";
+			pstmt = connection.prepareStatement(UPDATE_CATEGORY_LABEL);
+			pstmt.setString(1, event.getCategory().getName());
+			pstmt.setInt(2, event.getID());
+			pstmt.executeUpdate();
+			
+			close();
+			return true;
+		}catch(SQLException sql){
+			close();
+			return false;
+		}
 	}
 
 }

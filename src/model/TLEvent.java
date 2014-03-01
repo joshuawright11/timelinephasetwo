@@ -10,6 +10,7 @@ public class TLEvent{
 	private String description, name;
         private Date startDate;
 	private Category category;
+	private int id;
         
         /**
          * Constructor
@@ -105,5 +106,17 @@ public class TLEvent{
         public void save(){
             this.save();
         }
+		/**
+		 * @return the id
+		 */
+		public int getID() {
+			return id;
+		}
+		/**
+		 * @param id the id to set
+		 */
+		public void setID(int id) {
+			this.id = id;
+		}
 
 }

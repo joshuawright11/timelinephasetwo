@@ -186,7 +186,7 @@ public class Timeline implements TimelineAPI{
 
 	@Override
 	public TLEvent[] getEvents() {
-		if(events.isEmpty()) return null;
+		if(events.isEmpty()) return new TLEvent[0];
 		return (TLEvent[])events.toArray(new TLEvent[events.size()]);
 	}
 	

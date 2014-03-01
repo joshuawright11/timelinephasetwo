@@ -180,7 +180,7 @@ public class TimelineMaker {
 		selectedEvent = null;
 		timelines.add(selectedTimeline);
 
-		database.writeTimeline(selectedTimeline);
+		database.saveTimeline(selectedTimeline);
 		gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
 		updateGraphics();
 	}
@@ -219,7 +219,7 @@ public class TimelineMaker {
 		}
 		selectedTimeline = t;
 		timelines.add(selectedTimeline);
-		database.writeTimeline(selectedTimeline);
+		database.saveTimeline(selectedTimeline);
 		if (newName)
 			gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
 		updateGraphics();
@@ -255,7 +255,7 @@ public class TimelineMaker {
 			updateGraphics();
 
 			database.removeTimeline(selectedTimeline);
-			database.writeTimeline(selectedTimeline);
+			database.saveTimeline(selectedTimeline);
 		}
 	}
 
@@ -271,7 +271,7 @@ public class TimelineMaker {
 			updateGraphics();
 
 			database.removeTimeline(selectedTimeline);
-			database.writeTimeline(selectedTimeline);
+			database.saveTimeline(selectedTimeline);
 		}
 	}
 
@@ -290,7 +290,7 @@ public class TimelineMaker {
 			updateGraphics();
 
 			database.removeTimeline(selectedTimeline);
-			database.writeTimeline(selectedTimeline);
+			database.saveTimeline(selectedTimeline);
 		}
 	}
 
