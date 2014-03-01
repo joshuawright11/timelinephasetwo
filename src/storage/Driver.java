@@ -42,6 +42,7 @@ public class Driver {
 		for(Timeline timeline : timelines){
 			System.out.println("-----"+timeline.getName()+"-----");
 			TLEvent[] events = timeline.getEvents();
+			if(events == null) continue;
 			for(TLEvent event : events){
 				System.out.println(event.getName());
 			}
