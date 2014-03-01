@@ -2,12 +2,10 @@ This is where we can put some possible feature ideas for the project.
 
 - Icons for items
 - Duration events as background (so like a time period where something happened, like the church timeline)
-- descriptions for events (mouse  over to display)
-- manual length adjustment 
-- label for axis
+- descriptions for events, maybe mouse  over to display (JOSH: database and model, GUI will have to wait)
+- manual length adjustment / zoomin/zoomout
+- label for axis (We already have this?)
 - "EditCategory" window with color
 - ImageIcons for events - uploadable (KAYLEY)
-- Zoom in/out
-- Descriptions for events that show hovered over the label on mouse over (CSS?)
 - Labels show at different heights/do not overlap
 - Font choice!
