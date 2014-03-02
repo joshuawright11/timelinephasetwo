@@ -6,9 +6,11 @@ package model;
 
 import java.sql.Date;
 
+import storage.DBHelper;
+
 public class TLEvent{
 	private String description, name;
-        private Date startDate;
+    private Date startDate;
 	private Category category;
 	private int id;
         
@@ -21,13 +23,13 @@ public class TLEvent{
             this.name = name;
             category = new Category("Default");
         }
-        /**
-         * Constructor
-         * 
-         * @param name The name of the Event to be consructed.
-         * @param startDate The int value of start of the event.
-         * @param category The category of the event.
-         */
+    /**
+     * Constructor
+     * 
+     * @param name The name of the Event to be consructed.
+     * @param startDate The int value of start of the event.
+     * @param category The category of the event.
+     */
 	public TLEvent(String name, Date startDate, Category category){
 		this.name = name;
 		this.startDate = startDate;
@@ -101,10 +103,9 @@ public class TLEvent{
         
         /**
          * Saves the event to the database.
-         * TODO: insert the functionality for saving to the database.
          */
-        public void save(){
-            this.save();
+        public void save(DBHelper db, String timelineName){
+        	db.saveEvent(this, timelineName);
         }
 		/**
 		 * @return the id

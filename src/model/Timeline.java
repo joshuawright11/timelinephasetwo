@@ -55,7 +55,9 @@ public class Timeline implements TimelineAPI{
 	 * whether the timeline has been changed since its last database sync
 	 */
 	private boolean dirty;
+	
 	private TimelineMaker timelineMaker;
+	
 	/**
 	 * Constructor
 	 * 
@@ -218,7 +220,7 @@ public class Timeline implements TimelineAPI{
 		return axisLabel;
 	}
         
-        public Iterator<TLEvent> getEventIterator(){ // ?? you can iterate over arrays too...
+        public Iterator<TLEvent> getEventIterator(){
             return events.iterator();
         }
 }
