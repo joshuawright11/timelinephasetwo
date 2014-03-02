@@ -128,9 +128,6 @@ public abstract class TLEventLabel extends Label {
 		test.setEditable(false);
 		test.setWrapText(true);
 		
-
-		
-		
 		MenuItem category = new MenuItem("Category: "+event.getCategory().getName());
 		CustomMenuItem text = new CustomMenuItem(test);
 		contextMenu.getItems().addAll(name, category, text);

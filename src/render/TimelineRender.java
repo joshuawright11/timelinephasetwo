@@ -11,7 +11,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import model.Atomic;
 import model.Duration;
 import model.TLEvent;
@@ -220,6 +225,7 @@ public class TimelineRender implements Runnable {
 	private void renderTimeline() {
 		group.getChildren().clear();
 		group = new Group();
+		group.getChildren().add(createTitle());
 		renderAtomics();
 		renderTime();
 		renderDurations();
@@ -453,5 +459,18 @@ public class TimelineRender implements Runnable {
 			return 0;
 		}
 	}
-
+	
+	private Text createTitle(){
+		Text t = new Text();
+		t.setText(timeline.getName());
+		t.setFont(Font.font(null,FontWeight.BOLD,30));
+		t.setFill(Color.NAVY);
+		DropShadow ds = new DropShadow();
+		ds.setOffsetY(2.0f);
+		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
+		t.setEffect(ds);
+		t.setX(20);
+		t.setY(40);
+		return t;
+	}
 }
