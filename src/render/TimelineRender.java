@@ -11,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -82,7 +81,6 @@ public class TimelineRender implements Runnable {
 	 * ArrayLists of all the events in the timeline. 
 	 * Separated into durations and atomics for rendering purposes
 	 */
-
 	private ArrayList<Duration> durations;
 	private ArrayList<Atomic> atomics;
 	
@@ -300,9 +298,12 @@ public class TimelineRender implements Runnable {
 		Calendar endCalendar = new GregorianCalendar();
 		endCalendar.setTime(new Date(maxTime));
 
+		System.out.println("First date: "+getFirstDate().toString());
+		System.out.println("Max Time: "+new Date(maxTime).toString());
+		
 		int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
 		int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
-		int diffDay = diffYear * 365 +endCalendar.get(Calendar.DAY_OF_YEAR) - startCalendar.get(Calendar.DAY_OF_YEAR);
+		int diffDay = diffYear * 365 + endCalendar.get(Calendar.DAY_OF_YEAR) - startCalendar.get(Calendar.DAY_OF_YEAR);
 		
 		switch(axisLabel){ // +1 to round up
 		case DAYS:
@@ -324,17 +325,18 @@ public class TimelineRender implements Runnable {
 	 */
 	private Date getFirstDate() {
 		Date date = new Date(minTime);
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		Date toReturn = null;
 
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH);
-		int day = cal.get(Calendar.DAY_OF_YEAR);
+		int day = cal.get(Calendar.DAY_OF_MONTH);
 
 		switch(axisLabel){
 		case DAYS:
 			cal.set(year, month, day);
+			System.out.println("Year is: " + year + " |Month is: " + month + " |Day is: " + day + " |Cal at: " + new Date(cal.getTime().getTime()).toString());
 			toReturn = new Date(cal.getTime().getTime());
 			break;
 		case MONTHS:
@@ -378,7 +380,6 @@ public class TimelineRender implements Runnable {
 	private void renderDurations() {
 		int counter = 0;
 		for(Duration e : durations){
-			
 			int xStart = getXPos(e.getStartDate());
 			int xEnd = getXPos(e.getEndDate());
 			int labelWidth = xEnd - xStart;
@@ -460,6 +461,11 @@ public class TimelineRender implements Runnable {
 		}
 	}
 	
+	/**
+	 * Makes a very simple title for the timeline
+	 * 
+	 * @return A Text object that will be the title
+	 */
 	private Text createTitle(){
 		Text t = new Text();
 		t.setText(timeline.getName());
