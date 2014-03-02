@@ -22,7 +22,7 @@ public class Atomic extends TLEvent {
 		super(name, startDate, category);
 	}
         
-                /**
+        /**
          * Saves the event to the database.
          * TODO: insert the functionality for saving to the database.
          */

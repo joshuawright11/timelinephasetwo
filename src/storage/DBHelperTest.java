@@ -42,8 +42,7 @@ public class DBHelperTest {
 		Timeline newTimeline = new Timeline("dong");
 		oldTimeline.addEvent(new Duration("the", new Category(""), new Date(0), new Date(0)));
 		newTimeline.addEvent(new Duration("witch", new Category(""), new Date(0), new Date(0)));
-		db.writeTimeline(oldTimeline);
-		db.changeTimeline(oldTimeline, newTimeline);
+		db.saveTimeline(oldTimeline);
 		assertEquals(newTimeline.getName(), db.getTimelines()[0].getName());
 		assertEquals(newTimeline.getEvents()[0].getName(), db.getTimelines()[0].getEvents()[0].getName());
 		
@@ -59,7 +58,7 @@ public class DBHelperTest {
 	public void testWriteTimeline() {
 		Timeline timeline = new Timeline("mightbe"); //is causes problems in the SQL
 		timeline.addEvent(new Duration("dead", new Category(""), new Date(0), new Date(0)));
-		db.writeTimeline(timeline);
+		db.saveTimeline(timeline);
 		assertEquals(timeline.getName(), db.getTimelines()[0].getName());
 		assertEquals(timeline.getEvents()[0].getName(), db.getTimelines()[0].getEvents()[0].getName());
 		
@@ -75,7 +74,7 @@ public class DBHelperTest {
 	public void testRemoveTimeline() {
 		Timeline timeline = new Timeline("which");
 		timeline.addEvent(new Duration("old", new Category(""), new Date(0), new Date(0)));
-		db.writeTimeline(timeline);
+		db.saveTimeline(timeline);
 		db.removeTimeline(timeline);
 		assertTrue(db.getTimelines().length == 0);
 	}
@@ -91,8 +90,8 @@ public class DBHelperTest {
 		Timeline secondTimeline = new Timeline("the");
 		firstTimeline.addEvent(new Atomic("wicked", new Category(""), new Date(0)));
 		secondTimeline.addEvent(new Duration("witch", new Category(""), new Date(0), new Date(0)));
-		db.writeTimeline(firstTimeline);
-		db.writeTimeline(secondTimeline);
+		db.saveTimeline(firstTimeline);
+		db.saveTimeline(secondTimeline);
 		assertEquals(firstTimeline.getName(), db.getTimelines()[0].getName());
 		assertEquals(firstTimeline.getEvents()[0].getName(), db.getTimelines()[0].getEvents()[0].getName());
 		assertEquals(secondTimeline.getName(), db.getTimelines()[1].getName());

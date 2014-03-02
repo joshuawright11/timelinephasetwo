@@ -7,41 +7,13 @@ import java.util.ArrayList;
 
 import model.TimelineMaker;
 import model.Duration;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.input.MouseEvent;
 
 /**
  * @author josh
  *
  */
 public class DurationLabel extends TLEventLabel {
-	/**
-	 * The event this label is associated with
-	 */
-	private Duration event;
-	
-	/**
-	 * The x and y position of this event
-	 */
-	private int xPos;
-	private int yPos;
-
-	/**
-	 * The model of the program to update selected event
-	 */
-	private TimelineMaker model;
-	
-	/**
-	 * This object. Used for passing to anonymous inner classes.
-	 */
-	private DurationLabel label;
-	
-	/**
-	 * ArrayList of all other eventLabels, used for clearing previous selection
-	 */
-	private ArrayList<TLEventLabel> eventLabels;
-	
 	
 	/**
 	 * The width in pixels of the label
@@ -60,61 +32,29 @@ public class DurationLabel extends TLEventLabel {
 	 * @param eventLabels the list of TLEventLabels
 	 */
 	DurationLabel(Duration event, int xPos, int yPos, int width, TimelineMaker model, ArrayList<TLEventLabel> eventLabels){
-		super(event.getName());
-		this.event = event;
-		this.xPos = xPos;
-		this.yPos = yPos;
-		this.eventLabels = eventLabels;
-		this.label = this;
+		super(xPos, yPos, event, model, eventLabels);
 		this.width = width;
-		this.model = model;
-		init();
+		uniqueDesign(); // yeah this is kludgy
 	}
 	
-	/**
-	 * Calls two other init helper methods for cleanliness
-	 */
-	private void init() {
-		initDesign();
-		initHandlers();
-	}
-
-	/**
-	 * Sets up the "design" of the label. Border, position, etc.
-	 */
-	private void initDesign(){
-		label.setPrefWidth(width);
-		label.setAlignment(Pos.CENTER);
-		label.setLayoutX(xPos);
-		label.setLayoutY(yPos);
-		label.setStyle("-fx-border-color: blue");
-	}
-	
-	/**
-	 * Initializes the various handlers of the label
-	 */
-	private void initHandlers(){
-		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent e) {
-				for(TLEventLabel label : eventLabels){
-					label.setSelected(false);
-				}
-				setSelected(true);
-				new Thread(new Runnable() {
-					public void run() {
-						model.selectEvent(event);
-					}
-				}).start();
-			}
-		});
-	}
+	@Override
+	public void uniqueHandlers() {}
 
 	@Override
 	public void updateDesign() {
 		if (isSelected()) {
-			label.setStyle("-fx-border-color: black");
+			setStyle("-fx-border-color: black;-fx-background-color: white;");
 		}else{	
-			label.setStyle("-fx-border-color: blue");
+			setStyle("-fx-border-color: blue;-fx-background-color: white;");
 		}
 	}
+
+	@Override
+	public void uniqueDesign() {
+		setPrefWidth(width);
+		setAlignment(Pos.CENTER);
+		setStyle("-fx-border-color: blue");
+	}
+
+
 }

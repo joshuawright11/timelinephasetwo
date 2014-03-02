@@ -358,7 +358,7 @@ public class TimelineRender implements Runnable {
 			AtomicLabel label = new AtomicLabel(e, xPosition, pushDown, model, eventLabels);
 			eventLabels.add(label);
 			group.getChildren().add(label);
-			pushDown += 20;
+	        pushDown += 20;
 		}
 
 	}

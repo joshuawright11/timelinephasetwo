@@ -35,14 +35,14 @@ public class Driver {
 		test1.addEvent(event2);
 		helper.removeTimeline(test1);
 		helper.removeTimeline(test2);
-		helper.writeTimeline(test1);
-		helper.writeTimeline(test2);
-		helper.removeTimeline(test1);
-		helper.changeTimeline(test2, test1);
+		helper.saveTimeline(test1);
+		helper.saveTimeline(test2);
+		helper.editTimelineInfo(test1);
 		Timeline[] timelines = helper.getTimelines();
 		for(Timeline timeline : timelines){
 			System.out.println("-----"+timeline.getName()+"-----");
 			TLEvent[] events = timeline.getEvents();
+			if(events == null) continue;
 			for(TLEvent event : events){
 				System.out.println(event.getName());
 			}

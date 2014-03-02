@@ -28,7 +28,7 @@ public interface DBHelperAPI {
 	 * @param timeline the timeline to write
 	 * @return
 	 */
-	public boolean writeTimeline(Timeline timeline);
+	public boolean saveTimeline(Timeline timeline);
 	
 	/**
 	 * Removes a timeline and all its information from the database
@@ -45,14 +45,35 @@ public interface DBHelperAPI {
 	 * @param newTimeline the new timeline to switch it with
 	 * @return the newly saved timeline
 	 */
-	public Timeline changeTimeline(Timeline oldTimeline, Timeline newTimeline);
+	public boolean editTimelineInfo(Timeline timeline);
 	
+	/**
+	 * Saves an event to the table of its timeline.
+	 * 
+	 * @param event The event to save
+	 */
+	public void saveEvent(TLEvent event, String timelineName);
+	
+	/**
+	 * Removes an event from its timeline's table.
+	 * 
+	 * @param event The event to remove
+	 * @return false if the event did not exist in the database
+	 */
+	public boolean removeEvent(TLEvent event, String timelineName);
+	
+	/**
+	 * Edit the details of a specified event, in a specified timeline.
+	 * **This will need to be changed if events can be in multiple timelines at once.
+	 * 
+	 * @return false if the event did not exist in the database
+	 */
+	public boolean editEvent(TLEvent event, String timelineName);
+
 	/**
 	 * Returns an array of all timelines currently in the database. The timelines have their events and any additional info built into them
 	 * 
 	 * @return array of all timelines in the database
 	 */
 	public Timeline[] getTimelines();
-	public void writeEvent(TLEvent event);
-	public void removeEvent(TLEvent event);
 }
