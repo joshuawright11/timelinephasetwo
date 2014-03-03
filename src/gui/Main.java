@@ -11,8 +11,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-	        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));  
-	        primaryStage.setTitle("Timestretch");
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("MainWindow.fxml"));
+			Parent root = (Parent)loader.load();
+			primaryStage.setTitle("Timestretch");
 	        Scene scene = new Scene(root);
 	        primaryStage.setScene(scene);
 	        primaryStage.show();

@@ -144,11 +144,12 @@ public class MainWindowController {
     @FXML
     void editEventPressed(ActionEvent event) {
 		try {
-	        Parent root = FXMLLoader.load(getClass().getResource("EventPropertiesWindow.fxml"));  
-            Stage stage = new Stage();
-            stage.setTitle("Edit Event");
-            stage.setScene(new Scene(root));
-            stage.show();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Edit Event");
+	        stage.setScene(new Scene(root));
+	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -158,11 +159,12 @@ public class MainWindowController {
     @FXML
     void editTimelinePressed(ActionEvent event) {
 		try {
-	        Parent root = FXMLLoader.load(getClass().getResource("TimelinePropertiesWindow.fxml"));  
-            Stage stage = new Stage();
-            stage.setTitle("Edit Timeline");
-            stage.setScene(new Scene(root));
-            stage.show();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimelinePropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Edit Timeline");
+	        stage.setScene(new Scene(root));
+	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -195,11 +197,12 @@ public class MainWindowController {
     @FXML
     void newEventPressed(Event event) {
 		try {
-	        Parent root = FXMLLoader.load(getClass().getResource("EventPropertiesWindow.fxml"));  
-            Stage stage = new Stage();
-            stage.setTitle("New Event");
-            stage.setScene(new Scene(root));
-            stage.show();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Add Event");
+	        stage.setScene(new Scene(root));
+	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -211,11 +214,12 @@ public class MainWindowController {
     @FXML
     void newTimelinePressed(Event event) {
 		try {
-	        Parent root = FXMLLoader.load(getClass().getResource("TimelinePropertiesWindow.fxml"));  
-            Stage stage = new Stage();
-            stage.setTitle("New Timeline");
-            stage.setScene(new Scene(root));
-            stage.show();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimelinePropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Add Timeline");
+	        stage.setScene(new Scene(root));
+	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
