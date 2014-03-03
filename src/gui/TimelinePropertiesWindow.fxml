@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="timlinePropertiesWindowAnchor" fx:id="timelinePropertiesWindowAnchor" minHeight="243.7" prefHeight="245.7" prefWidth="425.9998558593725" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="gui.TimelinePropertiesWindowController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Label fx:id="appearanceLabel" layoutY="78.0" text="Appearance:" AnchorPane.leftAnchor="14.0">
+      <font>
+        <Font name="System Bold Italic" size="16.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label fx:id="informationLabel" font="$x1" layoutY="14.0" text="Information:" AnchorPane.leftAnchor="14.0" />
+    <Label fx:id="axisUnitLabel" layoutY="149.0" prefHeight="22.0" text="Axis Unit" AnchorPane.leftAnchor="14.0">
+      <font>
+        <Font name="System Bold Italic" size="13.0" fx:id="x2" />
+      </font>
+    </Label>
+    <Label fx:id="titleLabel" font="$x2" layoutY="40.0" text="Title" AnchorPane.leftAnchor="14.0" />
+    <Label fx:id="colorLabel" alignment="TOP_LEFT" font="$x2" layoutY="114.0" prefHeight="25.0" text="Color" AnchorPane.leftAnchor="14.0" />
+    <ColorPicker fx:id="colorColorChooser" layoutY="114.0" AnchorPane.rightAnchor="14.0" />
+    <TextField fx:id="titleTextField" layoutY="37.0" prefWidth="199.99991689452872" AnchorPane.leftAnchor="213.0" AnchorPane.rightAnchor="13.0" />
+    <ComboBox fx:id="fontComboBox" layoutY="176.0" AnchorPane.rightAnchor="14.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Item 1" />
+          <String fx:value="Item 2" />
+          <String fx:value="Item 3" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+    <Button fx:id="createButton" layoutY="216.0" mnemonicParsing="false" onAction="#createButtonPressed" text="Create" AnchorPane.rightAnchor="93.0" />
+    <Button fx:id="cancelButton" layoutY="216.0" mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" AnchorPane.rightAnchor="14.0" />
+    <ComboBox fx:id="axisUnitComboBox" layoutY="149.0" AnchorPane.rightAnchor="14.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Item 1" />
+          <String fx:value="Item 2" />
+          <String fx:value="Item 3" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+    <Separator fx:id="appearanceSeparator" layoutY="70.0" prefWidth="426.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+    <Label fx:id="fontLabel" font="$x2" layoutY="176.0" prefHeight="22.0" text="Font" AnchorPane.leftAnchor="13.0" />
+    <Separator fx:id="buttonSeparator" layoutY="207.0" prefWidth="426.000244140625" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" />
+  </children>
+</AnchorPane>
