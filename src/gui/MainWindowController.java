@@ -1,9 +1,13 @@
 package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -14,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 
 public class MainWindowController {
@@ -138,13 +143,29 @@ public class MainWindowController {
     // Handler for Button[fx:id="editEventButton"] onAction
     @FXML
     void editEventPressed(ActionEvent event) {
-        // handle the event here
+		try {
+	        Parent root = FXMLLoader.load(getClass().getResource("EventPropertiesWindow.fxml"));  
+            Stage stage = new Stage();
+            stage.setTitle("Edit Event");
+            stage.setScene(new Scene(root));
+            stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for Button[fx:id="editTimelineButton"] onAction
     @FXML
     void editTimelinePressed(ActionEvent event) {
-        // handle the event here
+		try {
+	        Parent root = FXMLLoader.load(getClass().getResource("TimelinePropertiesWindow.fxml"));  
+            Stage stage = new Stage();
+            stage.setTitle("Edit Timeline");
+            stage.setScene(new Scene(root));
+            stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for MenuItem[fx:id="exitMenuItem"] onAction
@@ -173,7 +194,15 @@ public class MainWindowController {
     // Handler for MenuItem[fx:id="newEventMenuItem"] onMenuValidation
     @FXML
     void newEventPressed(Event event) {
-        // handle the event here
+		try {
+	        Parent root = FXMLLoader.load(getClass().getResource("EventPropertiesWindow.fxml"));  
+            Stage stage = new Stage();
+            stage.setTitle("New Event");
+            stage.setScene(new Scene(root));
+            stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for Button[fx:id="addTimelineButton"] onAction
@@ -181,7 +210,15 @@ public class MainWindowController {
     // Handler for MenuItem[fx:id="newTimelineMenuItem"] onMenuValidation
     @FXML
     void newTimelinePressed(Event event) {
-        // handle the event here
+		try {
+	        Parent root = FXMLLoader.load(getClass().getResource("TimelinePropertiesWindow.fxml"));  
+            Stage stage = new Stage();
+            stage.setTitle("New Timeline");
+            stage.setScene(new Scene(root));
+            stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for MenuItem[fx:id="saveMenuItem"] onAction
