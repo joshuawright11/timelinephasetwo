@@ -298,9 +298,6 @@ public class TimelineRender implements Runnable {
 		Calendar endCalendar = new GregorianCalendar();
 		endCalendar.setTime(new Date(maxTime));
 
-		System.out.println("First date: "+getFirstDate().toString());
-		System.out.println("Max Time: "+new Date(maxTime).toString());
-		
 		int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
 		int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
 		int diffDay = diffYear * 365 + endCalendar.get(Calendar.DAY_OF_YEAR) - startCalendar.get(Calendar.DAY_OF_YEAR);
@@ -336,7 +333,6 @@ public class TimelineRender implements Runnable {
 		switch(axisLabel){
 		case DAYS:
 			cal.set(year, month, day);
-			System.out.println("Year is: " + year + " |Month is: " + month + " |Day is: " + day + " |Cal at: " + new Date(cal.getTime().getTime()).toString());
 			toReturn = new Date(cal.getTime().getTime());
 			break;
 		case MONTHS:
