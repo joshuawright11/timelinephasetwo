@@ -55,5 +55,5 @@
  * this should be all events that have the mouse over them 
  * (a :hover selector might make more sense) */
 #label-highlighted{
-    -fx-background-color: grey;
+    -fx-background-color: rgb(0, 109, 204);
 }

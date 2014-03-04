@@ -162,7 +162,9 @@ public class MainWindowController{
 	        controller.initData(timelineMaker, selectedEvent);
 			Stage stage = new Stage();
 			stage.setTitle("Edit Event");
-	        stage.setScene(new Scene(root));
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/EventPropertiesWindow.css");
+			stage.setScene(scene);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -181,7 +183,9 @@ public class MainWindowController{
 	        controller.initData(timelineMaker, selectedTimeline);
 			Stage stage = new Stage();
 			stage.setTitle("Edit Timeline");
-	        stage.setScene(new Scene(root));
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/TimelinePropertiesWindow.css");
+	        stage.setScene(scene);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -221,7 +225,9 @@ public class MainWindowController{
 	        controller.initData(timelineMaker, null);
 			Stage stage = new Stage();
 			stage.setTitle("Add Event");
-	        stage.setScene(new Scene(root));
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/EventPropertiesWindow.css");
+	        stage.setScene(scene);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -240,7 +246,9 @@ public class MainWindowController{
 	        controller.initData(timelineMaker, null);
 			Stage stage = new Stage();
 			stage.setTitle("Add Timeline");
-	        stage.setScene(new Scene(root));
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/EventPropertiesWindow.css");
+	        stage.setScene(scene);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
