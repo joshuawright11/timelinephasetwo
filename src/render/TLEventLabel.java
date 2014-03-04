@@ -155,7 +155,7 @@ public abstract class TLEventLabel extends Label {
 			public void handle(MouseEvent e) {
 				Platform.runLater(new Thread(new Runnable() {
 					public void run() {
-						setStyle("-fx-background-color: grey");
+						setId("label-highlighted");
 					}
 				}));
 			}

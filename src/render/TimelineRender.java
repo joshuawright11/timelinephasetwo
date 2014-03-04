@@ -150,8 +150,9 @@ public class TimelineRender extends Pane {
 	 * the Date class's compareTo method (which I didn't know existed until after writing this).
 	 */
 	private void init(){
+		setId("render-pane");
 		unitWidth = 150;
-		pushDown = 60;
+		pushDown = 60; //to allow 60 pixels for title
 		for(TLEvent event : timeline.getEvents()){
 			if(event instanceof Duration){
 				durations.add((Duration)event);
@@ -221,7 +222,7 @@ public class TimelineRender extends Pane {
 			
 			Canvas canvas = new Canvas(unitWidth,20);
 			canvas.setLayoutX(xPos2);
-			canvas.setLayoutY(100);
+			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			gc.setStroke(Color.BLUE);
 		    gc.setLineWidth(3);
@@ -270,14 +271,14 @@ public class TimelineRender extends Pane {
 		label.setPrefWidth(unitWidth);
 		label.setPrefHeight(40);
 		label.setAlignment(Pos.CENTER);
-		label.setStyle("-fx-border-color: white;");
+		label.setId("axis-unit-label");
 		
 		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				Platform.runLater(new Thread(new Runnable() {
 					public void run() {
 						//I don't know what we want to do here, But I thought i'd set this here.
-						label.setStyle("-fx-border-color: blue");
+						label.setId("axis-unit-label-selected");
 					}
 				}));
 			}
@@ -355,15 +356,14 @@ public class TimelineRender extends Pane {
 	 * Uses custom Label class
 	 */
 	private void renderAtomics() {
-		pushDown = 60; //where to put the event ( y - axis )
 		for(Atomic e : atomics){
 			int xPosition = getXPos(e.getStartDate());
 			AtomicLabel label = new AtomicLabel(e, xPosition, pushDown, model, eventLabels);
 			eventLabels.add(label);
 			getChildren().add(label);
-	        pushDown += 20;
+	        pushDown += 25;
 		}
-
+		pushDown += 5; // add a little space between the atomic events and the axis
 	}
 
 	/**
@@ -374,6 +374,7 @@ public class TimelineRender extends Pane {
 	 */
 	private void renderDurations() {
 		int counter = 0;
+		pushDown += 5; // add a little space between the axis and the duration events
 		for(Duration e : durations){
 			int xStart = getXPos(e.getStartDate());
 			int xEnd = getXPos(e.getEndDate());
@@ -381,7 +382,7 @@ public class TimelineRender extends Pane {
 			DurationLabel label = new DurationLabel(e, xStart, (pushDown + 45 + counter), labelWidth, model, eventLabels);
 			eventLabels.add(label);
 			getChildren().add(label);
-			counter += 20;
+			counter += 25;
 		}
 	}
 
@@ -395,7 +396,6 @@ public class TimelineRender extends Pane {
 	private int getXPos(Date date) {
 		double units = getUnitsSinceStart(date);
 		int xPosition = (int)(units*unitWidth); 
-		//System.out.println("TLEvent " + date.toString() + " is " +units+ " units after the start. It has an x offset of " +(int)(units*unitWidth)+ " pixels.");
 		return xPosition;
 	}
 	

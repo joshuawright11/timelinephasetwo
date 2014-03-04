@@ -33,15 +33,15 @@ public class AtomicLabel extends TLEventLabel {
 	@Override
 	public void updateDesign() {
 		if (isSelected()) {
-			setStyle("-fx-border-color: black;-fx-background-color: white;");
+			setId("event-selected");
 		}else{	
-			setStyle("-fx-border-color: green;-fx-background-color: white;");
+			setId("atomic-label");
 		}
 	}
 
 	@Override
 	public void uniqueDesign() {
-		setStyle("-fx-border-color: green");		
+		setId("atomic-label");
 	}
 
 
