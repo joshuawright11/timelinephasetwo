@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 
-public class Main extends Application {
+public class Driver extends Application {
 	
 	TimelineMaker timelineMaker;
 	
@@ -20,7 +20,7 @@ public class Main extends Application {
 			Parent root = (Parent)loader.load();
 			MainWindowController controller = loader.<MainWindowController>getController();
 			controller.initData(timelineMaker);
-			primaryStage.setTitle("Timestretch");
+			primaryStage.setTitle("I can't think of a catchy title");
 			Scene scene = new Scene(root);
 	        primaryStage.setScene(scene);
 	        primaryStage.show();
