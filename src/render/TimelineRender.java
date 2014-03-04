@@ -6,12 +6,17 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import model.TimelineMaker;
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -240,7 +245,19 @@ public class TimelineRender implements Runnable {
 		int xPos2 = 0;
 		for(int i = 0; i < diffUnit ; i++){
 			Label label = unitLabel(i,xPos2);
-			group.getChildren().add(label);
+			group.getChildren().add(label); 
+			
+			Canvas canvas = new Canvas(unitWidth,20);
+			canvas.setLayoutX(xPos2);
+			canvas.setLayoutY(100);
+			GraphicsContext gc = canvas.getGraphicsContext2D();
+			gc.setStroke(Color.BLUE);
+		    gc.setLineWidth(3);
+			gc.strokeLine(0, 10, 149, 10);
+			gc.strokeLine(0, 0, 0, 20);
+			gc.strokeLine(149, 0, 149, 20);
+			group.getChildren().add(canvas);
+			
 			xPos2+=unitWidth;
 		}
 		Scene toShow = new Scene(group, xPos2+5, pushDown, Color.WHITE);
@@ -261,7 +278,7 @@ public class TimelineRender implements Runnable {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(getFirstDate());
 		cal.add(getUnit(), i); //adds i units to the date
-		Label label;
+		final Label label;
 
 		switch(axisLabel){
 		case DAYS:
@@ -282,7 +299,18 @@ public class TimelineRender implements Runnable {
 		label.setPrefWidth(unitWidth);
 		label.setPrefHeight(40);
 		label.setAlignment(Pos.CENTER);
-		label.setStyle("-fx-border-color: black;");
+		label.setStyle("-fx-border-color: white;");
+		
+		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent e) {
+				Platform.runLater(new Thread(new Runnable() {
+					public void run() {
+						//I don't know what we want to do here, But I thought i'd set this here.
+						label.setStyle("-fx-border-color: blue");
+					}
+				}));
+			}
+		});
 		return label;
 	}
 
