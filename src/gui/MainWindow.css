@@ -1,0 +1,16 @@
+!.root{
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-weight: bold;
+    
+    -fx-base: rgb(0, 109, 204);
+}
+
+!.label{
+    -fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
+    -fx-border-style: solid;
+    -fx-border-width: 3;
+}
+
+!.label:hover{
+}

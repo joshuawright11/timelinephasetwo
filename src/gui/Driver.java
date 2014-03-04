@@ -22,6 +22,7 @@ public class Driver extends Application {
 			controller.initData(timelineMaker);
 			primaryStage.setTitle("I can't think of a catchy title");
 			Scene scene = new Scene(root);
+			scene.getStylesheets().add("gui/MainWindow.css");
 	        primaryStage.setScene(scene);
 	        primaryStage.show();
 		} catch(Exception e) {
