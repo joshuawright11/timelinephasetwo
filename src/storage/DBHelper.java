@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.*;
+import model.Timeline.AxisLabel;
 
 /**
  * 
@@ -106,6 +107,8 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 	
+	
+	//TODO TODO TODO SAVE AS TABLE WITH ID AS NAME
 	@Override
 	public boolean editTimelineInfo(Timeline timeline) {
 		open();
@@ -224,19 +227,13 @@ public class DBHelper implements DBHelperAPI{
 	 * @return the id of the timeline
 	 * @throws SQLException because there are databases.
 	 */
-	private void setEventID(TLEvent event, String timelineName){
-		open();
-		try{
+	private void setEventID(TLEvent event, String timelineName) throws SQLException{
 			String SELECT_LABEL = "SELECT _id FROM "+timelineName+" WHERE eventName = ?;";
 			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
 			pstmt.setString(1, event.getName());
 			resultSet = pstmt.executeQuery();
 			int id = resultSet.getInt(1);
 			event.setID(id);
-		}catch(SQLException e){
-			
-		}
-		close();
 	}
 
 	/**
@@ -366,7 +363,7 @@ public class DBHelper implements DBHelperAPI{
 					events.add(event);
 				}
 				int label = getAxisLabel(timelineNames.get(j));
-				Timeline timeline = new Timeline(timelineNames.get(j), events, label);
+				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), AxisLabel.values()[label]);
 				timelines[j] = timeline;
 			}
 			close();
@@ -380,6 +377,7 @@ public class DBHelper implements DBHelperAPI{
 
 	@Override
 	public void saveEvent(TLEvent event, String timelineName) {
+		open();
 		try{
 			if(event instanceof Atomic)
 				writeEvent((Atomic)event, timelineName);
@@ -390,6 +388,7 @@ public class DBHelper implements DBHelperAPI{
 		catch(SQLException sql){
 			sql.printStackTrace();
 		}
+		close();
 	}
 
 	@Override
@@ -400,6 +399,7 @@ public class DBHelper implements DBHelperAPI{
 			PreparedStatement pstmt = connection.prepareStatement(REMOVE_EVENT_LABEL);
 			pstmt.setInt(1, event.getID());
 			pstmt.executeUpdate();
+			System.out.println("Deleted... hopefully");
 			close();
 			return true;
 		}catch(SQLException sql){

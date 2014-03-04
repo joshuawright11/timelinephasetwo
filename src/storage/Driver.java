@@ -10,6 +10,7 @@ import model.Category;
 import model.Duration;
 import model.TLEvent;
 import model.Timeline;
+import model.Timeline.AxisLabel;
 
 /**
  * This is a driver to help set up a sample database. This can be used to reset or remake the database
@@ -29,8 +30,8 @@ public class Driver {
 		DBHelper helper = new DBHelper("timeline.db");
 		TLEvent event1 = new Atomic("one", new Category(""), new Date(((long)1000)*60*60*24));
 		TLEvent event2 = new Duration("two", new Category(""), new Date(((long)1000)*60*60*24),new Date(((long)1000)*60*60*24*2));
-		Timeline test1 = new Timeline("Test1", 0);
-		Timeline test2 = new Timeline("Test2", 2);
+		Timeline test1 = new Timeline("Test1", AxisLabel.DAYS);
+		Timeline test2 = new Timeline("Test2", AxisLabel.YEARS);
 		test1.addEvent(event1);
 		test1.addEvent(event2);
 		helper.removeTimeline(test1);
