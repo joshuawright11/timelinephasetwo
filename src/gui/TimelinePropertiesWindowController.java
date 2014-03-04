@@ -1,8 +1,13 @@
 package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import model.Timeline;
+import model.Timeline.AxisLabel;
+import model.TimelineMaker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -10,10 +15,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 
-public class TimelinePropertiesWindowController {
+public class TimelinePropertiesWindowController extends TimelineMakerController{
 
+	private TimelineMaker timelineMaker;
+	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
@@ -27,7 +37,7 @@ public class TimelinePropertiesWindowController {
     private Separator appearanceSeparator; // Value injected by FXMLLoader
 
     @FXML // fx:id="axisUnitComboBox"
-    private ComboBox<?> axisUnitComboBox; // Value injected by FXMLLoader
+    private ComboBox<AxisLabel> axisUnitComboBox; // Value injected by FXMLLoader
 
     @FXML // fx:id="axisUnitLabel"
     private Label axisUnitLabel; // Value injected by FXMLLoader
@@ -69,35 +79,51 @@ public class TimelinePropertiesWindowController {
     // Handler for Button[fx:id="cancelButton"] onAction
     @FXML
     void cancelButtonPressed(ActionEvent event) {
-        // handle the event here
+        Node source = (Node) event.getSource(); 
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     // Handler for Button[fx:id="createButton"] onAction
     @FXML
     void createButtonPressed(ActionEvent event) {
-        // handle the event here
+        String title = titleTextField.getText();
+        if(title.equals("")){
+        	//TODO title missing alert
+        	return;
+        }
+        Color color = colorColorChooser.getValue();
+        AxisLabel axisUnit = axisUnitComboBox.getValue();
+        Font font = null; //TODO set font?
+        timelineMaker.addTimeline(title, color, axisUnit, font);
+        
+        Node source = (Node) event.getSource(); 
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+
+	@FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert appearanceLabel != null : "fx:id=\"appearanceLabel\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert appearanceSeparator != null : "fx:id=\"appearanceSeparator\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert axisUnitComboBox != null : "fx:id=\"axisUnitComboBox\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert axisUnitLabel != null : "fx:id=\"axisUnitLabel\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert buttonSeparator != null : "fx:id=\"buttonSeparator\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert colorColorChooser != null : "fx:id=\"colorColorChooser\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert colorLabel != null : "fx:id=\"colorLabel\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert createButton != null : "fx:id=\"createButton\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert fontComboBox != null : "fx:id=\"fontComboBox\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert fontLabel != null : "fx:id=\"fontLabel\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert informationLabel != null : "fx:id=\"informationLabel\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert timelinePropertiesWindowAnchor != null : "fx:id=\"timelinePropertiesWindowAnchor\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert titleLabel != null : "fx:id=\"titleLabel\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-        assert titleTextField != null : "fx:id=\"titleTextField\" was not injected: check your FXML file 'TimelinePropertiesWindow.fxml'.";
-
-        // Initialize your logic here: all @FXML variables will have been injected
-
+        initComboBox();
     }
+
+	/**
+	 * 
+	 */
+	private void initComboBox() {
+		AxisLabel[] labels = Timeline.AxisLabel.values();
+		for(AxisLabel label : labels)
+			axisUnitComboBox.getItems().addAll(label);
+		axisUnitComboBox.setValue(labels[0]);
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.TimelineMakerController#initData(model.TimelineMaker)
+	 */
+	@Override
+	public void initData(TimelineMaker timelineMaker) {
+		this.timelineMaker = timelineMaker;
+	}
 
 }

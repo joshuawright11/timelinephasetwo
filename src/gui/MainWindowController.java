@@ -2,6 +2,7 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import model.TimelineMaker;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -21,8 +22,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
-public class MainWindowController {
+public class MainWindowController extends TimelineMakerController{
 
+	private TimelineMaker timelineMaker;
+	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
@@ -146,6 +149,8 @@ public class MainWindowController {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
+			EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
+	        controller.initData(timelineMaker);
 			Stage stage = new Stage();
 			stage.setTitle("Edit Event");
 	        stage.setScene(new Scene(root));
@@ -161,6 +166,8 @@ public class MainWindowController {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimelinePropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
+			TimelinePropertiesWindowController controller = loader.<TimelinePropertiesWindowController>getController();
+	        controller.initData(timelineMaker);
 			Stage stage = new Stage();
 			stage.setTitle("Edit Timeline");
 	        stage.setScene(new Scene(root));
@@ -199,6 +206,8 @@ public class MainWindowController {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
+	        EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
+	        controller.initData(timelineMaker);
 			Stage stage = new Stage();
 			stage.setTitle("Add Event");
 	        stage.setScene(new Scene(root));
@@ -216,6 +225,8 @@ public class MainWindowController {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimelinePropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
+			TimelinePropertiesWindowController controller = loader.<TimelinePropertiesWindowController>getController();
+	        controller.initData(timelineMaker);
 			Stage stage = new Stage();
 			stage.setTitle("Add Timeline");
 	        stage.setScene(new Scene(root));
@@ -263,8 +274,15 @@ public class MainWindowController {
         assert toolbarPane != null : "fx:id=\"toolbarPane\" was not injected: check your FXML file 'MainWindow.fxml'.";
         assert toolbarSeparator != null : "fx:id=\"toolbarSeparator\" was not injected: check your FXML file 'MainWindow.fxml'.";
 
-        // Initialize your logic here: all @FXML variables will have been injected
 
     }
+
+	/* (non-Javadoc)
+	 * @see gui.TimelineMakerController#initData(model.TimelineMaker)
+	 */
+	@Override
+	public void initData(TimelineMaker timelineMaker) {
+		this.timelineMaker = timelineMaker;
+	}
 
 }

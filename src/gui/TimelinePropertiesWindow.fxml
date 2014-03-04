@@ -26,24 +26,10 @@
     <ColorPicker fx:id="colorColorChooser" layoutY="114.0" AnchorPane.rightAnchor="14.0" />
     <TextField fx:id="titleTextField" layoutY="37.0" prefWidth="199.99991689452872" AnchorPane.leftAnchor="213.0" AnchorPane.rightAnchor="13.0" />
     <ComboBox fx:id="fontComboBox" layoutY="176.0" AnchorPane.rightAnchor="14.0">
-      <items>
-        <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
-        </FXCollections>
-      </items>
     </ComboBox>
     <Button fx:id="createButton" layoutY="216.0" mnemonicParsing="false" onAction="#createButtonPressed" text="Create" AnchorPane.rightAnchor="93.0" />
     <Button fx:id="cancelButton" layoutY="216.0" mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" AnchorPane.rightAnchor="14.0" />
     <ComboBox fx:id="axisUnitComboBox" layoutY="149.0" AnchorPane.rightAnchor="14.0">
-      <items>
-        <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
-        </FXCollections>
-      </items>
     </ComboBox>
     <Separator fx:id="appearanceSeparator" layoutY="70.0" prefWidth="426.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
     <Label fx:id="fontLabel" font="$x2" layoutY="176.0" prefHeight="22.0" text="Font" AnchorPane.leftAnchor="13.0" />

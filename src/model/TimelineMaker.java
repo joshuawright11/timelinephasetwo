@@ -3,7 +3,13 @@ package model;
 import render.*;
 import gui.*;
 import storage.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
 import javax.swing.*;
+
+import model.Timeline.AxisLabel;
+
 import java.util.*;
 import java.util.logging.*;
 
@@ -35,10 +41,10 @@ public class TimelineMaker {
 	 * The database for storing timelines of this application.
 	 */
 	private DBHelper database;
-	/**
-	 * The main GUI window for this application.
-	 */
-	private MainWindow gui;
+//	/**
+//	 * The main GUI window for this application.
+//	 */
+//	private MainWindow gui;
 	/**
 	 * The graphics object for displaying timelines in this application.
 	 */
@@ -64,78 +70,78 @@ public class TimelineMaker {
 			System.out.println("Error loading from Database.");
 		}
 
-		initGUI();
+		//initGUI();
 	}
 
-	/**
-	 * Constructor.
-	 * Only for testing purposes.
-	 * @param db
-	 */
-	public TimelineMaker(DBHelper db) {
-		database = db;
-		timelines = new ArrayList<Timeline>();
-		try {
-			for (Timeline t : database.getTimelines())
-				timelines.add(t);
-			selectedTimeline = timelines.get(0);
-			selectedEvent = selectedTimeline.getEvents()[0];
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("Your database is empty.");
-		} catch (Exception e){
-			System.out.println("Error loading from Database.");
-		}		
-		graphics = new TimelineGraphics(this);
-		gui = new MainWindow(this, graphics);
-		while (!timelines.isEmpty())
-			deleteTimeline();
-	}
+//	/**
+//	 * Constructor.
+//	 * Only for testing purposes.
+//	 * @param db
+//	 */
+//	public TimelineMaker(DBHelper db) {
+//		database = db;
+//		timelines = new ArrayList<Timeline>();
+//		try {
+//			for (Timeline t : database.getTimelines())
+//				timelines.add(t);
+//			selectedTimeline = timelines.get(0);
+//			selectedEvent = selectedTimeline.getEvents()[0];
+//		} catch (IndexOutOfBoundsException e) {
+//			System.out.println("Your database is empty.");
+//		} catch (Exception e){
+//			System.out.println("Error loading from Database.");
+//		}		
+//		graphics = new TimelineGraphics(this);
+//		gui = new MainWindow(this, graphics);
+//		while (!timelines.isEmpty())
+//			deleteTimeline();
+//	}
 
-	/**
-	 * Initialize the GUI components of this application.
-	 */
-	private void initGUI() {
-		try {
-			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (UnsupportedLookAndFeelException ex) {
-			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-		}
+//	/**
+//	 * Initialize the GUI components of this application.
+//	 */
+//	private void initGUI() {
+//		try {
+//			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//				if ("Nimbus".equals(info.getName())) {
+//					UIManager.setLookAndFeel(info.getClassName());
+//					break;
+//				}
+//			}
+//		} catch (ClassNotFoundException ex) {
+//			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+//		} catch (InstantiationException ex) {
+//			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+//		} catch (IllegalAccessException ex) {
+//			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+//		} catch (UnsupportedLookAndFeelException ex) {
+//			Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+//		}
+//
+//		SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+//				gui = new MainWindow(TimelineMaker.this, graphics);
+//				gui.setVisible(true);
+//				new Thread(new Runnable() {
+//					public void run() {
+//						gui.updateTimelines(getTimelineTitles(), null);
+//					}
+//				}).start();
+//			}
+//		});
+//
+//	}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				gui = new MainWindow(TimelineMaker.this, graphics);
-				gui.setVisible(true);
-				new Thread(new Runnable() {
-					public void run() {
-						gui.updateTimelines(getTimelineTitles(), null);
-					}
-				}).start();
-			}
-		});
-
-	}
-
-	/**
-	 * Retrieve a list of the names of all the timelines.
-	 * @return timelines
-	 */
-	public ArrayList<String> getTimelineTitles() {
-		ArrayList<String> toReturn = new ArrayList<String>();
-		for (Timeline t: timelines)
-			toReturn.add(t.getName());
-		return toReturn;
-	}
+//	/**
+//	 * Retrieve a list of the names of all the timelines.
+//	 * @return timelines
+//	 */
+//	public ArrayList<String> getTimelineTitles() {
+//		ArrayList<String> toReturn = new ArrayList<String>();
+//		for (Timeline t: timelines)
+//			toReturn.add(t.getName());
+//		return toReturn;
+//	}
 
 	/**
 	 * Retrieve the timeline with the parameterized name.
@@ -175,13 +181,14 @@ public class TimelineMaker {
 	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param t the timeline to be added
 	 */
-	public void addTimeline(Timeline t) {
+	public void addTimeline(String title, Color color, AxisLabel axisUnit, Font font) {
+		Timeline t = new Timeline();//TODO TODO TODO FIX THIS
 		selectedTimeline = t;
 		selectedEvent = null;
 		timelines.add(selectedTimeline);
 
 		database.saveTimeline(selectedTimeline);
-		gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
+		//gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
 		updateGraphics();
 	}
 
@@ -197,7 +204,7 @@ public class TimelineMaker {
 			selectedTimeline = null;
 			selectedEvent = null;
 			graphics.clearScreen();
-			gui.updateTimelines(getTimelineTitles(), null);
+			//gui.updateTimelines(getTimelineTitles(), null);
 		}
 	}
 
@@ -221,7 +228,7 @@ public class TimelineMaker {
 		timelines.add(selectedTimeline);
 		database.saveTimeline(selectedTimeline);
 		if (newName)
-			gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
+			//gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
 		updateGraphics();
 	}
 
@@ -247,7 +254,8 @@ public class TimelineMaker {
 	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param e the new event
 	 */
-	public void addEvent(TLEvent e) {
+	public void addEvent(String title, Date startDate, Date endDate, Object category, String description) {
+		//TODO TODO TODO fix this
 		if (selectedTimeline != null) {
 			selectedTimeline.addEvent(e);
 			selectedEvent = e;

@@ -1,8 +1,12 @@
 package gui;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ResourceBundle;
+
+import model.TimelineMaker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -11,10 +15,13 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 
-public class EventPropertiesWindowController {
+public class EventPropertiesWindowController extends TimelineMakerController{
 
+	private TimelineMaker timelineMaker;
+	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
@@ -73,42 +80,51 @@ public class EventPropertiesWindowController {
     // Handler for Button[fx:id="cancelButton"] onAction
     @FXML
     void cancelPressed(ActionEvent event) {
-        // handle the event here
+        Node  source = (Node)  event.getSource(); 
+        Stage stage  = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     // Handler for Button[fx:id="createButton"] onAction
     @FXML
     void createPressed(ActionEvent event) {
-        // handle the event here
+    	String title = titleTextField.getText();
+        Date startDate = new Date(0); //TODO get Date working
+        Date endDate = null;
+    	Object category = categoryComboBox.getValue();
+    	String description = descriptionTextArea.getText();
+    	if(durationCheckBox.isPressed()){
+    		endDate = new Date(0); //TODO get Date working
+    	}
+    	timelineMaker.addEvent(title, startDate, endDate, category, description);
     }
 
     // Handler for CheckBox[fx:id="durationCheckBox"] onAction
     @FXML
     void durationPressed(ActionEvent event) {
-        // handle the event here
+        endDateTextField.setVisible(!endDateTextField.isVisible());
+        dateToLabel.setVisible(!dateToLabel.isVisible());
+        //TODO shift startDateTextField over
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert buttonSeparator != null : "fx:id=\"buttonSeparator\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert categoryComboBox != null : "fx:id=\"categoryComboBox\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert categoryLabel != null : "fx:id=\"categoryLabel\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert createButton != null : "fx:id=\"createButton\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert dateLabel != null : "fx:id=\"dateLabel\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert dateToLabel != null : "fx:id=\"dateToLabel\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert descriptionLabel != null : "fx:id=\"descriptionLabel\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert descriptionTextArea != null : "fx:id=\"descriptionTextArea\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert durationCheckBox != null : "fx:id=\"durationCheckBox\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert endDateTextField != null : "fx:id=\"endDateTextField\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert eventPropertiesWindowAnchor != null : "fx:id=\"eventPropertiesWindowAnchor\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert startDateTextField != null : "fx:id=\"startDateTextField\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert titleLabel != null : "fx:id=\"titleLabel\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert titleTextField != null : "fx:id=\"titleTextField\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-        assert typeLabel != null : "fx:id=\"typeLabel\" was not injected: check your FXML file 'EventPropertiesWindow.fxml'.";
-
-        // Initialize your logic here: all @FXML variables will have been injected
-
+    	endDateTextField.setVisible(false);
+        dateToLabel.setVisible(false);
+      //TODO shift startDateTextField over
+        initComboBox();
     }
+
+	private void initComboBox() {
+		//TODO initialize categories
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.TimelineMakerController#initData(model.TimelineMaker)
+	 */
+	@Override
+	public void initData(TimelineMaker timelineMaker) {
+		this.timelineMaker = timelineMaker;
+	}
 
 }
