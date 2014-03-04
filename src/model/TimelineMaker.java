@@ -23,6 +23,10 @@ public class TimelineMaker {
 	 * A list of all the timelines in this application.
 	 */
 	private ArrayList<Timeline> timelines;
+        /**
+	 * A list of all the categories in this application.
+	 */
+        private ArrayList<Category> categories;
 	/**
 	 * The timeline selected in this application.
 	 */
@@ -52,7 +56,8 @@ public class TimelineMaker {
 		database = new DBHelper("timeline.db");
 		graphics = new TimelineGraphics(this);
 		timelines = new ArrayList<Timeline>();
-
+                categories = new ArrayList<Category>();
+                categories.add(new Category("Default"));
 		try {
 			for (Timeline t : database.getTimelines())
 				timelines.add(t);
@@ -305,5 +310,73 @@ public class TimelineMaker {
         public int getUniqueID() {
             return idCounter++;
          }
-
+        
+                /**
+         * Adds a Category to the current collection of Categories.
+         * 
+         * @param c The Category to add.
+         * @return True if successful, False otherwise.
+         */
+        public boolean addCategory(Category c){
+            if(containsTitle(c)) return false;
+            else categories.add(c);
+            return true;        
+        }
+        /**
+         * Searches known category titles to find a match.
+         * 
+         * @param cat The category for which to search.
+         * @return True if found, False otherwise.
+         */
+        private boolean containsTitle(Category cat){
+            for(Category c : categories){
+                if(c.getName().equals(cat.getName())) return true;
+            }return false;
+        }
+        /**
+         * Deletes a Category from the current set of categories.
+         * 
+         * @param name The name of the category to delete.
+         * @return True if found and removed, False otherwise.
+         */
+        public boolean deleteCategory(String name){
+            for(Iterator it = categories.iterator();it.hasNext();){
+                Category category = (Category)it.next();
+                if(category.getName().equals(name)){
+                    categories.remove(category);
+                    return true;
+                }
+            }
+            return false;
+        }
+        /**
+         * Deletes a Category from the current set of categories.
+         * 
+         * @param cat The category to delete.
+         * @return True if found and removed, False otherwise.
+         */
+        public boolean deleteCategory(Category cat){
+            return categories.remove(cat);
+        }
+        /**
+         * Method to get the default category.
+         * 
+         * @return The default Category.
+         */
+        public Category getDefaultCategory(){
+            return categories.get(0);
+        }
+        
+        public Iterator getCategoryIterator(){
+            return categories.iterator();
+        }
+        
+                /**
+         * Method to get the number of categories known.
+         * 
+         * @return An int representing the number of categories known.
+         */
+        public int catSize(){
+            return categories.size();
+        }
 }

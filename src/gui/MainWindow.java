@@ -159,6 +159,7 @@ public class MainWindow extends JFrame {
 	 * The view menu.
 	 */
 	private JMenu viewMenu;
+                
 
 	/**
 	 * Constructor.
@@ -210,7 +211,7 @@ public class MainWindow extends JFrame {
 		multiViewMenuItem = new JMenuItem();
 		insertMenu = new JMenu();
 		newEventMenuItem = new JMenuItem();
-
+                
 		// Set default close operation and title of this window.
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Timelord - Create, edit, and view timelines!");

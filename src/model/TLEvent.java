@@ -5,12 +5,13 @@
 package model;
 
 import java.sql.Date;
+import javax.swing.ImageIcon;
 
 public class TLEvent{
-	private String description, name;
-        private Date startDate;
-	private Category category;
-        private TLEventLabel label;
+	protected String description, name;
+        protected Date startDate;
+	protected Category category;
+        protected TLEventLabel label;
         /**
          * Constructor
          * 
@@ -101,6 +102,7 @@ public class TLEvent{
         public void setLabel(TLEventLabel label){
             this.label = label;
         }
+
         
         public TLEventLabel getLabel(){
             return this.getLabel();
