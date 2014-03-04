@@ -20,9 +20,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
-public class TimelinePropertiesWindowController extends TimelineMakerController{
+public class TimelinePropertiesWindowController{
 
 	private TimelineMaker timelineMaker;
+	
+	private Timeline timeline;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -95,7 +97,8 @@ public class TimelinePropertiesWindowController extends TimelineMakerController{
         Color color = colorColorChooser.getValue();
         AxisLabel axisUnit = axisUnitComboBox.getValue();
         Font font = null; //TODO set font?
-        timelineMaker.addTimeline(title, color, axisUnit, font);
+        if(timeline != null) timelineMaker.editTimeline(timeline, title, color, axisUnit, font);
+        else timelineMaker.addTimeline(title, color, axisUnit, font);
         
         Node source = (Node) event.getSource(); 
         Stage stage = (Stage) source.getScene().getWindow();
@@ -105,6 +108,7 @@ public class TimelinePropertiesWindowController extends TimelineMakerController{
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
+		timeline = null;
         initComboBox();
     }
 
@@ -118,12 +122,17 @@ public class TimelinePropertiesWindowController extends TimelineMakerController{
 		axisUnitComboBox.setValue(labels[0]);
 	}
 
-	/* (non-Javadoc)
-	 * @see gui.TimelineMakerController#initData(model.TimelineMaker)
-	 */
-	@Override
-	public void initData(TimelineMaker timelineMaker) {
+	public void initData(TimelineMaker timelineMaker, Timeline timeline) {
 		this.timelineMaker = timelineMaker;
+		if(timeline != null){
+			loadTimelineInfo(timeline);
+			this.timeline = timeline;
+		}
+	}
+
+	private void loadTimelineInfo(Timeline timeline) {
+		titleTextField.setText(timeline.getName());
+		axisUnitComboBox.setValue(timeline.getAxisLabel());
 	}
 
 }
