@@ -2,6 +2,8 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import model.TLEvent;
+import model.Timeline;
 import model.TimelineMaker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,7 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 
-public class MainWindowController extends TimelineMakerController{
+public class MainWindowController{
 
 	private TimelineMaker timelineMaker;
 	
@@ -151,11 +153,13 @@ public class MainWindowController extends TimelineMakerController{
     // Handler for Button[fx:id="editEventButton"] onAction
     @FXML
     void editEventPressed(ActionEvent event) {
+    	TLEvent selectedEvent = timelineMaker.getSelectedEvent();
+    	if(selectedEvent == null) return;
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 			EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
-	        controller.initData(timelineMaker);
+	        controller.initData(timelineMaker, selectedEvent);
 			Stage stage = new Stage();
 			stage.setTitle("Edit Event");
 	        stage.setScene(new Scene(root));
@@ -168,11 +172,13 @@ public class MainWindowController extends TimelineMakerController{
     // Handler for Button[fx:id="editTimelineButton"] onAction
     @FXML
     void editTimelinePressed(ActionEvent event) {
+    	Timeline selectedTimeline = timelineMaker.getSelectedTimeline();
+    	if(selectedTimeline == null) return;
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimelinePropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 			TimelinePropertiesWindowController controller = loader.<TimelinePropertiesWindowController>getController();
-	        controller.initData(timelineMaker);
+	        controller.initData(timelineMaker, selectedTimeline);
 			Stage stage = new Stage();
 			stage.setTitle("Edit Timeline");
 	        stage.setScene(new Scene(root));
@@ -212,7 +218,7 @@ public class MainWindowController extends TimelineMakerController{
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 	        EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
-	        controller.initData(timelineMaker);
+	        controller.initData(timelineMaker, null);
 			Stage stage = new Stage();
 			stage.setTitle("Add Event");
 	        stage.setScene(new Scene(root));
@@ -231,7 +237,7 @@ public class MainWindowController extends TimelineMakerController{
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimelinePropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 			TimelinePropertiesWindowController controller = loader.<TimelinePropertiesWindowController>getController();
-	        controller.initData(timelineMaker);
+	        controller.initData(timelineMaker, null);
 			Stage stage = new Stage();
 			stage.setTitle("Add Timeline");
 	        stage.setScene(new Scene(root));
@@ -246,7 +252,7 @@ public class MainWindowController extends TimelineMakerController{
     @FXML
     void savePressed(Event event) {
         // TODO manually save all data to database
-    } 
+    }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -259,21 +265,17 @@ public class MainWindowController extends TimelineMakerController{
     }
 
     private void timelineListViewClicked(){
-    	if(!timelineMaker.getSelectedTimeline().getName().equals(timelinesListView.getSelectionModel().getSelectedItem()))
-    		System.out.println(timelinesListView.getSelectionModel().getSelectedItem());
     	timelineMaker.selectTimeline(timelinesListView.getSelectionModel().getSelectedItem());
     }
     
-	private void populateListView() {
+	public void populateListView() {
 		timelinesListView.setItems(FXCollections.observableList(timelineMaker.getTimelineTitles()));
+		if(timelineMaker.getSelectedTimeline() != null) timelinesListView.getSelectionModel().select(timelineMaker.getSelectedTimeline().getName());
 	}
 
-	/* (non-Javadoc)
-	 * @see gui.TimelineMakerController#initData(model.TimelineMaker)
-	 */
-	@Override
 	public void initData(TimelineMaker timelineMaker) {
 		this.timelineMaker = timelineMaker;
+		timelineMaker.setMainWindow(this);
 		populateListView();
 		timelineMaker.graphics.setPanel(renderScrollPane);
 	}
