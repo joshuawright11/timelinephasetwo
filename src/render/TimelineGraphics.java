@@ -4,6 +4,8 @@ import model.TimelineMaker;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import model.Timeline;
 
 /**
@@ -21,17 +23,17 @@ public class TimelineGraphics{
 	 * the JFXPanel to put the graphics in. JFXPanel provides a link between the 
 	 * graphics (javafx) and the gui (swing).
 	 */
-	private JFXPanel fxPanel;
+	private ScrollPane scrollPane;
 	
-	/**
-	 * The Group that the timeline items are put in. This is then put on a Scene
-	 * which displays the graphics to the screen.
-	 * 
-	 * Only in this class so that the clearScreen method can work, otherwise 
-	 * it could be encapsulated in the TimelineRender object.
-	 * 
-	 */
-	private Group root;
+//	/**
+//	 * The Group that the timeline items are put in. This is then put on a Scene
+//	 * which displays the graphics to the screen.
+//	 * 
+//	 * Only in this class so that the clearScreen method can work, otherwise 
+//	 * it could be encapsulated in the TimelineRender object.
+//	 * 
+//	 */
+//	private Group root;
 	
 	/**
 	 * The state of the program, only in this class to pass it to the 
@@ -46,7 +48,7 @@ public class TimelineGraphics{
 	 */
 	public TimelineGraphics(TimelineMaker model){
 		this.model = model;
-		root = new Group();
+		//root = new Group();
 	}
 	
 	/**
@@ -57,8 +59,10 @@ public class TimelineGraphics{
 	 * @param timeline the timeline to render
 	 */
 	public void renderTimeline(Timeline timeline) {
-		root = new Group();
-		Platform.runLater(new TimelineRender(fxPanel, model, timeline, root));
+		//create Pane
+		Pane render = new TimelineRender(model, timeline);
+		//Platform.runLater(new TimelineRender(displayPane, model, timeline));
+		scrollPane.setContent(render);
 	}
 
 	/**
@@ -72,7 +76,7 @@ public class TimelineGraphics{
 	public void clearScreen() {
 		Platform.runLater(new Runnable() {
 			public void run() {
-				root.getChildren().clear();
+				//pane.getChildren().clear();
 			}
 		});
 	}
@@ -82,7 +86,7 @@ public class TimelineGraphics{
 	 * 
 	 * @param fxPanel the panel to set
 	 */
-	public void setPanel(JFXPanel fxPanel) {
-		this.fxPanel = fxPanel;
+	public void setPanel(ScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
 	}
 }

@@ -1,10 +1,10 @@
 package gui;
 
-
 import render.TimelineGraphics;
-import javafx.embed.swing.JFXPanel;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 
-import javax.swing.*;
+
 
 /**
  * DisplayPane.java
@@ -16,26 +16,20 @@ import javax.swing.*;
  * Project Phase 1
  * Feb 15, 2014
  */
-public class DisplayPane extends JScrollPane {
+public class DisplayPane extends ScrollPane {
 	
 	/**
 	 * Default serial version ID.
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * The JFXPanel for graphics.
-	 */
-	private JFXPanel fxPanel;
-	
+		
 	/**
 	 * Constructor.
 	 * Set up the TimelineGraphics object in the JFXPanel.
 	 * @param graphics the TimelineGraphics object
 	 */
 	public DisplayPane(TimelineGraphics graphics) {       
-		fxPanel = new JFXPanel();
-		setViewportView(fxPanel);
-        graphics.setPanel(fxPanel);
+        graphics.setPanel(this);
+        System.out.println("Hello from displayPane");
 	}
 }

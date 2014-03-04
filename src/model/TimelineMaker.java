@@ -48,7 +48,7 @@ public class TimelineMaker {
 	/**
 	 * The graphics object for displaying timelines in this application.
 	 */
-	private TimelineGraphics graphics;
+	public TimelineGraphics graphics;
         int idCounter;
 	/**
 	 * Constructor.
@@ -132,16 +132,17 @@ public class TimelineMaker {
 //
 //	}
 
-//	/**
-//	 * Retrieve a list of the names of all the timelines.
-//	 * @return timelines
-//	 */
-//	public ArrayList<String> getTimelineTitles() {
-//		ArrayList<String> toReturn = new ArrayList<String>();
-//		for (Timeline t: timelines)
-//			toReturn.add(t.getName());
-//		return toReturn;
-//	}
+	/**
+	 * Retrieve a list of the names of all the timelines.
+	 * @return timelines
+	 */
+	public ArrayList<String> getTimelineTitles() {
+		ArrayList<String> toReturn = new ArrayList<String>();
+		for (Timeline t: timelines){
+			toReturn.add(t.getName());
+		}
+		return toReturn;
+	}
 
 	/**
 	 * Retrieve the timeline with the parameterized name.
@@ -182,8 +183,8 @@ public class TimelineMaker {
 	 * @param t the timeline to be added
 	 */
 	public void addTimeline(String title, Color color, AxisLabel axisUnit, Font font) {
-		Timeline t = new Timeline();//TODO TODO TODO FIX THIS
-		selectedTimeline = t;
+		//Timeline t = new Timeline();//TODO TODO TODO FIX THIS
+		//selectedTimeline = t;
 		selectedEvent = null;
 		timelines.add(selectedTimeline);
 
@@ -256,15 +257,15 @@ public class TimelineMaker {
 	 */
 	public void addEvent(String title, Date startDate, Date endDate, Object category, String description) {
 		//TODO TODO TODO fix this
-		if (selectedTimeline != null) {
-			selectedTimeline.addEvent(e);
-			selectedEvent = e;
-
-			updateGraphics();
-
-			database.removeTimeline(selectedTimeline);
-			database.saveTimeline(selectedTimeline);
-		}
+//		if (selectedTimeline != null) {
+//			selectedTimeline.addEvent(e);
+//			selectedEvent = e;
+//
+//			updateGraphics();
+//
+//			database.removeTimeline(selectedTimeline);
+//			database.saveTimeline(selectedTimeline);
+//		}
 	}
 
 	/**

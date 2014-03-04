@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -53,13 +54,13 @@ import model.Timeline.AxisLabel;
  * in the making this class.
  */
 
-public class TimelineRender implements Runnable {
+public class TimelineRender extends Pane {
 
-	/**
-	 * Used as the connection between the Swing gui and the javafx graphics
-	 * (embeds in swing)
-	 */
-	private JFXPanel fxPanel;
+//	/**
+//	 * Used as the connection between the Swing gui and the javafx graphics
+//	 * (embeds in swing)
+//	 */
+//	private Pane pane;
 	
 	/**
 	 * The model of the entire program, this is so selected events can be set
@@ -71,11 +72,11 @@ public class TimelineRender implements Runnable {
 	 */
 	private Timeline timeline;
 	
-	/**
-	 * The group of javafx elements to display in the scene (similar to a canvas,
-	 * this gets put on the JFXPanel)
-	 */
-	private Group group;
+//	/**
+//	 * The group of javafx elements to display in the scene (similar to a canvas,
+//	 * this gets put on the JFXPanel)
+//	 */
+//	private Group group;
 	
 	/**
 	 * ArrayLists of all the events in the timeline. 
@@ -134,37 +135,41 @@ public class TimelineRender implements Runnable {
 	 * @param timeline
 	 * @param group
 	 */
-	public TimelineRender(JFXPanel fxPanel, TimelineMaker model, Timeline timeline, Group group) {
+	public TimelineRender(TimelineMaker model, Timeline timeline) {
 		this.model = model;
 		this.timeline = timeline;
 		if (timeline.getAxisLabel() == AxisLabel.DAYS || timeline.getAxisLabel() == AxisLabel.MONTHS || timeline.getAxisLabel() == AxisLabel.YEARS)
 			this.axisLabel = timeline.getAxisLabel();
 		else
 			this.axisLabel = AxisLabel.YEARS;
-		this.group = group;
-		this.fxPanel = fxPanel;
+		//this.group = group;
 		atomics = new ArrayList<Atomic>();
 		durations = new ArrayList<Duration>();
 		
 		eventLabels = new ArrayList<TLEventLabel>();
-	}
-
-	/*
-	 * Initializes the minTime maxTime values, if there are not events render a blank screen
-	 *  otherwise then calls init and renders the timeline.
-	 * 
-	 * (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
-	public void run() {
-		if (!initRange()){
-			Scene toShow = new Scene(new Group(), 0, 0, Color.WHITE);
-			fxPanel.setScene(toShow);
+		if(!initRange()){
 			return;
 		}
 		init();
 		renderTimeline();
 	}
+
+//	/*
+//	 * Initializes the minTime maxTime values, if there are not events render a blank screen
+//	 *  otherwise then calls init and renders the timeline.
+//	 * 
+//	 * (non-Javadoc)
+//	 * @see java.lang.Runnable#run()
+//	 */
+//	public void run() {
+//		if (!initRange()){
+//			Scene toShow = new Scene(new Group(), 0, 0, Color.WHITE);
+//			
+//			return;
+//		}
+//		init();
+//		renderTimeline();
+//	}
 
 	/**
 	 * Sets the unitWidth to a constant (this can be changed to depend on how many units are in the
@@ -221,12 +226,13 @@ public class TimelineRender implements Runnable {
 	 */
 
 	private void renderTimeline() {
-		group.getChildren().clear();
-		group = new Group();
-		group.getChildren().add(createTitle());
+		getChildren().clear();
+		//group = new Group();
+		getChildren().add(createTitle());
 		renderAtomics();
 		renderTime();
 		renderDurations();
+		setLayoutY(pushDown);
 	}
 	
 	/**
@@ -240,11 +246,12 @@ public class TimelineRender implements Runnable {
 		int xPos2 = 0;
 		for(int i = 0; i < diffUnit ; i++){
 			Label label = unitLabel(i,xPos2);
-			group.getChildren().add(label);
+			getChildren().add(label);
 			xPos2+=unitWidth;
 		}
-		Scene toShow = new Scene(group, xPos2+5, pushDown, Color.WHITE);
-		fxPanel.setScene(toShow);
+		setLayoutX(xPos2+5);
+		//Scene toShow = new Scene(group, xPos2+5, pushDown, Color.WHITE);
+		//fxPanel.setScene(toShow);
 	}
 	
 	/**
@@ -361,7 +368,7 @@ public class TimelineRender implements Runnable {
 			int xPosition = getXPos(e.getStartDate());
 			AtomicLabel label = new AtomicLabel(e, xPosition, pushDown, model, eventLabels);
 			eventLabels.add(label);
-			group.getChildren().add(label);
+			getChildren().add(label);
 	        pushDown += 20;
 		}
 
@@ -381,7 +388,7 @@ public class TimelineRender implements Runnable {
 			int labelWidth = xEnd - xStart;
 			DurationLabel label = new DurationLabel(e, xStart, (pushDown + 45 + counter), labelWidth, model, eventLabels);
 			eventLabels.add(label);
-			group.getChildren().add(label);
+			getChildren().add(label);
 			counter += 20;
 		}
 	}

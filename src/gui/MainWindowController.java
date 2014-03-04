@@ -3,8 +3,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import model.TimelineMaker;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,8 +21,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 public class MainWindowController extends TimelineMakerController{
@@ -108,7 +113,7 @@ public class MainWindowController extends TimelineMakerController{
     private Label timelinesLabel; // Value injected by FXMLLoader
 
     @FXML // fx:id="timelinesListView"
-    private ListView<?> timelinesListView; // Value injected by FXMLLoader
+    private ListView<String> timelinesListView; // Value injected by FXMLLoader
 
     @FXML // fx:id="toolbarPane"
     private AnchorPane toolbarPane; // Value injected by FXMLLoader
@@ -121,26 +126,26 @@ public class MainWindowController extends TimelineMakerController{
     // Handler for MenuItem[fx:id="aboutMenuItem"] onMenuValidation
     @FXML
     void aboutPressed(Event event) {
-        // handle the event here
+        // TODO open about window
     }
 
     // Handler for Button[fx:id="deleteEventButton"] onAction
     @FXML
     void deleteEventPressed(ActionEvent event) {
-        // handle the event here
+        timelineMaker.deleteEvent();
     }
 
     // Handler for MenuItem[fx:id="deleteMenuItem"] onAction
     // Handler for MenuItem[fx:id="deleteMenuItem"] onMenuValidation
     @FXML
     void deletePressed(Event event) {
-        // handle the event here
+        // TODO Might delete
     }
 
     // Handler for Button[fx:id="deleteTimelineButton"] onAction
     @FXML
     void deleteTimelinePressed(ActionEvent event) {
-        // handle the event here
+    	timelineMaker.deleteTimeline();
     }
 
     // Handler for Button[fx:id="editEventButton"] onAction
@@ -181,21 +186,21 @@ public class MainWindowController extends TimelineMakerController{
     // Handler for MenuItem[fx:id="exitMenuItem"] onMenuValidation
     @FXML
     void exitPressed(Event event) {
-        // handle the event here
+        System.exit(0);
     }
 
     // Handler for MenuItem[fx:id="helpMenuItem"] onAction
     // Handler for MenuItem[fx:id="helpMenuItem"] onMenuValidation
     @FXML
     void helpPressed(Event event) {
-        // handle the event here
+        // TODO show help window
     }
 
     // Handler for MenuItem[fx:id="newCategoryMenuItem"] onAction
     // Handler for MenuItem[fx:id="newCategoryMenuItem"] onMenuValidation
     @FXML
     void newCategoryPressed(Event event) {
-        // handle the event here
+        // TODO new Category window
     }
 
     // Handler for Button[fx:id="addEventButton"] onAction
@@ -240,42 +245,28 @@ public class MainWindowController extends TimelineMakerController{
     // Handler for MenuItem[fx:id="saveMenuItem"] onMenuValidation
     @FXML
     void savePressed(Event event) {
-        // handle the event here
-    }
+        // TODO manually save all data to database
+    } 
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert aboutMenuItem != null : "fx:id=\"aboutMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert addEventButton != null : "fx:id=\"addEventButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert addTimelineButton != null : "fx:id=\"addTimelineButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert deleteEventButton != null : "fx:id=\"deleteEventButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert deleteMenuItem != null : "fx:id=\"deleteMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert deleteTimelineButton != null : "fx:id=\"deleteTimelineButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert editEventButton != null : "fx:id=\"editEventButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert editMenu != null : "fx:id=\"editMenu\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert editTimelineButton != null : "fx:id=\"editTimelineButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert eventsLabel != null : "fx:id=\"eventsLabel\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert exitMenuItem != null : "fx:id=\"exitMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert fileMenu != null : "fx:id=\"fileMenu\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert helpMenuItem != null : "fx:id=\"helpMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert infoMenu != null : "fx:id=\"infoMenu\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert insertMenu != null : "fx:id=\"insertMenu\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert mainWindowAnchor != null : "fx:id=\"mainWindowAnchor\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert menuBar != null : "fx:id=\"menuBar\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert newCategoryMenuItem != null : "fx:id=\"newCategoryMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert newEventMenuItem != null : "fx:id=\"newEventMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert newTimelineMenuItem != null : "fx:id=\"newTimelineMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert renderPaneContainer != null : "fx:id=\"renderPaneContainer\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert renderScrollPane != null : "fx:id=\"renderScrollPane\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert saveMenuItem != null : "fx:id=\"saveMenuItem\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert splitPane != null : "fx:id=\"splitPane\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert timelinesLabel != null : "fx:id=\"timelinesLabel\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert timelinesListView != null : "fx:id=\"timelinesListView\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert toolbarPane != null : "fx:id=\"toolbarPane\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert toolbarSeparator != null : "fx:id=\"toolbarSeparator\" was not injected: check your FXML file 'MainWindow.fxml'.";
-
-
+    	timelinesListView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				timelineListViewClicked();
+			}
+		});
     }
+
+    private void timelineListViewClicked(){
+    	if(!timelineMaker.getSelectedTimeline().getName().equals(timelinesListView.getSelectionModel().getSelectedItem()))
+    		System.out.println(timelinesListView.getSelectionModel().getSelectedItem());
+    	timelineMaker.selectTimeline(timelinesListView.getSelectionModel().getSelectedItem());
+    }
+    
+	private void populateListView() {
+		timelinesListView.setItems(FXCollections.observableList(timelineMaker.getTimelineTitles()));
+	}
 
 	/* (non-Javadoc)
 	 * @see gui.TimelineMakerController#initData(model.TimelineMaker)
@@ -283,6 +274,8 @@ public class MainWindowController extends TimelineMakerController{
 	@Override
 	public void initData(TimelineMaker timelineMaker) {
 		this.timelineMaker = timelineMaker;
+		populateListView();
+		timelineMaker.graphics.setPanel(renderScrollPane);
 	}
 
 }
