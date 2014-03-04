@@ -3,6 +3,9 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
+import model.Category;
+import model.Duration;
+import model.TLEvent;
 import model.TimelineMaker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,9 +21,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
-public class EventPropertiesWindowController extends TimelineMakerController{
+public class EventPropertiesWindowController{
 
 	private TimelineMaker timelineMaker;
+	
+	private TLEvent oldEvent;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -35,7 +40,7 @@ public class EventPropertiesWindowController extends TimelineMakerController{
     private Button cancelButton; // Value injected by FXMLLoader
 
     @FXML // fx:id="categoryComboBox"
-    private ComboBox<?> categoryComboBox; // Value injected by FXMLLoader
+    private ComboBox<String> categoryComboBox; // Value injected by FXMLLoader
 
     @FXML // fx:id="categoryLabel"
     private Label categoryLabel; // Value injected by FXMLLoader
@@ -89,14 +94,20 @@ public class EventPropertiesWindowController extends TimelineMakerController{
     @FXML
     void createPressed(ActionEvent event) {
     	String title = titleTextField.getText();
-        Date startDate = new Date(0); //TODO get Date working
+        Date startDate = Date.valueOf(startDateTextField.getText());
         Date endDate = null;
-    	Object category = categoryComboBox.getValue();
+    	Object category = categoryComboBox.getValue(); //TODO get Category working
     	String description = descriptionTextArea.getText();
-    	if(durationCheckBox.isPressed()){
-    		endDate = new Date(0); //TODO get Date working
+    	if(durationCheckBox.isSelected()){
+    		System.out.println("Hola");
+    		endDate = Date.valueOf(endDateTextField.getText());
     	}
-    	timelineMaker.addEvent(title, startDate, endDate, category, description);
+    	if(oldEvent != null) timelineMaker.editEvent(oldEvent, title, startDate, endDate, category, description);
+    	else timelineMaker.addEvent(title, startDate, endDate, category, description);
+        
+    	Node  source = (Node)  event.getSource(); 
+        Stage stage  = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     // Handler for CheckBox[fx:id="durationCheckBox"] onAction
@@ -111,6 +122,7 @@ public class EventPropertiesWindowController extends TimelineMakerController{
     void initialize() {
     	endDateTextField.setVisible(false);
         dateToLabel.setVisible(false);
+        oldEvent = null;
       //TODO shift startDateTextField over
         initComboBox();
     }
@@ -119,12 +131,23 @@ public class EventPropertiesWindowController extends TimelineMakerController{
 		//TODO initialize categories
 	}
 
-	/* (non-Javadoc)
-	 * @see gui.TimelineMakerController#initData(model.TimelineMaker)
-	 */
-	@Override
-	public void initData(TimelineMaker timelineMaker) {
+	public void initData(TimelineMaker timelineMaker, TLEvent event) {
 		this.timelineMaker = timelineMaker;
+		this.oldEvent = event;
+		if(event != null) loadEventInfo(event);
+	}
+
+	private void loadEventInfo(TLEvent event) {
+		titleTextField.setText(event.getName());
+		if(event instanceof Duration){
+			durationCheckBox.setSelected(true);
+	        endDateTextField.setVisible(!endDateTextField.isVisible());
+	        dateToLabel.setVisible(!dateToLabel.isVisible());
+			endDateTextField.setText(((Duration) event).getEndDate().toString());
+		}
+		startDateTextField.setText(event.getStartDate().toString());
+		categoryComboBox.setValue(event.getCategory().getName());
+		descriptionTextArea.setText(event.getDescription());
 	}
 
 }

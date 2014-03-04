@@ -73,5 +73,6 @@ public class TimelineGraphics{
 	 */
 	public void setPanel(ScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
+		renderTimeline(model.getSelectedTimeline());
 	}
 }
