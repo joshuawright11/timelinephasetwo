@@ -21,7 +21,7 @@ public class Main extends Application {
 			MainWindowController controller = loader.<MainWindowController>getController();
 			controller.initData(timelineMaker);
 			primaryStage.setTitle("Timestretch");
-	        Scene scene = new Scene(root);
+			Scene scene = new Scene(root);
 	        primaryStage.setScene(scene);
 	        primaryStage.show();
 		} catch(Exception e) {

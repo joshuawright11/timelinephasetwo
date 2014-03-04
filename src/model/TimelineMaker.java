@@ -5,13 +5,9 @@ import gui.*;
 import storage.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
-import javax.swing.*;
-
 import model.Timeline.AxisLabel;
-
-import java.util.*;
-import java.util.logging.*;
+import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * TimelineMaker.java
@@ -41,10 +37,10 @@ public class TimelineMaker {
 	 * The database for storing timelines of this application.
 	 */
 	private DBHelper database;
-//	/**
-//	 * The main GUI window for this application.
-//	 */
-//	private MainWindow gui;
+	/**
+	 * The main GUI window for this application.
+	 */
+	private MainWindowController mainWindow;
 	/**
 	 * The graphics object for displaying timelines in this application.
 	 */
@@ -63,7 +59,7 @@ public class TimelineMaker {
 			for (Timeline t : database.getTimelines())
 				timelines.add(t);
 			selectedTimeline = timelines.get(0);
-			selectedEvent = selectedTimeline.getEvents()[0];
+			selectedEvent = null;
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Your database is empty.");
 		} catch (Exception e){
@@ -183,12 +179,13 @@ public class TimelineMaker {
 	 * @param t the timeline to be added
 	 */
 	public void addTimeline(String title, Color color, AxisLabel axisUnit, Font font) {
-		//Timeline t = new Timeline();//TODO TODO TODO FIX THIS
-		//selectedTimeline = t;
+		Timeline t = new Timeline(title, axisUnit);
+		selectedTimeline = t;
 		selectedEvent = null;
 		timelines.add(selectedTimeline);
 
 		database.saveTimeline(selectedTimeline);
+		mainWindow.populateListView();
 		//gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
 		updateGraphics();
 	}
@@ -205,7 +202,7 @@ public class TimelineMaker {
 			selectedTimeline = null;
 			selectedEvent = null;
 			graphics.clearScreen();
-			//gui.updateTimelines(getTimelineTitles(), null);
+			mainWindow.populateListView();
 		}
 	}
 
@@ -215,21 +212,16 @@ public class TimelineMaker {
  Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param t the new timeline
 	 */
-	public void editTimeline(Timeline t) {
+	public void editTimeline(Timeline t, String title, Color color, AxisLabel axisUnit, Font font) {
 		timelines.remove(selectedTimeline);
-		database.removeTimeline(selectedTimeline);
-
-		boolean newName;
-		try {
-			newName = !selectedTimeline.getName().equals(t.getName());
-		} catch (NullPointerException e) {
-			newName = true;
-		}
-		selectedTimeline = t;
-		timelines.add(selectedTimeline);
-		database.saveTimeline(selectedTimeline);
-		if (newName)
-			//gui.updateTimelines(getTimelineTitles(), selectedTimeline.getName());
+		Timeline newTimeline = new Timeline(title, t.getEvents(), axisUnit);
+		newTimeline.setID(t.getID());
+		timelines.add(newTimeline);
+		//database.removeTimeline(selectedTimeline);
+		//database.saveTimeline(newTimeline);
+		database.editTimelineInfo(newTimeline); //TODO get this working
+		selectedTimeline = newTimeline;
+		mainWindow.populateListView();
 		updateGraphics();
 	}
 
@@ -256,16 +248,19 @@ public class TimelineMaker {
 	 * @param e the new event
 	 */
 	public void addEvent(String title, Date startDate, Date endDate, Object category, String description) {
-		//TODO TODO TODO fix this
-//		if (selectedTimeline != null) {
-//			selectedTimeline.addEvent(e);
-//			selectedEvent = e;
-//
-//			updateGraphics();
-//
-//			database.removeTimeline(selectedTimeline);
-//			database.saveTimeline(selectedTimeline);
-//		}
+		TLEvent event;
+		if(endDate != null){
+			event = new Duration(title, new Category(""), startDate, endDate);
+		}
+		else{
+			event = new Atomic(title, new Category(""), startDate);
+		}
+		if (selectedTimeline != null) {
+			selectedTimeline.addEvent(event);
+			selectedEvent = event;
+			updateGraphics();
+			database.saveEvent(event, selectedTimeline.getName());
+		}
 	}
 
 	/**
@@ -275,12 +270,9 @@ public class TimelineMaker {
 	public void deleteEvent() {
 		if (selectedEvent != null && selectedTimeline != null && selectedTimeline.contains(selectedEvent)) {
 			selectedTimeline.removeEvent(selectedEvent);
+			database.removeEvent(selectedEvent, selectedTimeline.getName());
 			selectedEvent = null;
-
 			updateGraphics();
-
-			database.removeTimeline(selectedTimeline);
-			database.saveTimeline(selectedTimeline);
 		}
 	}
 
@@ -290,16 +282,19 @@ public class TimelineMaker {
  Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param e the new event
 	 */
-	public void editEvent(TLEvent e) {
+	public void editEvent(TLEvent oldEvent, String title, Date startDate, Date endDate, Object category, String description) {
 		if (selectedEvent != null && selectedTimeline != null && selectedTimeline.contains(selectedEvent)) {
 			selectedTimeline.removeEvent(selectedEvent);
-			selectedEvent = e;
-			selectedTimeline.addEvent(selectedEvent);
+			TLEvent toAdd;
+			if(endDate != null) toAdd = new Duration(title, new Category(""), startDate, endDate);
+			else toAdd = new Atomic(title, new Category(""), startDate);
+			toAdd.setID(oldEvent.getID());
+			selectedEvent = toAdd;
+			selectedTimeline.addEvent(toAdd);
 
 			updateGraphics();
 
-			database.removeTimeline(selectedTimeline);
-			database.saveTimeline(selectedTimeline);
+			database.editEvent(toAdd, selectedTimeline.getName());
 		}
 	}
 
@@ -309,10 +304,19 @@ public class TimelineMaker {
 	public void updateGraphics() { 
 		graphics.clearScreen();
 		graphics.renderTimeline(selectedTimeline);
+		
 	}
         
         public int getUniqueID() {
             return idCounter++;
          }
+
+		/**
+		 * @param mainWindow the mainWindow to set
+		 */
+		public void setMainWindow(MainWindowController mainWindow) {
+			this.mainWindow = mainWindow;
+		}
+
 
 }
