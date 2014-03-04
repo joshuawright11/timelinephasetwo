@@ -6,10 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import model.TimelineMaker;
-import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
@@ -55,12 +52,6 @@ import model.Timeline.AxisLabel;
  */
 
 public class TimelineRender extends Pane {
-
-//	/**
-//	 * Used as the connection between the Swing gui and the javafx graphics
-//	 * (embeds in swing)
-//	 */
-//	private Pane pane;
 	
 	/**
 	 * The model of the entire program, this is so selected events can be set
@@ -71,12 +62,6 @@ public class TimelineRender extends Pane {
 	 * The timeline associated with this TimelineRender object
 	 */
 	private Timeline timeline;
-	
-//	/**
-//	 * The group of javafx elements to display in the scene (similar to a canvas,
-//	 * this gets put on the JFXPanel)
-//	 */
-//	private Group group;
 	
 	/**
 	 * ArrayLists of all the events in the timeline. 
@@ -142,7 +127,6 @@ public class TimelineRender extends Pane {
 			this.axisLabel = timeline.getAxisLabel();
 		else
 			this.axisLabel = AxisLabel.YEARS;
-		//this.group = group;
 		atomics = new ArrayList<Atomic>();
 		durations = new ArrayList<Duration>();
 		
@@ -153,23 +137,6 @@ public class TimelineRender extends Pane {
 		init();
 		renderTimeline();
 	}
-
-//	/*
-//	 * Initializes the minTime maxTime values, if there are not events render a blank screen
-//	 *  otherwise then calls init and renders the timeline.
-//	 * 
-//	 * (non-Javadoc)
-//	 * @see java.lang.Runnable#run()
-//	 */
-//	public void run() {
-//		if (!initRange()){
-//			Scene toShow = new Scene(new Group(), 0, 0, Color.WHITE);
-//			
-//			return;
-//		}
-//		init();
-//		renderTimeline();
-//	}
 
 	/**
 	 * Sets the unitWidth to a constant (this can be changed to depend on how many units are in the
@@ -227,7 +194,6 @@ public class TimelineRender extends Pane {
 
 	private void renderTimeline() {
 		getChildren().clear();
-		//group = new Group();
 		getChildren().add(createTitle());
 		renderAtomics();
 		renderTime();
@@ -250,8 +216,6 @@ public class TimelineRender extends Pane {
 			xPos2+=unitWidth;
 		}
 		setLayoutX(xPos2+5);
-		//Scene toShow = new Scene(group, xPos2+5, pushDown, Color.WHITE);
-		//fxPanel.setScene(toShow);
 	}
 	
 	/**
