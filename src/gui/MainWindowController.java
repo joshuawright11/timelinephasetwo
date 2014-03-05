@@ -156,7 +156,20 @@ public class MainWindowController{
     // Handler for Button[fx:id="addCategoryButton"] onAction
     @FXML
     void addCategoryPressed(ActionEvent event) {
-        // handle the event here
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
+	        controller.initData(timelineMaker, null);
+			Stage stage = new Stage();
+			stage.setTitle("Add Category");
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
+	        stage.setScene(scene);
+	        stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for Button[fx:id="addIconImageButton"] onAction
@@ -193,7 +206,20 @@ public class MainWindowController{
     // Handler for Button[fx:id="editCategoryButton"] onAction
     @FXML
     void editCategoryPressed(ActionEvent event) {
-        // handle the event here
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
+	        controller.initData(timelineMaker, null);
+			Stage stage = new Stage();
+			stage.setTitle("Edit Category");
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
+	        stage.setScene(scene);
+	        stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for Button[fx:id="editEventButton"] onAction
