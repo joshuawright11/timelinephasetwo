@@ -18,6 +18,12 @@
  * this should only be the pane which the timeline is rendered on
  * (an instance ) */
 #render-pane{
+}
+
+/* Applies to id = renderScrollPane
+ * this should only be the pane which the timeline is rendered on
+ * (an instance ) */
+#renderScrollPane{
     -fx-background-color: gray;
 }
 
