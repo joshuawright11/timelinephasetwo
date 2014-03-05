@@ -42,12 +42,25 @@ public class MainWindowController{
     @FXML // fx:id="aboutMenuItem"
     private MenuItem aboutMenuItem; // Value injected by FXMLLoader
 
+    @FXML // fx:id="addCategoryButton"
+    private Button addCategoryButton; // Value injected by FXMLLoader
+    
     @FXML // fx:id="addEventButton"
     private Button addEventButton; // Value injected by FXMLLoader
 
     @FXML // fx:id="addTimelineButton"
     private Button addTimelineButton; // Value injected by FXMLLoader
 
+    @FXML // fx:id="categoriesLabel"
+    private Label categoriesLabel; // Value injected by FXMLLoader
+
+    @FXML // fx:id="categoriesListView"
+    private ListView<?> categoriesListView; // Value injected by FXMLLoader
+
+    @FXML // fx:id="deleteCategoryButton"
+    private Button deleteCategoryButton; // Value injected by FXMLLoader
+
+    
     @FXML // fx:id="deleteEventButton"
     private Button deleteEventButton; // Value injected by FXMLLoader
 
@@ -57,6 +70,9 @@ public class MainWindowController{
     @FXML // fx:id="deleteTimelineButton"
     private Button deleteTimelineButton; // Value injected by FXMLLoader
 
+    @FXML // fx:id="editCategoryButton"
+    private Button editCategoryButton; // Value injected by FXMLLoader
+    
     @FXML // fx:id="editEventButton"
     private Button editEventButton; // Value injected by FXMLLoader
 
@@ -78,6 +94,12 @@ public class MainWindowController{
     @FXML // fx:id="helpMenuItem"
     private MenuItem helpMenuItem; // Value injected by FXMLLoader
 
+    @FXML // fx:id="iconsLabel"
+    private Label iconsLabel; // Value injected by FXMLLoader
+
+    @FXML // fx:id="iconsSeparator"
+    private Separator iconsSeparator; // Value injected by FXMLLoader
+      
     @FXML // fx:id="infoMenu"
     private Menu infoMenu; // Value injected by FXMLLoader
 
@@ -123,7 +145,7 @@ public class MainWindowController{
     @FXML // fx:id="toolbarSeparator"
     private Separator toolbarSeparator; // Value injected by FXMLLoader
 
-
+    
     // Handler for MenuItem[fx:id="aboutMenuItem"] onAction
     // Handler for MenuItem[fx:id="aboutMenuItem"] onMenuValidation
     @FXML
@@ -131,6 +153,37 @@ public class MainWindowController{
         // TODO open about window
     }
 
+    // Handler for Button[fx:id="addCategoryButton"] onAction
+    @FXML
+    void addCategoryPressed(ActionEvent event) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
+	        controller.initData(timelineMaker, null);
+			Stage stage = new Stage();
+			stage.setTitle("Add Category");
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
+	        stage.setScene(scene);
+	        stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+
+    // Handler for Button[fx:id="addIconImageButton"] onAction
+    @FXML
+    void addIconImagePressed(ActionEvent event) {
+        // handle the event here
+    }
+
+    // Handler for Button[fx:id="deleteCategoryButton"] onAction
+    @FXML
+    void deleteCategoryPressed(ActionEvent event) {
+        // handle the event here
+    }
+    
     // Handler for Button[fx:id="deleteEventButton"] onAction
     @FXML
     void deleteEventPressed(ActionEvent event) {
@@ -148,6 +201,25 @@ public class MainWindowController{
     @FXML
     void deleteTimelinePressed(ActionEvent event) {
     	timelineMaker.deleteTimeline();
+    }
+    
+    // Handler for Button[fx:id="editCategoryButton"] onAction
+    @FXML
+    void editCategoryPressed(ActionEvent event) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
+	        controller.initData(timelineMaker, null);
+			Stage stage = new Stage();
+			stage.setTitle("Edit Category");
+			Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
+	        stage.setScene(scene);
+	        stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for Button[fx:id="editEventButton"] onAction
