@@ -97,7 +97,7 @@
         </AnchorPane>
       </items>
     </SplitPane>
-    <AnchorPane prefHeight="479.0" prefWidth="163.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="633.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="26.0">
+    <AnchorPane prefHeight="577.0" prefWidth="163.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="26.0">
       <children>
         <Label id="eventLabel" fx:id="categoriesLabel" font="$x1" prefHeight="40.0" prefWidth="149.0" text="Categories" textAlignment="LEFT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0" />
         <ListView id="timelinesListView" fx:id="categoriesListView" prefHeight="145.0" prefWidth="134.0" AnchorPane.bottomAnchor="290.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="44.0" />
