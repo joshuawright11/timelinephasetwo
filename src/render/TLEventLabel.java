@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -150,7 +151,7 @@ public abstract class TLEventLabel extends Label {
 	 */
 	private void initHandlers(){
 		final Label label = this;
-		setTooltip(new Tooltip("Click to select and show info!"));
+		setTooltip(new Tooltip("Double click to show info!"));
 		setOnMouseEntered(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				Platform.runLater(new Thread(new Runnable() {
@@ -171,16 +172,20 @@ public abstract class TLEventLabel extends Label {
 		});
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
+		        if(e.getButton().equals(MouseButton.PRIMARY)){
+		        	if(e.getClickCount() == 2){
+						Platform.runLater(new Thread(new Runnable() {
+							public void run() {
+								contextMenu.show(label, MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());	
+							}
+						}));
+		            }
+		        }
 				for(TLEventLabel label : eventLabels){
 					label.setSelected(false);
 				}
 				setSelected(true);
-				Platform.runLater(new Thread(new Runnable() {
-					public void run() {
-						contextMenu.show(label, MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());	
-						model.selectEvent(event);
-					}
-				}));
+				model.selectEvent(event);
 			}
 		});
 		uniqueHandlers();
