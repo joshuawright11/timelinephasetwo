@@ -3,7 +3,6 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-import model.Category;
 import model.Duration;
 import model.TLEvent;
 import model.TimelineMaker;
