@@ -223,6 +223,7 @@ public class MainWindowController{
 			Parent root = (Parent)loader.load();
 	        EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
 	        controller.initData(timelineMaker, null);
+                controller.initComboBox();
 			Stage stage = new Stage();
 			stage.setTitle("Add Event");
 			Scene scene = new Scene(root);

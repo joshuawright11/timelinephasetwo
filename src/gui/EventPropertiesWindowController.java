@@ -1,6 +1,7 @@
 package gui;
 import java.net.URL;
 import java.sql.Date;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import model.Category;
@@ -19,13 +20,16 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.Timeline;
 
 
 public class EventPropertiesWindowController{
 
-	private TimelineMaker timelineMaker;
+    private  TimelineMaker timelineMaker;
 	
-	private TLEvent oldEvent;
+    private TLEvent oldEvent;
+    
+    private Category selectedCategory;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -124,12 +128,24 @@ public class EventPropertiesWindowController{
         dateToLabel.setVisible(false);
         oldEvent = null;
       //TODO shift startDateTextField over
-        initComboBox();
+        System.out.println(timelineMaker == null);
     }
 
-	private void initComboBox() {
-		//TODO initialize categories
-	}
+    //Populates the combo box with categories.
+    public void initComboBox() {
+        Iterator<Category> categoryIterator =  timelineMaker.getCategoryIterator();
+        String[] names = new String[timelineMaker.catSize()];
+        int i = 0;
+        Category c = new Category("Base");
+        while(categoryIterator.hasNext()){
+            c = (Category)categoryIterator.next();
+            categoryComboBox.getItems().addAll(c.getName());
+            names[i++] = c.getName();
+        }
+        categoryComboBox.setValue(names[0]);
+        selectedCategory = c;
+      
+    }
 
 	public void initData(TimelineMaker timelineMaker, TLEvent event) {
 		this.timelineMaker = timelineMaker;
@@ -149,5 +165,7 @@ public class EventPropertiesWindowController{
 		categoryComboBox.setValue(event.getCategory().getName());
 		descriptionTextArea.setText(event.getDescription());
 	}
+        
+        
 
 }
