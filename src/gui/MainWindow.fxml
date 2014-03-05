@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="mainWindow" fx:id="mainWindowAnchor" prefHeight="500.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="gui.MainWindowController">
+<AnchorPane id="mainWindow" fx:id="mainWindowAnchor" prefHeight="603.0" prefWidth="943.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="gui.MainWindowController">
   <!-- TODO Add Nodes -->
   <children>
     <MenuBar fx:id="menuBar" layoutY="0.0" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="478.9999000000025" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -70,7 +70,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane fx:id="splitPane" dividerPositions="0.20426065162907267" focusTraversable="true" prefHeight="472.9999000000025" prefWidth="478.9999000000025" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+    <SplitPane fx:id="splitPane" dividerPositions="0.2103225806451613" focusTraversable="true" prefHeight="479.0" prefWidth="634.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="26.0">
       <items>
         <AnchorPane fx:id="toolbarPane" maxWidth="1.7976931348623157E308" minHeight="477.0" minWidth="160.0" prefHeight="160.0" prefWidth="160.0">
           <children>
@@ -97,5 +97,17 @@
         </AnchorPane>
       </items>
     </SplitPane>
+    <AnchorPane prefHeight="479.0" prefWidth="163.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="633.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="26.0">
+      <children>
+        <Label id="eventLabel" fx:id="categoriesLabel" font="$x1" prefHeight="40.0" prefWidth="149.0" text="Categories" textAlignment="LEFT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0" />
+        <ListView id="timelinesListView" fx:id="categoriesListView" prefHeight="145.0" prefWidth="134.0" AnchorPane.bottomAnchor="290.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="44.0" />
+        <Button id="deleteEvent" fx:id="deleteCategoryButton" mnemonicParsing="false" onAction="#deleteCategoryPressed" prefWidth="134.0" text="Delete Category" AnchorPane.bottomAnchor="228.0" AnchorPane.rightAnchor="15.0" />
+        <Button id="addEvent" fx:id="addCategoryButton" mnemonicParsing="false" onAction="#addCategoryPressed" prefWidth="134.0" text="Add Category" AnchorPane.bottomAnchor="259.0" AnchorPane.rightAnchor="15.0" />
+        <Button id="editEvent" fx:id="editCategoryButton" mnemonicParsing="false" onAction="#editCategoryPressed" prefWidth="134.0" text="Edit Category" AnchorPane.bottomAnchor="197.0" AnchorPane.rightAnchor="15.0" />
+        <Separator id="iconSeparator" fx:id="iconsSeparator" prefWidth="165.0" AnchorPane.bottomAnchor="183.0" AnchorPane.rightAnchor="-2.0" />
+        <Label id="eventLabel" fx:id="iconsLabel" font="$x1" prefHeight="40.0" prefWidth="149.0" text="Icons" textAlignment="LEFT" AnchorPane.bottomAnchor="147.0" AnchorPane.rightAnchor="0.0" />
+        <Button id="addEvent" fx:id="addIconImageButton" mnemonicParsing="false" onAction="#addIconImagePressed" prefWidth="134.0" text="Add Icon Image" AnchorPane.bottomAnchor="126.0" AnchorPane.rightAnchor="15.0" />
+      </children>
+    </AnchorPane>
   </children>
 </AnchorPane>
