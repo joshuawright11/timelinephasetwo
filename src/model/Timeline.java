@@ -72,7 +72,7 @@ public class Timeline implements TimelineAPI{
             id = timelineMaker.getUniqueID();
 	}
         
-        public Timeline(String name){
+    public Timeline(String name){
             this.name = name;
             events = new ArrayList<TLEvent>();
             axisLabel = AxisLabel.YEARS;
@@ -102,19 +102,12 @@ public class Timeline implements TimelineAPI{
 	 * @param name Timeline name
 	 * @param axisLabel Unit to render timeline in
 	 */
-	public Timeline(String name, int axisLabel) {
+	public Timeline(String name, AxisLabel axisLabel) {
 		this.name = name;
 		events = new ArrayList<TLEvent>();
-		this.axisLabel = AXIS_LABELS[axisLabel];
+		this.axisLabel = axisLabel;
 		this.events = new ArrayList<TLEvent>();
 		dirty = true;
-	}
-	
-	public int getID(){
-		return id;
-	}
-	public void setID(int id){
-		this.id = id;
 	}
 	
 	/**
@@ -124,14 +117,21 @@ public class Timeline implements TimelineAPI{
 	 * @param events TLEvents in timeline
 	 * @param axisLabel Unit to render timeline in
 	 */
-	public Timeline(String name, ArrayList<TLEvent> events, int axisLabel) {
+	public Timeline(String name, TLEvent[] events, AxisLabel axisLabel) {
 		this.name = name;
 		if(events != null)
-			this.events = events;
+			this.events = new ArrayList<TLEvent>(Arrays.asList(events));
 		else
 			this.events = new ArrayList<TLEvent>();
-		this.axisLabel = AXIS_LABELS[axisLabel];
+		this.axisLabel = axisLabel;
 		dirty = true;
+	}
+
+	public int getID(){
+		return id;
+	}
+	public void setID(int id){
+		this.id = id;
 	}
 	
 	@Override

@@ -43,9 +43,9 @@ public class DurationLabel extends TLEventLabel {
 	@Override
 	public void updateDesign() {
 		if (isSelected()) {
-			setStyle("-fx-border-color: black;-fx-background-color: white;");
+			setId("event-selected");
 		}else{	
-			setStyle("-fx-border-color: blue;-fx-background-color: white;");
+			setId("duration-label");
 		}
 	}
 
@@ -53,7 +53,7 @@ public class DurationLabel extends TLEventLabel {
 	public void uniqueDesign() {
 		setPrefWidth(width);
 		setAlignment(Pos.CENTER);
-		setStyle("-fx-border-color: blue");
+		setId("duration-label");
 	}
 
 

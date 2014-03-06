@@ -6,16 +6,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import model.TimelineMaker;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.Pane;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -58,13 +56,7 @@ import model.Timeline.AxisLabel;
  * in the making this class.
  */
 
-public class TimelineRender implements Runnable {
-
-	/**
-	 * Used as the connection between the Swing gui and the javafx graphics
-	 * (embeds in swing)
-	 */
-	private JFXPanel fxPanel;
+public class TimelineRender extends Pane {
 	
 	/**
 	 * The model of the entire program, this is so selected events can be set
@@ -75,12 +67,6 @@ public class TimelineRender implements Runnable {
 	 * The timeline associated with this TimelineRender object
 	 */
 	private Timeline timeline;
-	
-	/**
-	 * The group of javafx elements to display in the scene (similar to a canvas,
-	 * this gets put on the JFXPanel)
-	 */
-	private Group group;
 	
 	/**
 	 * ArrayLists of all the events in the timeline. 
@@ -139,32 +125,18 @@ public class TimelineRender implements Runnable {
 	 * @param timeline
 	 * @param group
 	 */
-	public TimelineRender(JFXPanel fxPanel, TimelineMaker model, Timeline timeline, Group group) {
+	public TimelineRender(TimelineMaker model, Timeline timeline) {
 		this.model = model;
 		this.timeline = timeline;
 		if (timeline.getAxisLabel() == AxisLabel.DAYS || timeline.getAxisLabel() == AxisLabel.MONTHS || timeline.getAxisLabel() == AxisLabel.YEARS)
 			this.axisLabel = timeline.getAxisLabel();
 		else
 			this.axisLabel = AxisLabel.YEARS;
-		this.group = group;
-		this.fxPanel = fxPanel;
 		atomics = new ArrayList<Atomic>();
 		durations = new ArrayList<Duration>();
 		
 		eventLabels = new ArrayList<TLEventLabel>();
-	}
-
-	/*
-	 * Initializes the minTime maxTime values, if there are not events render a blank screen
-	 *  otherwise then calls init and renders the timeline.
-	 * 
-	 * (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
-	public void run() {
-		if (!initRange()){
-			Scene toShow = new Scene(new Group(), 0, 0, Color.WHITE);
-			fxPanel.setScene(toShow);
+		if(!initRange()){
 			return;
 		}
 		init();
@@ -178,8 +150,9 @@ public class TimelineRender implements Runnable {
 	 * the Date class's compareTo method (which I didn't know existed until after writing this).
 	 */
 	private void init(){
+		setId("render-pane");
 		unitWidth = 150;
-		pushDown = 60;
+		pushDown = 60; //to allow 60 pixels for title
 		for(TLEvent event : timeline.getEvents()){
 			if(event instanceof Duration){
 				durations.add((Duration)event);
@@ -226,12 +199,12 @@ public class TimelineRender implements Runnable {
 	 */
 
 	private void renderTimeline() {
-		group.getChildren().clear();
-		group = new Group();
-		group.getChildren().add(createTitle());
+		getChildren().clear();
+		getChildren().add(createTitle());
 		renderAtomics();
 		renderTime();
 		renderDurations();
+		setLayoutY(pushDown);
 	}
 	
 	/**
@@ -245,23 +218,22 @@ public class TimelineRender implements Runnable {
 		int xPos2 = 0;
 		for(int i = 0; i < diffUnit ; i++){
 			Label label = unitLabel(i,xPos2);
-			group.getChildren().add(label); 
+			getChildren().add(label); 
 			
 			Canvas canvas = new Canvas(unitWidth,20);
 			canvas.setLayoutX(xPos2);
-			canvas.setLayoutY(100);
+			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			gc.setStroke(Color.BLUE);
 		    gc.setLineWidth(3);
 			gc.strokeLine(0, 10, 149, 10);
 			gc.strokeLine(0, 0, 0, 20);
 			gc.strokeLine(149, 0, 149, 20);
-			group.getChildren().add(canvas);
+			getChildren().add(canvas);
 			
 			xPos2+=unitWidth;
 		}
-		Scene toShow = new Scene(group, xPos2+5, pushDown, Color.WHITE);
-		fxPanel.setScene(toShow);
+		setLayoutX(xPos2+5);
 	}
 	
 	/**
@@ -299,14 +271,14 @@ public class TimelineRender implements Runnable {
 		label.setPrefWidth(unitWidth);
 		label.setPrefHeight(40);
 		label.setAlignment(Pos.CENTER);
-		label.setStyle("-fx-border-color: white;");
+		label.setId("axis-unit-label");
 		
 		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				Platform.runLater(new Thread(new Runnable() {
 					public void run() {
 						//I don't know what we want to do here, But I thought i'd set this here.
-						label.setStyle("-fx-border-color: blue");
+						label.setId("axis-unit-label-selected");
 					}
 				}));
 			}
@@ -326,9 +298,6 @@ public class TimelineRender implements Runnable {
 		Calendar endCalendar = new GregorianCalendar();
 		endCalendar.setTime(new Date(maxTime));
 
-		System.out.println("First date: "+getFirstDate().toString());
-		System.out.println("Max Time: "+new Date(maxTime).toString());
-		
 		int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
 		int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
 		int diffDay = diffYear * 365 + endCalendar.get(Calendar.DAY_OF_YEAR) - startCalendar.get(Calendar.DAY_OF_YEAR);
@@ -364,7 +333,6 @@ public class TimelineRender implements Runnable {
 		switch(axisLabel){
 		case DAYS:
 			cal.set(year, month, day);
-			System.out.println("Year is: " + year + " |Month is: " + month + " |Day is: " + day + " |Cal at: " + new Date(cal.getTime().getTime()).toString());
 			toReturn = new Date(cal.getTime().getTime());
 			break;
 		case MONTHS:
@@ -388,15 +356,14 @@ public class TimelineRender implements Runnable {
 	 * Uses custom Label class
 	 */
 	private void renderAtomics() {
-		pushDown = 60; //where to put the event ( y - axis )
 		for(Atomic e : atomics){
 			int xPosition = getXPos(e.getStartDate());
 			AtomicLabel label = new AtomicLabel(e, xPosition, pushDown, model, eventLabels);
 			eventLabels.add(label);
-			group.getChildren().add(label);
-	        pushDown += 20;
+			getChildren().add(label);
+	        pushDown += 25;
 		}
-
+		pushDown += 5; // add a little space between the atomic events and the axis
 	}
 
 	/**
@@ -407,14 +374,15 @@ public class TimelineRender implements Runnable {
 	 */
 	private void renderDurations() {
 		int counter = 0;
+		pushDown += 5; // add a little space between the axis and the duration events
 		for(Duration e : durations){
 			int xStart = getXPos(e.getStartDate());
 			int xEnd = getXPos(e.getEndDate());
 			int labelWidth = xEnd - xStart;
 			DurationLabel label = new DurationLabel(e, xStart, (pushDown + 45 + counter), labelWidth, model, eventLabels);
 			eventLabels.add(label);
-			group.getChildren().add(label);
-			counter += 20;
+			getChildren().add(label);
+			counter += 25;
 		}
 	}
 
@@ -428,7 +396,6 @@ public class TimelineRender implements Runnable {
 	private int getXPos(Date date) {
 		double units = getUnitsSinceStart(date);
 		int xPosition = (int)(units*unitWidth); 
-		//System.out.println("TLEvent " + date.toString() + " is " +units+ " units after the start. It has an x offset of " +(int)(units*unitWidth)+ " pixels.");
 		return xPosition;
 	}
 	

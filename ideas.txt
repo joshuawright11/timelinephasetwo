@@ -5,7 +5,7 @@ This is where we can put some possible feature ideas for the project.
 - descriptions for events, maybe mouse  over to display (JOSH: database and model, GUI will have to wait)
 - manual length adjustment / zoomin/zoomout
 - label for axis (We already have this?)
-- "EditCategory" window with color
+- "EditCategory" window with color (ANDREW)
 - ImageIcons for events - uploadable (KAYLEY)
 - Labels show at different heights/do not overlap
 - Font choice!
