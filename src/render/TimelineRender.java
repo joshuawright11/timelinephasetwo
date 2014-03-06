@@ -209,11 +209,17 @@ public class TimelineRender extends Pane {
 		renderTime2();
 		renderLines();
 		pushDown = 60;
-		renderAtomics();
-		renderDurations();
+		eventsToFront();
 		setLayoutY(pushDown);
 	}
 	
+	/**
+	 * 
+	 */
+	private void eventsToFront() {
+		for(TLEventLabel label : eventLabels) label.toFront();
+	}
+
 	/**
 	 * Renders each 'Unit' on the axis as label with width unitWidth (uses unitLabel method). 
 	 * Adds the label to the group, and when finished puts the group in a scene and displays the 
@@ -231,9 +237,6 @@ public class TimelineRender extends Pane {
 			canvas.setLayoutX(xPos2);
 			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
-			
-			
-			
 			
 			gc.setStroke(Color.BLUE);
 		    gc.setLineWidth(3);
@@ -266,9 +269,6 @@ public class TimelineRender extends Pane {
 			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			
-			
-			
-			
 			gc.setStroke(Color.BLUE);
 		    gc.setLineWidth(3);
 			gc.strokeLine(0, 10, unitWidth, 10);
@@ -292,15 +292,10 @@ public class TimelineRender extends Pane {
 		int xPos2 = 0;
 		for(int i = 0; i < diffUnit ; i++){
 			
-			
 			Canvas canvas = new Canvas(unitWidth,400);
 			canvas.setLayoutX(xPos2);
 			canvas.setLayoutY(60);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
-			
-			
-			
-			
 			
 		    gc.setLineWidth(3);
 		    gc.setStroke(Color.web("#1FABD5"));
