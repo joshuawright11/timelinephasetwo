@@ -9,6 +9,7 @@ import model.Timeline.AxisLabel;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javafx.scene.image.Image;
 
 /**
  * TimelineMaker.java
@@ -26,7 +27,7 @@ public class TimelineMaker {
 	 * A list of all the timelines in this application.
 	 */
 	private ArrayList<Timeline> timelines;
-
+        private ArrayList<Icon> icons;
 	/**
 	 * The timeline selected in this application.
 	 */
@@ -56,7 +57,8 @@ public class TimelineMaker {
 		database = new DBHelper("timeline.db");
 		graphics = new TimelineGraphics(this);
 		timelines = new ArrayList<Timeline>();
-
+                icons = new ArrayList<Icon>();
+                icons.add(new Icon("None", null));
 		try {
 			for (Timeline t : database.getTimelines())
 				timelines.add(t);
@@ -129,7 +131,27 @@ public class TimelineMaker {
 //		});
 //
 //	}
+        
+        public Icon getIcon(String t){
+            for(Icon i: icons){
+                if(i.getName().equals(t)) return i;
+            }
+            return icons.get(0);
+        }
+        
+	public ArrayList<String> getImageTitles() {
+            ArrayList<String> iconTitles = new ArrayList<String>();
+            for(Icon i: icons){
+                iconTitles.add(i.getName());
+            }
+            return iconTitles;
+	}
 
+        
+        public void addIcon(Icon i){
+            if(i != null) icons.add(i);
+        }
+        
 	/**
 	 * Retrieve a list of the names of all the timelines.
 	 * @return timelines
@@ -249,7 +271,7 @@ public class TimelineMaker {
 	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param e the new event
 	 */
-	public void addEvent(String title, Date startDate, Date endDate, Object category, String description) {
+	public void addEvent(String title, Date startDate, Date endDate, Object category, String description, Icon icon) {
 		TLEvent event;
 		if(endDate != null){
 			event = new Duration(title, new Category(""), startDate, endDate);
@@ -257,6 +279,7 @@ public class TimelineMaker {
 		else{
 			event = new Atomic(title, new Category(""), startDate);
 		}
+                if(!icon.getName().equals("None")) event.setIcon(icon);
 		if (selectedTimeline != null) {
 			selectedTimeline.addEvent(event);
 			selectedEvent = event;
@@ -284,12 +307,13 @@ public class TimelineMaker {
  Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param e the new event
 	 */
-	public void editEvent(TLEvent oldEvent, String title, Date startDate, Date endDate, Category category, String description) {
+	public void editEvent(TLEvent oldEvent, String title, Date startDate, Date endDate, Category category, String description, Icon icon) {
 		if (selectedEvent != null && selectedTimeline != null && selectedTimeline.contains(selectedEvent)) {
 			selectedTimeline.removeEvent(selectedEvent);
 			TLEvent toAdd;
 			if(endDate != null) toAdd = new Duration(title, new Category(""), startDate, endDate);
 			else toAdd = new Atomic(title, new Category(""), startDate);
+                        if(!icon.getName().equals("None")) toAdd.setIcon(icon);
 			toAdd.setID(oldEvent.getID());
 			selectedEvent = toAdd;
 			selectedTimeline.addEvent(toAdd);

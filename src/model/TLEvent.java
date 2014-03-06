@@ -5,6 +5,7 @@
 package model;
 
 import java.sql.Date;
+import javafx.scene.image.Image;
 
 import storage.DBHelper;
 
@@ -13,6 +14,7 @@ public class TLEvent{
         private Date startDate;
 	private Category category;
 	private int id;
+        private Icon icon;
         
         /**
          * Constructor
@@ -121,5 +123,12 @@ public class TLEvent{
 	public void setID(int id) {
             this.id = id;
 	}
-
+        
+        public Icon getIcon(){
+            return icon;
+        }
+        
+        public void setIcon(Icon icon){
+            this.icon = icon;
+        }
 }

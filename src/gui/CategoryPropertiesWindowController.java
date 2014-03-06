@@ -81,6 +81,8 @@ public class CategoryPropertiesWindowController {
 	        Stage stage  = (Stage) source.getScene().getWindow();
 	        stage.close();
         }
+        
+        
         //TODO: Save the new category to the database.
     }
 
