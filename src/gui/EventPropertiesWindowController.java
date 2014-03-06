@@ -73,6 +73,12 @@ public class EventPropertiesWindowController{
     @FXML // fx:id="eventPropertiesWindowAnchor"
     private AnchorPane eventPropertiesWindowAnchor; // Value injected by FXMLLoader
 
+    @FXML // fx:id="iconComboBox"
+    private ComboBox<?> iconComboBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="iconLabel"
+    private Label iconLabel; // Value injected by FXMLLoader
+    
     @FXML // fx:id="startDateTextField"
     private TextField startDateTextField; // Value injected by FXMLLoader
 
@@ -120,7 +126,6 @@ public class EventPropertiesWindowController{
     void durationPressed(ActionEvent event) {
         endDateTextField.setVisible(!endDateTextField.isVisible());
         dateToLabel.setVisible(!dateToLabel.isVisible());
-        //TODO shift startDateTextField over
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -128,7 +133,6 @@ public class EventPropertiesWindowController{
     	endDateTextField.setVisible(false);
         dateToLabel.setVisible(false);
         oldEvent = null;
-      //TODO shift startDateTextField over
     }
 
     //Populates the combo box with categories.

@@ -8,10 +8,7 @@
 
 /* Applies to all labels */
 .label{
-    -fx-border-radius: 5 5 5 5;
-    -fx-background-radius: 5 5 5 5;
-    -fx-border-style: solid;
-    -fx-border-width: 3;
+    
 }
 
 /* Applies to id = render-pane
@@ -30,7 +27,9 @@
 /* Applies to id = axis-unit-label
  * this should be all unselected axis unit labels */
 #axis-unit-label{
-    /* nothing yet */
+	-fx-border-style: none;
+    
+   	
 }
 
 /* Applies to id = axis-unit-label
@@ -42,18 +41,30 @@
 /* Applies to id = atomic-label
  * this should be all unselected atomic labels */
 #atomic-label{
+	-fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
+    -fx-border-style: solid;
+    -fx-border-width: 3;
     -fx-border-color: green;
 }
 
 /* Applies to id = duration-label
  * this should be all unselected duration labels */
 #duration-label{
+	-fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
+    -fx-border-style: solid;
+    -fx-border-width: 3;
     -fx-border-color: blue;
 }
 
 /* Applies to id = event-selected
  * this should be all selected events */
 #event-selected{
+	-fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
+    -fx-border-style: solid;
+    -fx-border-width: 3;
     -fx-border-color: black;
 }
 
@@ -61,5 +72,10 @@
  * this should be all events that have the mouse over them 
  * (a :hover selector might make more sense) */
 #label-highlighted{
+	-fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
+    -fx-border-style: solid;
+    -fx-border-width: 3;
+    -fx-border-color: black;
     -fx-background-color: rgb(0, 109, 204);
 }
