@@ -202,8 +202,14 @@ public class TimelineRender extends Pane {
 	private void renderTimeline() {
 		getChildren().clear();
 		getChildren().add(createTitle());
-		renderAtomics();
+		
 		renderTime();
+		renderAtomics();
+		renderDurations();
+		renderTime2();
+		renderLines();
+		pushDown = 60;
+		renderAtomics();
 		renderDurations();
 		setLayoutY(pushDown);
 	}
@@ -234,20 +240,73 @@ public class TimelineRender extends Pane {
 			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
 			gc.strokeLine(unitWidth, 0, unitWidth, 20);
+		
+			getChildren().add(canvas);
 			
-			gc.strokeLine(0, 390, unitWidth, 390);
-			gc.strokeLine(0, 380, 0, 400);
-			gc.strokeLine(unitWidth, 380, unitWidth, 400);
+			xPos2+=unitWidth;
+		}
+		setLayoutX(xPos2+5);
+	}
+	
+	/**
+	 * Renders each 'Unit' on the Bottom axis as label with width unitWidth (uses unitLabel method). 
+	 * Adds the label to the group, and when finished puts the group in a scene and displays the 
+	 * scene in the fxPanel.
+	 */
+	
+	private void renderTime2(){
+		int diffUnit = getUnitLength();
+		int xPos2 = 0;
+		for(int i = 0; i < diffUnit ; i++){
+			Label label = unitLabel(i,xPos2);
+			getChildren().add(label); 
 			
-			/*
-			gc.strokeLine(0, pushDown+100, unitWidth, pushDown+100);
-			gc.strokeLine(0, pushDown+90, 0, pushDown+110);
-			gc.strokeLine(unitWidth, pushDown+100, unitWidth, pushDown+110);
-			*/
+			Canvas canvas = new Canvas(unitWidth,400);
+			canvas.setLayoutX(xPos2);
+			canvas.setLayoutY(pushDown);
+			GraphicsContext gc = canvas.getGraphicsContext2D();
 			
-			gc.setStroke(Color.web("#1FABD5"));
-			gc.strokeLine(0, 20, 0, 380);
-			gc.strokeLine(unitWidth, 20, unitWidth, 380);
+			
+			
+			
+			gc.setStroke(Color.BLUE);
+		    gc.setLineWidth(3);
+			gc.strokeLine(0, 10, unitWidth, 10);
+			gc.strokeLine(0, 0, 0, 20);
+			gc.strokeLine(unitWidth, 0, unitWidth, 20);
+			
+			getChildren().add(canvas);
+			
+			xPos2+=unitWidth;
+		}
+		setLayoutX(xPos2+5);
+	}
+	
+	/**
+	 * Renders lines between the two axis.
+	 * 
+	 * 
+	 */
+	private void renderLines(){
+		int diffUnit = getUnitLength();
+		int xPos2 = 0;
+		for(int i = 0; i < diffUnit ; i++){
+			
+			
+			Canvas canvas = new Canvas(unitWidth,400);
+			canvas.setLayoutX(xPos2);
+			canvas.setLayoutY(60);
+			GraphicsContext gc = canvas.getGraphicsContext2D();
+			
+			
+			
+			
+			
+		    gc.setLineWidth(3);
+		    gc.setStroke(Color.web("#1FABD5"));
+			gc.strokeLine(0, 23, 0, pushDown-56);
+			gc.strokeLine(unitWidth, 23, unitWidth, pushDown-56);
+		    
 		
 			getChildren().add(canvas);
 			
@@ -376,6 +435,7 @@ public class TimelineRender extends Pane {
 	 * Uses custom Label class
 	 */
 	private void renderAtomics() {
+		pushDown += 30;
 		for(Atomic e : atomics){
 			int xPosition = getXPos(e.getStartDate());
 			AtomicLabel label = new AtomicLabel(e, xPosition, pushDown, model, eventLabels);
@@ -383,7 +443,7 @@ public class TimelineRender extends Pane {
 			getChildren().add(label);
 	        pushDown += 25;
 		}
-		pushDown += 5; // add a little space between the atomic events and the axis
+		 // add a little space between the atomic events and the axis
 	}
 
 	/**
@@ -394,16 +454,18 @@ public class TimelineRender extends Pane {
 	 */
 	private void renderDurations() {
 		int counter = 0;
-		pushDown += 5; // add a little space between the axis and the duration events
+		pushDown -= 25; // add a little space between the axis and the duration events
 		for(Duration e : durations){
 			int xStart = getXPos(e.getStartDate());
 			int xEnd = getXPos(e.getEndDate());
 			int labelWidth = xEnd - xStart;
+			
 			DurationLabel label = new DurationLabel(e, xStart, (pushDown + 45 + counter), labelWidth, model, eventLabels);
 			eventLabels.add(label);
 			getChildren().add(label);
-			counter += 25;
+			pushDown += 25;
 		}
+		pushDown += 65;
 	}
 
 
