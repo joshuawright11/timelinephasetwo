@@ -180,7 +180,9 @@ public class MainWindowController{
     // Handler for Button[fx:id="deleteCategoryButton"] onAction
     @FXML
     void deleteCategoryPressed(ActionEvent event) {
-        // handle the event here
+        Category selectedCategory = timelineMaker.getSelectedTimeline().getSelectedCategory();
+        timelineMaker.getSelectedTimeline().deleteCategory(selectedCategory);
+        populateListView();
     }
     
     // Handler for Button[fx:id="deleteEventButton"] onAction

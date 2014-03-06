@@ -24,7 +24,7 @@ public class CategoryPropertiesWindowController {
 
 	private TimelineMaker timelineMaker;
 	
-	private Category category;
+private Category category;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
