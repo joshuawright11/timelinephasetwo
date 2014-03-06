@@ -6,6 +6,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import javafx.scene.paint.Color;
 
 /**
  * Timeline.java
@@ -259,10 +260,12 @@ public class Timeline implements TimelineAPI{
          * @return True if found and removed, False otherwise.
          */
         public boolean deleteCategory(Category cat){
+            //The user is not allowed to delete the only category!
             if(categories.size() <= 1) return false;
             for(TLEvent e: events)
                 if(e.getCategory().getName().equals(cat.getName()))
                     e.setCategory(getDefaultCategory());
+            selectCategory(getDefaultCategory().getName());
             return categories.remove(cat);
         }
         /**
@@ -305,6 +308,12 @@ public class Timeline implements TimelineAPI{
                 if (c.getName().equals(title))
                     return c;
             return null;
+        }
+        
+        public void editCategory(String title, String name, Color color){
+            Category c = getCategory(title);
+            c.setColor(color);
+            c.setName(name);
         }
         
 	public void selectCategory(String title) {

@@ -158,13 +158,13 @@ public class MainWindowController{
     @FXML
     void addCategoryPressed(ActionEvent event) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
-			Parent root = (Parent)loader.load();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
+		Parent root = (Parent)loader.load();
 	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
 	        controller.initData(timelineMaker, null);
-			Stage stage = new Stage();
-			stage.setTitle("Add Category");
-			Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setTitle("Add Category");
+		Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
 	        stage.setScene(scene);
 	        stage.setMinWidth(292);
@@ -218,9 +218,9 @@ public class MainWindowController{
 			Parent root = (Parent)loader.load();
 	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
 	        controller.initData(timelineMaker, selectedCategory);
-			Stage stage = new Stage();
-			stage.setTitle("Edit Category");
-			Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setTitle("Edit Category");
+		Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
 	        stage.setScene(scene);
 	        stage.setMinWidth(292);

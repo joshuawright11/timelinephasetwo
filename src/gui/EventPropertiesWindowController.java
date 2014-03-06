@@ -133,7 +133,6 @@ public class EventPropertiesWindowController{
     	endDateTextField.setVisible(false);
         dateToLabel.setVisible(false);
         oldEvent = null;
-        //Deleted a line about initializing the combo box. This was intentional.
     }
 
     //Populates the combo box with categories.
