@@ -1,6 +1,16 @@
 package gui;
+import java.awt.Desktop;
+import static java.awt.SystemColor.desktop;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.TLEvent;
 import model.Timeline;
@@ -22,10 +32,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.swing.ImageIcon;
 import model.Category;
+import model.Icon;
 
 
 public class MainWindowController{
@@ -145,7 +159,9 @@ public class MainWindowController{
 
     @FXML // fx:id="toolbarSeparator"
     private Separator toolbarSeparator; // Value injected by FXMLLoader
-
+    
+    private FileChooser fileChooser;
+    private Desktop desktop = Desktop.getDesktop();
     
     // Handler for MenuItem[fx:id="aboutMenuItem"] onAction
     // Handler for MenuItem[fx:id="aboutMenuItem"] onMenuValidation
@@ -177,9 +193,25 @@ public class MainWindowController{
 
     // Handler for Button[fx:id="addIconImageButton"] onAction
     @FXML
-    void addIconImagePressed(ActionEvent event) {
+    void addIconImagePressed(ActionEvent event) throws FileNotFoundException {
+        fileChooser.setTitle("Open Icon");
+        fileChooser.setInitialDirectory(
+            new File(System.getProperty("user.home"))
+        ); 
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png"),
+                new FileChooser.ExtensionFilter("GIF", "*.gif")
+            );
+        File file = 
+                        fileChooser.showOpenDialog(new Stage());
+        if(file != null){
+            InputStream is = new FileInputStream(file.getPath());
+            timelineMaker.addIcon(new Icon(file.getName(), new Image(is, 50, 50, true, true)));
+        }
         // handle the event here
     }
+
 
     // Handler for Button[fx:id="deleteCategoryButton"] onAction
     @FXML
@@ -402,10 +434,13 @@ public class MainWindowController{
     }
 
 	public void initData(TimelineMaker timelineMaker) {
+                fileChooser = new FileChooser();
 		this.timelineMaker = timelineMaker;
 		timelineMaker.setMainWindow(this);
+                //fileChooser.showOpenDialog(stage);
 		populateListView();
 		timelineMaker.graphics.setPanel(renderScrollPane);
+                
 	}
 
 }
