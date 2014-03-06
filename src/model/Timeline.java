@@ -73,7 +73,7 @@ public class Timeline implements TimelineAPI{
 	public Timeline(String name, TimelineMaker timelineMaker){
             this.name = name;
             categories = new ArrayList<Category>();
-            categories.add(new Category("Default"));
+            categories.add(new Category(""));
             events = new ArrayList<TLEvent>();
             axisLabel = AxisLabel.YEARS;
             setDirty(true);
@@ -87,7 +87,7 @@ public class Timeline implements TimelineAPI{
             axisLabel = AxisLabel.YEARS;
             setDirty(true);
             categories = new ArrayList<Category>();
-            categories.add(new Category("Default"));
+            categories.add(new Category(""));
     }
 	
 	/**
@@ -103,7 +103,7 @@ public class Timeline implements TimelineAPI{
 		this.events = new ArrayList<TLEvent>();
 		dirty = true;
                 categories = new ArrayList<Category>();
-             categories.add(new Category("Default"));
+             categories.add(new Category(""));
 
 	}
 	
@@ -116,7 +116,7 @@ public class Timeline implements TimelineAPI{
 	 */
 	public Timeline(String name, TLEvent[] events, AxisLabel axisLabel) {
             categories = new ArrayList<Category>();
-            categories.add(new Category("Default"));
+            categories.add(new Category(""));
 
 		this.name = name;
 		if(events != null)
@@ -232,6 +232,11 @@ public class Timeline implements TimelineAPI{
          */
         public boolean addCategory(Category c){
             if(containsTitle(c)) return false;
+            //Replace the default category if it wasn't edited.
+            else if(categories.size() == 1 && getDefaultCategory().getName().equals("")){
+                categories.add(c);
+                deleteCategory(getDefaultCategory());
+            }
             else categories.add(c);
             return true;        
         }
@@ -246,22 +251,7 @@ public class Timeline implements TimelineAPI{
                 if(c.getName().equals(cat.getName())) return true;
             }return false;
         }
-        /**
-         * Deletes a Category from the current set of categories.
-         * 
-         * @param name The name of the category to delete.
-         * @return True if found and removed, False otherwise.
-         */
-        public boolean deleteCategory(String name){
-            for(Iterator it = categories.iterator();it.hasNext();){
-                Category category = (Category)it.next();
-                if(category.getName().equals(name)){
-                    categories.remove(category);
-                    return true;
-                }
-            }
-            return false;
-        }
+        
         /**
          * Deletes a Category from the current set of categories.
          * 
@@ -269,6 +259,10 @@ public class Timeline implements TimelineAPI{
          * @return True if found and removed, False otherwise.
          */
         public boolean deleteCategory(Category cat){
+            if(categories.size() <= 1) return false;
+            for(TLEvent e: events)
+                if(e.getCategory().getName().equals(cat.getName()))
+                    e.setCategory(getDefaultCategory());
             return categories.remove(cat);
         }
         /**
@@ -292,5 +286,30 @@ public class Timeline implements TimelineAPI{
         public int catSize(){
             return categories.size();
         }
+        
+        public ArrayList<String> getCategoryTitles() {
+		ArrayList<String> toReturn = new ArrayList<String>();
+		for (Category c: categories){
+			toReturn.add(c.getName());
+		}
+		return toReturn;
+        }
+        
+        public Category getSelectedCategory(){
+            if(selectedCategory == null) selectedCategory = getDefaultCategory();
+            return selectedCategory;
+        }
+        
+        public Category getCategory(String title){
+            for (Category c : categories)
+                if (c.getName().equals(title))
+                    return c;
+            return null;
+        }
+        
+	public void selectCategory(String title) {
+            selectedCategory = getCategory(title);
+	}
+
 
 }

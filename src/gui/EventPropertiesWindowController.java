@@ -3,11 +3,13 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.Iterator;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 
 import model.Duration;
 import model.TLEvent;
 import model.TimelineMaker;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -17,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Timeline;
@@ -27,8 +30,6 @@ public class EventPropertiesWindowController{
     private  TimelineMaker timelineMaker;
 	
     private TLEvent oldEvent;
-    
-    private Category selectedCategory;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -96,17 +97,18 @@ public class EventPropertiesWindowController{
     // Handler for Button[fx:id="createButton"] onAction
     @FXML
     void createPressed(ActionEvent event) {
+        Category selectedCategory = timelineMaker.getSelectedTimeline().
+                getCategory(categoryComboBox.getSelectionModel().getSelectedItem());
+        System.out.println(selectedCategory.getName());
     	String title = titleTextField.getText();
         Date startDate = Date.valueOf(startDateTextField.getText());
         Date endDate = null;
-    	Object category = categoryComboBox.getValue(); //TODO get Category working
     	String description = descriptionTextArea.getText();
     	if(durationCheckBox.isSelected()){
-    		System.out.println("Hola");
     		endDate = Date.valueOf(endDateTextField.getText());
     	}
-    	if(oldEvent != null) timelineMaker.editEvent(oldEvent, title, startDate, endDate, category, description);
-    	else timelineMaker.addEvent(title, startDate, endDate, category, description);
+    	if(oldEvent != null) timelineMaker.editEvent(oldEvent, title, startDate, endDate, selectedCategory, description);
+    	else timelineMaker.addEvent(title, startDate, endDate, selectedCategory, description);
         
     	Node  source = (Node)  event.getSource(); 
         Stage stage  = (Stage) source.getScene().getWindow();
@@ -127,30 +129,25 @@ public class EventPropertiesWindowController{
         dateToLabel.setVisible(false);
         oldEvent = null;
       //TODO shift startDateTextField over
-        System.out.println(timelineMaker == null);
     }
 
     //Populates the combo box with categories.
     public void initComboBox() {
-        Iterator<Category> categoryIterator =  
-                timelineMaker.getSelectedTimeline().getCategoryIterator();
-        String[] names = 
-                new String[timelineMaker.getSelectedTimeline().catSize()];
-        int i = 0;
-        Category c = new Category("Base");
-        while(categoryIterator.hasNext()){
-            c = (Category)categoryIterator.next();
-            categoryComboBox.getItems().addAll(c.getName());
-            names[i++] = c.getName();
+        categoryComboBox.setItems(FXCollections.observableList(timelineMaker
+                .getSelectedTimeline().getCategoryTitles()));
+        if(timelineMaker.getSelectedTimeline() != null){
+            if(oldEvent != null && !oldEvent.getCategory().getName().equals("")) categoryComboBox.getSelectionModel().select(
+                oldEvent.getCategory().getName());
+            else categoryComboBox.getSelectionModel().select(
+                timelineMaker.getSelectedTimeline().getDefaultCategory().getName());
         }
-        categoryComboBox.setValue(names[0]);
-        selectedCategory = c;
     }
 
 	public void initData(TimelineMaker timelineMaker, TLEvent event) {
 		this.timelineMaker = timelineMaker;
 		this.oldEvent = event;
 		if(event != null) loadEventInfo(event);
+                initComboBox();
 	}
 
 	private void loadEventInfo(TLEvent event) {
@@ -165,7 +162,5 @@ public class EventPropertiesWindowController{
 		categoryComboBox.setValue(event.getCategory().getName());
 		descriptionTextArea.setText(event.getDescription());
 	}
-        
-        
 
 }

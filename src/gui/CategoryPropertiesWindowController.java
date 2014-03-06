@@ -1,11 +1,15 @@
 package gui;
 
+import javafx.scene.paint.*;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ResourceBundle;
 
 import model.Category;
 import model.TimelineMaker;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -48,6 +52,7 @@ public class CategoryPropertiesWindowController {
 
     @FXML // fx:id="renderColorLabel"
     private Label renderColorLabel; // Value injected by FXMLLoader
+    private Color color;
 
 
     // Handler for Button[fx:id="cancelButton"] onAction
@@ -61,7 +66,17 @@ public class CategoryPropertiesWindowController {
     // Handler for Button[fx:id="createButton"] onAction
     @FXML
     void createButtonPressed(ActionEvent event) {
-        // handle the event here
+        String title = categoryNameTextField.getText();
+        color = renderColorColorPicker.getValue();
+        System.out.println(color+" ");
+        Category c = new Category(title, color);
+        timelineMaker.getSelectedTimeline().addCategory(c);
+        timelineMaker.getSelectedTimeline().selectCategory(c.getName());
+        timelineMaker.populateView();
+        Node  source = (Node)  event.getSource(); 
+        Stage stage  = (Stage) source.getScene().getWindow();
+        stage.close();
+        //TODO: Save the new category to the database.
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -73,17 +88,31 @@ public class CategoryPropertiesWindowController {
         assert createButton != null : "fx:id=\"createButton\" was not injected: check your FXML file 'CategoryPropertiesWindow.fxml'.";
         assert renderColorColorPicker != null : "fx:id=\"renderColorColorPicker\" was not injected: check your FXML file 'CategoryPropertiesWindow.fxml'.";
         assert renderColorLabel != null : "fx:id=\"renderColorLabel\" was not injected: check your FXML file 'CategoryPropertiesWindow.fxml'.";
-
-
     }
     
-	public void initData(TimelineMaker timelineMaker, Category category) {
-		this.timelineMaker = timelineMaker;
-		this.category = category;
-		if(category != null){
-			loadCategoryInfo();
-		}
-	}
+    public void initData(TimelineMaker timelineMaker, Category category) {
+        //None of these methods on the color picker work!?
+        renderColorColorPicker = new ColorPicker();
+        renderColorColorPicker.setValue(Color.BEIGE);
+        renderColorColorPicker.setVisible(false);
+        if(category != null && category.getColor() != null){
+            color = category.getColor();
+            renderColorColorPicker.setValue(color);
+        }else color = Color.WHITE;
+        renderColorColorPicker.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                color = (renderColorColorPicker.getValue());    
+                System.out.println(""+renderColorColorPicker.getValue());
+            }
+        });
+
+	this.timelineMaker = timelineMaker;
+	this.category = category;
+	if(category != null){
+		loadCategoryInfo();
+        }
+    }
 
 	/**
 	 * @param category2

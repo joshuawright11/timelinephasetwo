@@ -25,6 +25,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.Category;
 
 
 public class MainWindowController{
@@ -53,7 +54,7 @@ public class MainWindowController{
     private Label categoriesLabel; // Value injected by FXMLLoader
 
     @FXML // fx:id="categoriesListView"
-    private ListView<?> categoriesListView; // Value injected by FXMLLoader
+    private ListView<String> categoriesListView; // Value injected by FXMLLoader
 
     @FXML // fx:id="deleteCategoryButton"
     private Button deleteCategoryButton; // Value injected by FXMLLoader
@@ -204,11 +205,12 @@ public class MainWindowController{
     // Handler for Button[fx:id="editCategoryButton"] onAction
     @FXML
     void editCategoryPressed(ActionEvent event) {
+        Category selectedCategory = timelineMaker.getSelectedTimeline().getSelectedCategory();
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
-	        controller.initData(timelineMaker, null);
+	        controller.initData(timelineMaker, selectedCategory);
 			Stage stage = new Stage();
 			stage.setTitle("Edit Category");
 			Scene scene = new Scene(root);
@@ -280,7 +282,20 @@ public class MainWindowController{
     // Handler for MenuItem[fx:id="newCategoryMenuItem"] onMenuValidation
     @FXML
     void newCategoryPressed(Event event) {
-        // TODO new Category window
+        try {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
+			Parent root = (Parent)loader.load();
+	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
+	        controller.initData(timelineMaker, new Category(""));
+		Stage stage = new Stage();
+		stage.setTitle("Edit Category");
+		Scene scene = new Scene(root);
+	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
+	        stage.setScene(scene);
+	        stage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     // Handler for Button[fx:id="addEventButton"] onAction
@@ -293,7 +308,6 @@ public class MainWindowController{
 			Parent root = (Parent)loader.load();
 	        EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
 	        controller.initData(timelineMaker, null);
-                controller.initComboBox();
 			Stage stage = new Stage();
 			stage.setTitle("Add Event");
 			Scene scene = new Scene(root);
@@ -341,16 +355,32 @@ public class MainWindowController{
 				timelineListViewClicked();
 			}
 		});
+        categoriesListView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				categoriesListViewClicked();
+			}
+		});
     }
 
     private void timelineListViewClicked(){
     	timelineMaker.selectTimeline(timelinesListView.getSelectionModel().getSelectedItem());
     }
     
-	public void populateListView() {
-		timelinesListView.setItems(FXCollections.observableList(timelineMaker.getTimelineTitles()));
-		if(timelineMaker.getSelectedTimeline() != null) timelinesListView.getSelectionModel().select(timelineMaker.getSelectedTimeline().getName());
-	}
+    private void categoriesListViewClicked(){
+        timelineMaker.getSelectedTimeline()
+                .selectCategory(categoriesListView.getSelectionModel().getSelectedItem());
+    }
+    
+    public void populateListView() {
+        timelinesListView.setItems(FXCollections.observableList(timelineMaker.getTimelineTitles()));
+        Timeline t = timelineMaker.getSelectedTimeline();
+        if(t != null){
+            timelinesListView.getSelectionModel().select(t.getName());
+            categoriesListView.setItems(FXCollections.observableList(t.getCategoryTitles()));
+            categoriesListView.getSelectionModel().select(t.getSelectedCategory().getName());
+        }
+    }
 
 	public void initData(TimelineMaker timelineMaker) {
 		this.timelineMaker = timelineMaker;
