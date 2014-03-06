@@ -20,7 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Timeline;
-
+import model.*;
 
 public class EventPropertiesWindowController{
 
@@ -132,8 +132,10 @@ public class EventPropertiesWindowController{
 
     //Populates the combo box with categories.
     public void initComboBox() {
-        Iterator<Category> categoryIterator =  timelineMaker.getCategoryIterator();
-        String[] names = new String[timelineMaker.catSize()];
+        Iterator<Category> categoryIterator =  
+                timelineMaker.getSelectedTimeline().getCategoryIterator();
+        String[] names = 
+                new String[timelineMaker.getSelectedTimeline().catSize()];
         int i = 0;
         Category c = new Category("Base");
         while(categoryIterator.hasNext()){
@@ -143,7 +145,6 @@ public class EventPropertiesWindowController{
         }
         categoryComboBox.setValue(names[0]);
         selectedCategory = c;
-      
     }
 
 	public void initData(TimelineMaker timelineMaker, TLEvent event) {
