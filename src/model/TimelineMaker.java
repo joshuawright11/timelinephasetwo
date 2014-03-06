@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import model.Timeline.AxisLabel;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * TimelineMaker.java
@@ -25,6 +26,7 @@ public class TimelineMaker {
 	 * A list of all the timelines in this application.
 	 */
 	private ArrayList<Timeline> timelines;
+
 	/**
 	 * The timeline selected in this application.
 	 */
@@ -151,14 +153,10 @@ public class TimelineMaker {
 				return t;
 		return null;
 	}
-
-	/**
-	 * Retrieve the currently selected timeline.
-	 * @return selectedTimeline
-	 */
-	public Timeline getSelectedTimeline() {
-		return selectedTimeline;
-	}
+        
+        public Timeline getSelectedTimeline(){
+            return selectedTimeline;
+        }
 
 	/**
 	 * Set the selected timeline.
@@ -224,6 +222,10 @@ public class TimelineMaker {
 		mainWindow.populateListView();
 		updateGraphics();
 	}
+        
+        public void populateView(){
+            mainWindow.populateListView();
+        }
 
 	/**
 	 * Retrieve the currently selected event.
@@ -282,7 +284,7 @@ public class TimelineMaker {
  Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param e the new event
 	 */
-	public void editEvent(TLEvent oldEvent, String title, Date startDate, Date endDate, Object category, String description) {
+	public void editEvent(TLEvent oldEvent, String title, Date startDate, Date endDate, Category category, String description) {
 		if (selectedEvent != null && selectedTimeline != null && selectedTimeline.contains(selectedEvent)) {
 			selectedTimeline.removeEvent(selectedEvent);
 			TLEvent toAdd;
@@ -291,9 +293,8 @@ public class TimelineMaker {
 			toAdd.setID(oldEvent.getID());
 			selectedEvent = toAdd;
 			selectedTimeline.addEvent(toAdd);
-
+                        toAdd.setCategory(category);
 			updateGraphics();
-
 			database.editEvent(toAdd, selectedTimeline.getName());
 		}
 	}
@@ -311,12 +312,16 @@ public class TimelineMaker {
             return idCounter++;
          }
 
-		/**
-		 * @param mainWindow the mainWindow to set
-		 */
-		public void setMainWindow(MainWindowController mainWindow) {
-			this.mainWindow = mainWindow;
-		}
+	/**
+     * @param mainWindow the mainWindow to set
+	 */
+	public void setMainWindow(MainWindowController mainWindow) {
+		this.mainWindow = mainWindow;
+	}
+                
+        public int timeSize(){
+            return timelines.size();
+        }
 
 
 }

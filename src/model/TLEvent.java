@@ -9,8 +9,8 @@ import java.sql.Date;
 import storage.DBHelper;
 
 public class TLEvent{
-	private String description, name;
-    private Date startDate;
+	protected String description, name;
+        private Date startDate;
 	private Category category;
 	private int id;
         
@@ -107,17 +107,19 @@ public class TLEvent{
         public void save(DBHelper db, String timelineName){
         	db.saveEvent(this, timelineName);
         }
-		/**
-		 * @return the id
-		 */
-		public int getID() {
-			return id;
-		}
-		/**
-		 * @param id the id to set
-		 */
-		public void setID(int id) {
-			this.id = id;
-		}
+        
+        
+        /**
+	 * @return the id
+	*/
+	public int getID() {
+            return id;
+	}
+        /**
+        * @param id the id to set
+         */
+	public void setID(int id) {
+            this.id = id;
+	}
 
 }

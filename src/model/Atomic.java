@@ -1,8 +1,6 @@
-/**
- * 
- */
 package model;
 import java.sql.Date;
+import javax.swing.ImageIcon;
 /**
  * Extension of class TLEvent to represent atomic (single date) events
  * 
@@ -12,21 +10,41 @@ import java.sql.Date;
  *
  */
 public class Atomic extends TLEvent {
-	
-        /**
-        * There is nothing special about Atomic events right now.
-        * To put anything else in this class apart from what's in TLEvent would be redundant.
- 		* We may choose to put an icon here.
-        */
+        String imageURL;
+        
 	public Atomic(String name, Category category, Date startDate){
-		super(name, startDate, category);
+            super(name, startDate, category);
 	}
         
-    /**
-     * Saves the event to the database.
-     * TODO: insert the functionality for saving to the database.
-     */
-    public void save(){
-       //
-    }
+        public ImageIcon generateIcon(String url){
+            imageURL = url;
+            return createImageIcon(imageURL,
+                                 this.name);  
+        //refreshButton.setIcon(icon);
+        }
+        
+        /** 
+         * Returns an ImageIcon, or null if the path was invalid. 
+         * Code by http://docs.oracle.com/javase/tutorial/uiswing/components/icon.html.
+         */
+        protected ImageIcon createImageIcon(String path,String description) {
+            java.net.URL imgURL = getClass().getResource(path);
+            if (imgURL != null) {
+                return new ImageIcon(imgURL, description);
+            } else {
+                System.err.println("Couldn't find file: " + path);
+                return null;
+            }
+        }
+
+        
+       /**
+         * Saves the event to the database.
+         * TODO: insert the functionality for saving to the database.
+         */
+        public void save(){
+           //
+        }
+        
+        
 }

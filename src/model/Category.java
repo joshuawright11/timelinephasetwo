@@ -6,7 +6,7 @@
 
 package model;
 
-import java.awt.Color;
+import javafx.scene.paint.*;
 
 /**
  * Datatype in which to categories.
@@ -25,7 +25,7 @@ public class Category{
          */
         public Category(String name){
 		this.name = name;
-                catColor = new Color(51, 255, 51);
+                catColor = Color.web("0x0000FF",1.0);;
 	}
         /**
          * Constructor
@@ -69,4 +69,10 @@ public class Category{
 	public void setColor(Color catColor){
 		this.catColor = catColor;
 	}
+        /*
+        * TODO: Save this category to the database.
+        */
+        public void save(){
+            
+        }
 }
