@@ -1,6 +1,6 @@
 /* Applies to everything */
 .root{
-    -fx-font-family: "Comic Sans MS";
+    -fx-font-family: "Liberation Sans Narrow";
     -fx-font-weight: bold;
     
     -fx-base: rgb(0, 109, 204);
@@ -18,6 +18,12 @@
  * this should only be the pane which the timeline is rendered on
  * (an instance ) */
 #render-pane{
+}
+
+/* Applies to id = renderScrollPane
+ * this should only be the pane which the timeline is rendered on
+ * (an instance ) */
+#renderScrollPane{
     -fx-background-color: gray;
 }
 
