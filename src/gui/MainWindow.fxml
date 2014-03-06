@@ -14,17 +14,17 @@
       <menus>
         <Menu mnemonicParsing="false" text="File" fx:id="fileMenu">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#newTimelinePressed" onMenuValidation="#newTimelinePressed" text="New Timeline" fx:id="newTimelineMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#newTimelinePressed" text="New Timeline" fx:id="newTimelineMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#savePressed" onMenuValidation="#savePressed" text="Save" fx:id="saveMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#savePressed" text="Save" fx:id="saveMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem disable="false" mnemonicParsing="false" onAction="#exitPressed" onMenuValidation="#exitPressed" text="Exit" fx:id="exitMenuItem">
+            <MenuItem disable="false" mnemonicParsing="false" onAction="#exitPressed" text="Exit" fx:id="exitMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
@@ -33,7 +33,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Edit" fx:id="editMenu">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#deletePressed" onMenuValidation="#deletePressed" text="Delete" fx:id="deleteMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#deletePressed" text="Delete" fx:id="deleteMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="D" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
@@ -42,12 +42,12 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Insert" fx:id="insertMenu">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#newEventPressed" onMenuValidation="#newEventPressed" text="New Event" fx:id="newEventMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#newEventPressed" text="New Event" fx:id="newEventMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#newCategoryPressed" onMenuValidation="#newCategoryPressed" text="New Category" fx:id="newCategoryMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#addCategoryPressed" text="New Category" fx:id="newCategoryMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
@@ -56,12 +56,12 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Info" fx:id="infoMenu">
           <items>
-            <MenuItem id="aboutMenuItem" mnemonicParsing="false" onAction="#aboutPressed" onMenuValidation="#aboutPressed" text="About" fx:id="aboutMenuItem">
+            <MenuItem id="aboutMenuItem" mnemonicParsing="false" onAction="#aboutPressed" text="About" fx:id="aboutMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#helpPressed" onMenuValidation="#helpPressed" text="Help" fx:id="helpMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#helpPressed" text="Help" fx:id="helpMenuItem">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
@@ -97,7 +97,7 @@
         </AnchorPane>
       </items>
     </SplitPane>
-    <AnchorPane prefHeight="577.0" prefWidth="163.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="26.0">
+    <AnchorPane fx:id="categoriesPane" prefHeight="577.0" prefWidth="163.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="26.0">
       <children>
         <Label id="eventLabel" fx:id="categoriesLabel" font="$x1" prefHeight="40.0" prefWidth="149.0" text="Categories" textAlignment="LEFT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0" />
         <ListView id="timelinesListView" fx:id="categoriesListView" prefHeight="145.0" prefWidth="134.0" AnchorPane.bottomAnchor="290.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="44.0" />
