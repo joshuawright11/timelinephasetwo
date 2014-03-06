@@ -24,6 +24,8 @@ public class Driver extends Application {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add("gui/MainWindow.css");
 	        primaryStage.setScene(scene);
+	        primaryStage.setMinWidth(326);
+	        primaryStage.setMinHeight(580);
 	        primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

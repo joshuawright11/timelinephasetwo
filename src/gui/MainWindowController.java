@@ -56,10 +56,12 @@ public class MainWindowController{
     @FXML // fx:id="categoriesListView"
     private ListView<String> categoriesListView; // Value injected by FXMLLoader
 
+    @FXML // fx:id="categoriesPane"
+    private AnchorPane categoriesPane; // Value injected by FXMLLoader
+    
     @FXML // fx:id="deleteCategoryButton"
     private Button deleteCategoryButton; // Value injected by FXMLLoader
 
-    
     @FXML // fx:id="deleteEventButton"
     private Button deleteEventButton; // Value injected by FXMLLoader
 
@@ -165,6 +167,8 @@ public class MainWindowController{
 			Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
 	        stage.setScene(scene);
+	        stage.setMinWidth(292);
+	        stage.setMinHeight(144);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -218,6 +222,8 @@ public class MainWindowController{
 			Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/CategoryPropertiesWindow.css");
 	        stage.setScene(scene);
+	        stage.setMinWidth(292);
+	        stage.setMinHeight(144);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -239,6 +245,8 @@ public class MainWindowController{
 			Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/EventPropertiesWindow.css");
 			stage.setScene(scene);
+	        stage.setMinWidth(311);
+	        stage.setMinHeight(376);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -260,6 +268,8 @@ public class MainWindowController{
 			Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/TimelinePropertiesWindow.css");
 	        stage.setScene(scene);
+	        stage.setMinWidth(426);
+	        stage.setMinHeight(270);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -306,6 +316,7 @@ public class MainWindowController{
     @FXML
     void newEventPressed(Event event) {
 		try {
+			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 	        EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
@@ -315,6 +326,8 @@ public class MainWindowController{
 			Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/EventPropertiesWindow.css");
 	        stage.setScene(scene);
+	        stage.setMinWidth(311);
+	        stage.setMinHeight(376);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -336,6 +349,8 @@ public class MainWindowController{
 			Scene scene = new Scene(root);
 	        scene.getStylesheets().add("gui/EventPropertiesWindow.css");
 	        stage.setScene(scene);
+	        stage.setMinWidth(426);
+	        stage.setMinHeight(270);
 	        stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
