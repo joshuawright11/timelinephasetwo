@@ -240,21 +240,7 @@ public class TimelineRender extends Pane {
 			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
 			gc.strokeLine(unitWidth, 0, unitWidth, 20);
-		/*
-			gc.strokeLine(0, 390, unitWidth, 390);
-			gc.strokeLine(0, 380, 0, 400);
-			gc.strokeLine(unitWidth, 380, unitWidth, 400);
-			
-			
-			gc.strokeLine(0, pushDown+50, unitWidth, pushDown+50);
-			gc.strokeLine(0, pushDown+40, 0, pushDown+60);
-			gc.strokeLine(unitWidth, pushDown+50, unitWidth, pushDown+60);
-			
-			
-			gc.setStroke(Color.web("#1FABD5"));
-			gc.strokeLine(0, 20, 0, 380);
-			gc.strokeLine(unitWidth, 20, unitWidth, 380);
-		*/
+		
 			getChildren().add(canvas);
 			
 			xPos2+=unitWidth;
@@ -288,21 +274,7 @@ public class TimelineRender extends Pane {
 			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
 			gc.strokeLine(unitWidth, 0, unitWidth, 20);
-			/*
-			gc.strokeLine(0, 390, unitWidth, 390);
-			gc.strokeLine(0, 380, 0, 400);
-			gc.strokeLine(unitWidth, 380, unitWidth, 400);
 			
-			
-			gc.strokeLine(0, pushDown+50, unitWidth, pushDown+50);
-			gc.strokeLine(0, pushDown+40, 0, pushDown+60);
-			gc.strokeLine(unitWidth, pushDown+50, unitWidth, pushDown+60);
-			
-			
-			gc.setStroke(Color.web("#1FABD5"));
-			gc.strokeLine(0, 20, 0, 380);
-			gc.strokeLine(unitWidth, 20, unitWidth, 380);
-		*/
 			getChildren().add(canvas);
 			
 			xPos2+=unitWidth;
@@ -335,21 +307,7 @@ public class TimelineRender extends Pane {
 			gc.strokeLine(0, 23, 0, pushDown-56);
 			gc.strokeLine(unitWidth, 23, unitWidth, pushDown-56);
 		    
-		/*
-			gc.strokeLine(0, 390, unitWidth, 390);
-			gc.strokeLine(0, 380, 0, 400);
-			gc.strokeLine(unitWidth, 380, unitWidth, 400);
-			
-			
-			gc.strokeLine(0, pushDown+50, unitWidth, pushDown+50);
-			gc.strokeLine(0, pushDown+40, 0, pushDown+60);
-			gc.strokeLine(unitWidth, pushDown+50, unitWidth, pushDown+60);
-			
-			
-			gc.setStroke(Color.web("#1FABD5"));
-			gc.strokeLine(0, 20, 0, 380);
-			gc.strokeLine(unitWidth, 20, unitWidth, 380);
-		*/
+		
 			getChildren().add(canvas);
 			
 			xPos2+=unitWidth;
