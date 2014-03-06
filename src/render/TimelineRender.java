@@ -239,6 +239,11 @@ public class TimelineRender extends Pane {
 			gc.strokeLine(0, 380, 0, 400);
 			gc.strokeLine(unitWidth, 380, unitWidth, 400);
 			
+			/*
+			gc.strokeLine(0, pushDown+100, unitWidth, pushDown+100);
+			gc.strokeLine(0, pushDown+90, 0, pushDown+110);
+			gc.strokeLine(unitWidth, pushDown+100, unitWidth, pushDown+110);
+			*/
 			
 			gc.setStroke(Color.web("#1FABD5"));
 			gc.strokeLine(0, 20, 0, 380);
