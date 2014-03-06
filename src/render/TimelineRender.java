@@ -16,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -220,15 +221,29 @@ public class TimelineRender extends Pane {
 			Label label = unitLabel(i,xPos2);
 			getChildren().add(label); 
 			
-			Canvas canvas = new Canvas(unitWidth,20);
+			Canvas canvas = new Canvas(unitWidth,400);
 			canvas.setLayoutX(xPos2);
 			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
+			
+			
+			
+			
 			gc.setStroke(Color.BLUE);
 		    gc.setLineWidth(3);
-			gc.strokeLine(0, 10, 149, 10);
+			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
-			gc.strokeLine(149, 0, 149, 20);
+			gc.strokeLine(unitWidth, 0, unitWidth, 20);
+			
+			gc.strokeLine(0, 390, unitWidth, 390);
+			gc.strokeLine(0, 380, 0, 400);
+			gc.strokeLine(unitWidth, 380, unitWidth, 400);
+			
+			
+			gc.setStroke(Color.web("#1FABD5"));
+			gc.strokeLine(0, 20, 0, 380);
+			gc.strokeLine(unitWidth, 20, unitWidth, 380);
+		
 			getChildren().add(canvas);
 			
 			xPos2+=unitWidth;
