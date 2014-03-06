@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package gui;
 import java.net.URL;
 import java.sql.Date;
