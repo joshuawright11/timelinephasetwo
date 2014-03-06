@@ -97,6 +97,7 @@ private Category category;
 	 */
 	private void loadCategoryInfo() {
 		categoryNameTextField.setText(category.getName());
+		renderColorColorPicker.setValue(category.getColor());
 	}
 
 }
