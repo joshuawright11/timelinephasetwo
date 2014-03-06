@@ -93,8 +93,8 @@ public class CategoryPropertiesWindowController {
     
     public void initData(TimelineMaker timelineMaker, Category category) {
 	this.timelineMaker = timelineMaker;
-	this.category = category;
 	if(category != null){
+            this.category = timelineMaker.getSelectedTimeline().getDefaultCategory();
             loadCategoryInfo();
         }
     }
