@@ -3,6 +3,7 @@ package render;
 import java.awt.MouseInfo;
 import java.util.ArrayList;
 
+import model.Category;
 import model.TLEvent;
 import model.TimelineMaker;
 import javafx.application.Platform;
@@ -152,6 +153,11 @@ public abstract class TLEventLabel extends Label {
 	private void initDesign(){
 		setLayoutX(xPos);
 		setLayoutY(yPos);
+		Category c = event.getCategory();
+		Color clr = c.getColor();
+		String color = clr.toString();
+		color = color.substring(2);
+		setStyle("-fx-background-color: #" + color);
 		uniqueDesign();
 	}
 

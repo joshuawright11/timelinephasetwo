@@ -43,6 +43,7 @@
 #atomic-label{
 	-fx-border-radius: 5 5 5 5;
     -fx-background-radius: 5 5 5 5;
+    -fx-background-color: green;
     -fx-border-style: solid;
     -fx-border-width: 3;
     -fx-border-color: green;
@@ -50,12 +51,12 @@
 
 /* Applies to id = duration-label
  * this should be all unselected duration labels */
-#duration-label{
-	-fx-border-radius: 5 5 5 5;
+#duration-label{	-fx-border-radius: 5 5 5 5;
     -fx-background-radius: 5 5 5 5;
+    -fx-background-color: red;
     -fx-border-style: solid;
     -fx-border-width: 3;
-    -fx-border-color: blue;
+    -fx-border-color: red;
 }
 
 /* Applies to id = event-selected

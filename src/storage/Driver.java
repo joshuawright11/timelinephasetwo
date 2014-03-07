@@ -5,6 +5,7 @@ package storage;
 
 import java.sql.Date;
 
+import javafx.scene.paint.Color;
 import model.Atomic;
 import model.Category;
 import model.Duration;
@@ -30,8 +31,8 @@ public class Driver {
 		DBHelper helper = new DBHelper("timeline.db");
 		TLEvent event1 = new Atomic("one", new Category(""), new Date(((long)1000)*60*60*24));
 		TLEvent event2 = new Duration("two", new Category(""), new Date(((long)1000)*60*60*24),new Date(((long)1000)*60*60*24*2));
-		Timeline test1 = new Timeline("Test1", AxisLabel.DAYS);
-		Timeline test2 = new Timeline("Test2", AxisLabel.YEARS);
+		Timeline test1 = new Timeline("Test1", AxisLabel.DAYS,Color.BLUE,Color.GRAY);
+		Timeline test2 = new Timeline("Test2", AxisLabel.YEARS,Color.BLUE,Color.GRAY);
 		test1.addEvent(event1);
 		test1.addEvent(event2);
 		helper.removeTimeline(test1);

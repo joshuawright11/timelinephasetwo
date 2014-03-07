@@ -50,11 +50,17 @@ public class TimelinePropertiesWindowController{
     @FXML // fx:id="cancelButton"
     private Button cancelButton; // Value injected by FXMLLoader
 
-    @FXML // fx:id="colorColorChooser"
-    private ColorPicker colorColorChooser; // Value injected by FXMLLoader
+    @FXML // fx:id="colorBackgroundChooser"
+    private ColorPicker colorBackgroundChooser; // Value injected by FXMLLoader
 
-    @FXML // fx:id="colorLabel"
-    private Label colorLabel; // Value injected by FXMLLoader
+    @FXML // fx:id="colorLabelBackground"
+    private Label colorLabelBackground; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="colorTimelineChooser"
+    private ColorPicker colorTimelineChooser; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="colorLabelTimeline"
+    private Label colorLabelTimeline; // Value injected by FXMLLoader
 
     @FXML // fx:id="createButton"
     private Button createButton; // Value injected by FXMLLoader
@@ -94,11 +100,12 @@ public class TimelinePropertiesWindowController{
         	//TODO title missing alert
         	return;
         }
-        Color color = colorColorChooser.getValue();
+        Color backgroundColor = colorBackgroundChooser.getValue();
+        Color timelineColor = colorTimelineChooser.getValue();
         AxisLabel axisUnit = axisUnitComboBox.getValue();
         Font font = null; //TODO set font?
-        if(timeline != null) timelineMaker.editTimeline(timeline, title, color, axisUnit, font);
-        else timelineMaker.addTimeline(title, color, axisUnit, font);
+        if(timeline != null) timelineMaker.editTimeline(timeline, title, timelineColor, backgroundColor, axisUnit, font);
+        else timelineMaker.addTimeline(title, timelineColor, backgroundColor, axisUnit, font);
         
         Node source = (Node) event.getSource(); 
         Stage stage = (Stage) source.getScene().getWindow();
