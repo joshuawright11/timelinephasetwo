@@ -361,9 +361,9 @@ public class MainWindowController{
         showDialog(timelineMaker.getHelpText());
     }
     
-    /*
+   /**
     * Brings up a new unresizable JavaFX stage with the text in
-    * param String show.
+    * @param String the string to show
     */
     void showDialog(String show){
         Stage dialog = new Stage();
@@ -474,28 +474,22 @@ public class MainWindowController{
 		});*/
     }
 
+    /**
+     * What happens when the timelineListView is clicked. It renders that timeline.
+     */
     private void timelineListViewClicked(){
     	timelineMaker.selectTimeline(timelinesListView.getSelectionModel().getSelectedItem());
         populateListView();
     }
     
+    /**
+     * What happens when the categoriesListView is clicked. It sets that category as the selected category
+     */
     private void categoriesListViewClicked(){
     	if(timelineMaker.getSelectedTimeline() == null) return;
         timelineMaker.getSelectedTimeline()
                 .selectCategory(categoriesListView.getSelectionModel().getSelectedItem());
     }
-    /*
-    private void iconComboBoxClicked(){
-        String selected = iconComboBox.getSelectionModel().getSelectedItem();
-        if(!selected.equals("None")){
-            iconLabel.setText(timelineMaker.getIcon
-                (selected).getName());
-            System.out.println("WHATHNNNFNG");
-            iconLabel.setGraphic(new ImageView(timelineMaker.getIcon
-                (selected).getImage()));
-            iconLabel.toFront();
-        }
-    }*/
     
     /**
      * Populates the list view with the timelines and categories.

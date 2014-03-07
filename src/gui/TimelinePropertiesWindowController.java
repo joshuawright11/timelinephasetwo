@@ -19,11 +19,21 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-
+/**
+ * This class is the controller of the TimelinePropertiesWindow. This handles all events and
+ * has references for all objects in that window.
+ *
+ */
 public class TimelinePropertiesWindowController{
 
+	/**
+	 * The model of the entire program
+	 */
 	private TimelineMaker timelineMaker;
 	
+	/**
+	 * The timeline this window is associated with
+	 */
 	private Timeline timeline;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
