@@ -16,18 +16,25 @@ public class Icon {
     /*
     * The name of the image, seperate from its entire path.
     */
-    String name;
+    private String name;
+    
     /*
     * The image associated with this icon.
     */
-    Image icon;
+    private Image icon;
     
+    private int id;
+    
+    private String path;
+        
     /*
     * Constructor. The parameters of an individual icon will not be changed.
     */
-    public Icon(String name, Image icon){
+    public Icon(String name, Image icon, String path){
         this.name = name;
         this.icon = icon;
+        this.path = path;
+        this.setId(-1);
     }
     
     public String getName(){
@@ -37,5 +44,24 @@ public class Icon {
     public Image getImage(){
         return icon;
     }
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getPath(){
+		return path;
+	}
+       
     
 }

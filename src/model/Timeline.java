@@ -218,6 +218,12 @@ public class Timeline implements TimelineAPI{
 	public Color getColorTL(){
 		return colorTL;
 	}
+	public void setColorBG(Color colorBG){
+		this.colorBG = colorBG;
+	}
+	public void setColorTL(Color colorTL){
+		this.colorTL = colorTL;
+	}
 	
 	@Override
 	public AxisLabel getAxisLabel() {

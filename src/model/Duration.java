@@ -25,9 +25,11 @@ public class Duration extends TLEvent {
 	 * @param category the event category
 	 * @param startDate the event startDate
 	 * @param endDate the event endDate
+	 * @param description 
+	 * @param iconIndex 
 	 */
-	public Duration(String name, Category category, Date startDate, Date endDate){
-		super(name, startDate, category);
+	public Duration(String name, Category category, Date startDate, Date endDate, int iconIndex, String description){
+		super(name, startDate, category, iconIndex, description);
 		this.endDate = endDate;
 	}
 	

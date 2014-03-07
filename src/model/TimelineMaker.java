@@ -45,6 +45,8 @@ public class TimelineMaker {
 	 * The main GUI window for this application.
 	 */
 	private MainWindowController mainWindow;
+	
+	
 	/**
 	 * The graphics object for displaying timelines in this application.
 	 */
@@ -70,7 +72,7 @@ public class TimelineMaker {
 		graphics = new TimelineGraphics(this);
 		timelines = new ArrayList<Timeline>();
                 icons = new ArrayList<Icon>();
-                icons.add(new Icon("None", null));
+                icons.add(new Icon("None", null, null));
 		try {
 			for (Timeline t : database.getTimelines())
 				timelines.add(t);
@@ -91,6 +93,10 @@ public class TimelineMaker {
 					}
 				}
 			}
+			for(Icon icon : database.getIcons()){
+				icons.add(icon);
+			}
+			populateEventIcons();
 			selectedTimeline = timelines.get(0);
 			selectedEvent = null;
 		} catch (IndexOutOfBoundsException e) {
@@ -125,7 +131,7 @@ public class TimelineMaker {
         public boolean deleteIcon(String icon){
             //The user is not allowed to delete the only category!
             if(icons.size() <= 1) return false;
-            Icon ico = new Icon(null, null);
+            Icon ico = new Icon(null, null, null);
             for(Icon i: icons)
                 if(i.getName().equals(icon)){
                     ico = i;
@@ -291,11 +297,13 @@ public class TimelineMaker {
 	public void addEvent(String title, Date startDate, Date endDate, Object category, String description, Icon icon) {
 		TLEvent event;
 		if (endDate != null) {
-			event = new Duration(title, new Category(""), startDate, endDate);
+			event = new Duration(title, new Category(""), startDate, endDate, icon.getId(), description);
 		} else {
-			event = new Atomic(title, new Category(""), startDate);
+			event = new Atomic(title, new Category(""), startDate, icon.getId(), description);
 		}
-                if(!icon.getName().equals("None")) event.setIcon(icon);
+		if (!icon.getName().equals("None") || event.getIcon() == null){
+			event.setIcon(icon);
+		}
 		if (selectedTimeline != null) {
 			selectedTimeline.addEvent(event);
 			selectedEvent = event;
@@ -330,8 +338,8 @@ public class TimelineMaker {
 		if (selectedEvent != null && selectedTimeline != null && selectedTimeline.contains(selectedEvent)) {
 			selectedTimeline.removeEvent(selectedEvent);
 			TLEvent toAdd;
-			if(endDate != null) toAdd = new Duration(title, category, startDate, endDate);
-			else toAdd = new Atomic(title, category, startDate);
+			if(endDate != null) toAdd = new Duration(title, category, startDate, endDate, icon.getId(), description);
+			else toAdd = new Atomic(title, category, startDate, icon.getId(), description);
                         if(!icon.getName().equals("None")) toAdd.setIcon(icon);
 			toAdd.setID(oldEvent.getID());
 			selectedEvent = toAdd;
@@ -379,5 +387,17 @@ public class TimelineMaker {
 	}
 	public void editCategory(Category category){
 		database.editCategory(category, selectedTimeline.getName());
+	}
+	private void populateEventIcons(){
+		HashMap<Integer,Icon> iconMap= new HashMap<Integer,Icon>();
+		for(Icon i : icons){
+			iconMap.put(i.getId(), i);
+		}
+		for(Timeline t : timelines){
+			for(TLEvent e : t.getEvents()){
+				e.setIcon(iconMap.get(e.getIconIndex()));
+				if(e.getIcon() == null) e.setIcon(icons.get(0));
+			}
+		}
 	}
 }

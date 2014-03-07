@@ -3,6 +3,12 @@
  */
 package storage;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -13,6 +19,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import model.*;
 import model.Timeline.AxisLabel;
@@ -35,7 +42,7 @@ public class DBHelper implements DBHelperAPI{
 	 * statement: for executing queries, although I try to use prepared statements if possible
 	 */
 	private Connection connection = null;
-	private ResultSet resultSet = null;  
+	private ResultSet resultSet = null;  // this was a bad idea. make local!!
     private Statement statement = null; 
 	
     /**
@@ -66,7 +73,8 @@ public class DBHelper implements DBHelperAPI{
 	private void init(){
 		open();
 		try {
-			statement.executeUpdate("CREATE TABLE timeline_info ("+ID+", timelineName TEXT, axisLabel TEXT);");
+			statement.executeUpdate("CREATE TABLE timeline_info ("+ID+", timelineName TEXT, axisLabel TEXT, "
+					+ "backgroundColor TEXT, axisColor TEXT);");
 		} catch (SQLException e) {
 			if(e.getMessage().contains("already exists")) {
 				//it has already been created, no issues
@@ -75,6 +83,14 @@ public class DBHelper implements DBHelperAPI{
 		}
 		try {
 			statement.executeUpdate("CREATE TABLE timeline_categories ("+ID+", categoryName TEXT, timelineName TEXT, color TEXT);");
+		} catch (SQLException e) {
+			if(e.getMessage().contains("already exists")) {
+				//it has already been created, no issues
+			}else
+				e.printStackTrace();
+		}
+		try {
+			statement.executeUpdate("CREATE TABLE timeline_icons ("+ID+", iconName TEXT, icon BLOB);");
 		} catch (SQLException e) {
 			if(e.getMessage().contains("already exists")) {
 				//it has already been created, no issues
@@ -165,11 +181,13 @@ public class DBHelper implements DBHelperAPI{
 	 * @throws SQLException because there are databases
 	 */
 	private void writeTimelineInfo(Timeline timeline) throws SQLException{
-		String INSERT_LABEL = "INSERT INTO timeline_info (timelineName, axisLabel) VALUES "
-				+"(?,?);";
+		String INSERT_LABEL = "INSERT INTO timeline_info (timelineName, axisLabel, backgroundColor, axisColor) VALUES "
+				+"(?,?,?,?);";
 		PreparedStatement pstmt = connection.prepareStatement(INSERT_LABEL);
 		pstmt.setString(1, timeline.getName());
 		pstmt.setString(2, timeline.getAxisLabel().name());
+		pstmt.setString(3, timeline.getColorBG().toString());
+		pstmt.setString(4, timeline.getColorTL().toString());
 		pstmt.executeUpdate();
 	}
 	
@@ -193,6 +211,18 @@ public class DBHelper implements DBHelperAPI{
 		pstmt.setString(1, timeline.getAxisLabel().name());
 		pstmt.setInt(2, timeline.getID());
 		pstmt.executeUpdate();
+		
+		String UPDATE_BG_LABEL = " UPDATE timeline_info SET backgroundColor=? WHERE _id=?;";
+		pstmt = connection.prepareStatement(UPDATE_BG_LABEL);
+		pstmt.setString(1, timeline.getColorBG().toString());
+		pstmt.setInt(2, timeline.getID());
+		pstmt.executeUpdate();
+		
+		String UPDATE_AXISCOLOR_LABEL = " UPDATE timeline_info SET axisColor=? WHERE _id=?;";
+		pstmt = connection.prepareStatement(UPDATE_AXISCOLOR_LABEL);
+		pstmt.setString(1, timeline.getColorTL().toString());
+		pstmt.setInt(2, timeline.getID());
+		pstmt.executeUpdate();
 	}
 
 	@Override
@@ -201,7 +231,8 @@ public class DBHelper implements DBHelperAPI{
 		open();
 		try {
 			statement.executeUpdate("CREATE TABLE "+tlName
-					+" ("+ID+",eventName TEXT, type TEXT, startDate DATETIME, endDate DATETIME, category TEXT);");
+					+" ("+ID+",eventName TEXT, type TEXT, startDate DATETIME, endDate DATETIME, "
+							+ "category TEXT, icon INTEGER, description TEXT);");
 			writeTimelineInfo(timeline);
 			setTimelineID(timeline);
 		} catch (SQLException e) {
@@ -245,8 +276,8 @@ public class DBHelper implements DBHelperAPI{
 			String SELECT_LABEL = "SELECT _id FROM timeline_info WHERE timelineName = ?;";
 			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
 			pstmt.setString(1, timeline.getName());
-			resultSet = pstmt.executeQuery();
-			int id = resultSet.getInt(1);
+			ResultSet resultSet2 = pstmt.executeQuery();
+			int id = resultSet2.getInt(1);
 			timeline.setID(id);
 	}
 
@@ -313,13 +344,15 @@ public class DBHelper implements DBHelperAPI{
 	 */
 	private void writeEvent(Atomic event, String tlName) throws SQLException{
 		String INSERT_ATOMIC = "INSERT INTO "+tlName
-				+" (eventName,type,startDate,endDate,category) VALUES "
-				+"(?,?,?,NULL,?);";
+				+" (eventName,type,startDate,endDate,category, icon, description) VALUES "
+				+"(?,?,?,NULL,?,?,?);";
 		PreparedStatement pstmt = connection.prepareStatement(INSERT_ATOMIC);
 		pstmt.setString(1, event.getName());
                 pstmt.setString(2, "atomic");
 		pstmt.setDate(3, event.getStartDate());
 		pstmt.setString(4, event.getCategory().getName());
+		pstmt.setInt(5, event.getIcon().getId());
+		pstmt.setString(6, event.getDescription());
 		pstmt.executeUpdate();
 	}
 	
@@ -333,14 +366,16 @@ public class DBHelper implements DBHelperAPI{
 	 */
 	private void writeEvent(Duration event, String tlName) throws SQLException{
 		String INSERT_DURATION = "INSERT INTO "+tlName
-				+" (eventName,type,startDate,endDate,category) VALUES "
-				+"(?,?,?,?,?);";
+				+" (eventName,type,startDate,endDate,category, icon, description) VALUES "
+				+"(?,?,?,?,?,?,?);";
 		PreparedStatement pstmt = connection.prepareStatement(INSERT_DURATION);
 		pstmt.setString(1, event.getName());
 		pstmt.setString(2, "duration");
 		pstmt.setDate(3, event.getStartDate());
 		pstmt.setDate(4, event.getEndDate());
 		pstmt.setString(5, event.getCategory().getName());
+		pstmt.setInt(6, event.getIcon().getId());
+		pstmt.setString(7, event.getDescription());
 		pstmt.executeUpdate();
 	}
 
@@ -362,7 +397,8 @@ public class DBHelper implements DBHelperAPI{
 		open();
 		try {
 			resultSet = statement.executeQuery("SELECT name from sqlite_master WHERE type = \"table\" "
-					+ "and name != \"sqlite_sequence\" and name != \"timeline_info\" and name != \"timeline_categories\";");
+					+ "and name != \"sqlite_sequence\" and name != \"timeline_info\" and name != \"timeline_categories\" "
+					+ "and name != \"timeline_icons\";");
 			ArrayList<String> timelineNames = new ArrayList<String>();
 			int numTimelines = 0;
 			while(resultSet.next()){ // Get all timeline names
@@ -379,15 +415,19 @@ public class DBHelper implements DBHelperAPI{
 					TLEvent event = null;
 					if(type.equals("atomic")){
 						String cat = resultSet.getString("category");
-                        Category category = new Category(cat); //TODO ASSOCIATE WITH CORRECT CATEGORY OBJECT
+                        Category category = new Category(cat);
 						Date startDate = resultSet.getDate("startDate");
-						event = new Atomic(name, category, startDate); 
+						int iconIndex = resultSet.getInt("icon");
+						String description = resultSet.getString("description");
+						event = new Atomic(name, category, startDate, iconIndex, description); 
 					}else if(type.equals("duration")){
                         String cat = resultSet.getString("category");
-                        Category category = new Category(cat); //TODO ASSOCIATE WITH CORRECT CATEGORY OBJECT
+                        Category category = new Category(cat);
 						Date startDate = resultSet.getDate("startDate");
 						Date endDate = resultSet.getDate("endDate");
-						event = new Duration(name, category, startDate, endDate); 
+						int iconIndex = resultSet.getInt("icon");
+						String description = resultSet.getString("description");
+						event = new Duration(name, category, startDate, endDate, iconIndex, description); 
 					}else{
 						System.out.println("YOU DONE MESSED UP.");
 					}
@@ -397,8 +437,11 @@ public class DBHelper implements DBHelperAPI{
 				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), Color.BLUE, Color.GRAY, AxisLabel.YEARS);
 				setTimelineID(timeline);
 				AxisLabel label = AxisLabel.values()[getAxisLabel(timeline)];
+				Color backgroundColor = getBackgroundColor(timeline.getID());
+				Color axisColor = getAxisColor(timeline.getID());
 				timeline.setAxisLabel(label);
-				//TODO db color
+				timeline.setColorBG(backgroundColor);
+				timeline.setColorTL(axisColor);
 				timelines[j] = timeline;
 			}
 			close();
@@ -408,6 +451,32 @@ public class DBHelper implements DBHelperAPI{
 		}
 		close();
 		return null;
+	}
+
+	/**
+	 * @return
+	 */
+	private Color getAxisColor(int id) throws SQLException{
+		String SELECT_LABEL = "SELECT axisColor FROM timeline_info WHERE _id = ?;";
+		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+		pstmt.setInt(1, id);
+		ResultSet resultSet2 = pstmt.executeQuery();
+		String color = resultSet2.getString(1);
+		Color toReturn = Color.web(color);
+		return toReturn;
+	}
+
+	/**
+	 * @return
+	 */
+	private Color getBackgroundColor(int id) throws SQLException{
+		String SELECT_LABEL = "SELECT backgroundColor FROM timeline_info WHERE _id = ?;";
+		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+		pstmt.setInt(1, id);
+		ResultSet resultSet2 = pstmt.executeQuery();
+		String color = resultSet2.getString(1);
+		Color toReturn = Color.web(color);
+		return toReturn;
 	}
 
 	@Override
@@ -469,6 +538,18 @@ public class DBHelper implements DBHelperAPI{
 			String UPDATE_CATEGORY_LABEL = " UPDATE "+timelineName+" SET category=? WHERE _id=?;";
 			pstmt = connection.prepareStatement(UPDATE_CATEGORY_LABEL);
 			pstmt.setString(1, event.getCategory().getName());
+			pstmt.setInt(2, event.getID());
+			pstmt.executeUpdate();
+			
+			String UPDATE_ICON_LABEL = " UPDATE "+timelineName+" SET icon=? WHERE _id=?;";
+			pstmt = connection.prepareStatement(UPDATE_ICON_LABEL);
+			pstmt.setInt(1, event.getIcon().getId());
+			pstmt.setInt(2, event.getID());
+			pstmt.executeUpdate();
+			
+			String UPDATE_DESCRIPTION_LABEL = " UPDATE "+timelineName+" SET description=? WHERE _id=?;";
+			pstmt = connection.prepareStatement(UPDATE_DESCRIPTION_LABEL);
+			pstmt.setString(1, event.getDescription());
 			pstmt.setInt(2, event.getID());
 			pstmt.executeUpdate();
 			
@@ -587,6 +668,89 @@ public class DBHelper implements DBHelperAPI{
 			close();
 			return false;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see storage.DBHelperAPI#saveIcon(model.Icon)
+	 */
+	@Override
+	public void saveIcon(Icon icon) {
+		String INSERT_ICON = "INSERT INTO timeline_icons (iconName,icon) VALUES (?,?);";
+		open();
+		try{
+			PreparedStatement pstmt = connection.prepareStatement(INSERT_ICON);
+			File f = new File(icon.getPath());
+			FileInputStream fin = new FileInputStream(f);
+			pstmt.setString(1, icon.getName());
+			pstmt.setBinaryStream(2, fin, (int)f.length());
+			pstmt.executeUpdate();
+			setIconID(icon);
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			System.out.println("That file can't be found!");
+			e.printStackTrace();
+		}
+		close();
+	}
+
+	/**
+	 * @param icon
+	 */
+	private void setIconID(Icon icon) throws SQLException{
+		String SELECT_LABEL = "SELECT _id FROM timeline_icons WHERE iconName = ?;";
+		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+		pstmt.setString(1, icon.getName());
+		ResultSet resultSet2 = pstmt.executeQuery();
+		int id = resultSet2.getInt(1);
+		icon.setId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see storage.DBHelperAPI#removeIcon(model.Icon)
+	 */
+	@Override
+	public boolean removeIcon(Icon icon) {
+		open();
+		try{
+			String REMOVE_ICON_LABEL = "DELETE FROM timeline_icons WHERE _id = ?;";
+			PreparedStatement pstmt = connection.prepareStatement(REMOVE_ICON_LABEL);
+			pstmt.setInt(1, icon.getId());
+			pstmt.executeUpdate();
+			close();
+			return true;
+		}catch(SQLException sql){
+			close();
+			return false;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see storage.DBHelperAPI#getIcons()
+	 */
+	@Override
+	public ArrayList<Icon> getIcons() {
+		open();
+		try{
+			ResultSet resultSet2 = statement.executeQuery("SELECT * FROM timeline_icons;");
+			ArrayList<Icon> icons = new ArrayList<Icon>();
+			while(resultSet2.next()){ // Get all category info
+				int id = resultSet2.getInt(1);
+				String name = resultSet2.getString("iconName");
+				Blob image = resultSet2.getBlob("icon");
+				InputStream is = image.getBinaryStream();
+				Icon icon = new Icon(name, new Image(is, 50, 50, true, true), ""); // path is no longer necessary
+				icon.setId(id);
+				icons.add(icon);
+			}
+			close();
+			return icons;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		close();
+		return null;
 	}
 
 }

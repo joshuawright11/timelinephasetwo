@@ -40,8 +40,8 @@ public class DBHelperTest {
 	public void testChangeTimeline() {
 		Timeline oldTimeline = new Timeline("ding");
 		Timeline newTimeline = new Timeline("dong");
-		oldTimeline.addEvent(new Duration("the", new Category(""), new Date(0), new Date(0)));
-		newTimeline.addEvent(new Duration("witch", new Category(""), new Date(0), new Date(0)));
+		oldTimeline.addEvent(new Duration("the", new Category(""), new Date(0), new Date(0), -1, ""));
+		newTimeline.addEvent(new Duration("witch", new Category(""), new Date(0), new Date(0), -1, ""));
 		db.saveTimeline(oldTimeline);
 		assertEquals(newTimeline.getName(), db.getTimelines()[0].getName());
 		assertEquals(newTimeline.getEvents()[0].getName(), db.getTimelines()[0].getEvents()[0].getName());
@@ -57,7 +57,7 @@ public class DBHelperTest {
 	@Test
 	public void testWriteTimeline() {
 		Timeline timeline = new Timeline("mightbe"); //is causes problems in the SQL
-		timeline.addEvent(new Duration("dead", new Category(""), new Date(0), new Date(0)));
+		timeline.addEvent(new Duration("dead", new Category(""), new Date(0), new Date(0), -1, ""));
 		db.saveTimeline(timeline);
 		assertEquals(timeline.getName(), db.getTimelines()[0].getName());
 		assertEquals(timeline.getEvents()[0].getName(), db.getTimelines()[0].getEvents()[0].getName());
@@ -73,7 +73,7 @@ public class DBHelperTest {
 	@Test
 	public void testRemoveTimeline() {
 		Timeline timeline = new Timeline("which");
-		timeline.addEvent(new Duration("old", new Category(""), new Date(0), new Date(0)));
+		timeline.addEvent(new Duration("old", new Category(""), new Date(0), new Date(0), -1, ""));
 		db.saveTimeline(timeline);
 		db.removeTimeline(timeline);
 		assertTrue(db.getTimelines().length == 0);
@@ -88,8 +88,8 @@ public class DBHelperTest {
 	public void testGetTimelines() {
 		Timeline firstTimeline = new Timeline("which");
 		Timeline secondTimeline = new Timeline("the");
-		firstTimeline.addEvent(new Atomic("wicked", new Category(""), new Date(0)));
-		secondTimeline.addEvent(new Duration("witch", new Category(""), new Date(0), new Date(0)));
+		firstTimeline.addEvent(new Atomic("wicked", new Category(""), new Date(0), -1, ""));
+		secondTimeline.addEvent(new Duration("witch", new Category(""), new Date(0), new Date(0), -1, ""));
 		db.saveTimeline(firstTimeline);
 		db.saveTimeline(secondTimeline);
 		assertEquals(firstTimeline.getName(), db.getTimelines()[0].getName());
