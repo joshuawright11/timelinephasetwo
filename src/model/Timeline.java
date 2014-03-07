@@ -220,6 +220,10 @@ public class Timeline implements TimelineAPI{
 	public AxisLabel getAxisLabel() {
 		return axisLabel;
 	}
+	
+	public void setAxisLabel(AxisLabel axisLabel) {
+		this.axisLabel = axisLabel;
+	}
         
         public Iterator<TLEvent> getEventIterator(){
             return events.iterator();

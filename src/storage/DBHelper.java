@@ -107,19 +107,46 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 	
-	
 	//TODO TODO TODO SAVE AS TABLE WITH ID AS NAME
 	@Override
 	public boolean editTimelineInfo(Timeline timeline) {
 		open();
 		try {
+			changeTimelineName(timeline);
 			updateTimelineInfo(timeline);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			close();
 			return false;
 		}
 		close();
 		return true;
+	}
+
+	/**
+	 * @throws SQLException 
+	 * 
+	 */
+	private void changeTimelineName(Timeline timeline) throws SQLException {
+		String oldName = getName(timeline);
+		String newName = timeline.getName();
+		System.out.println("Oldname was: "+oldName);
+		System.out.println("Newname is: "+timeline.getName());		
+		String SELECT_LABEL = "ALTER TABLE \""+oldName+"\" RENAME TO \""+newName+"\";";
+		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+		pstmt.execute();
+	}
+
+	/**
+	 * @param timeline
+	 */
+	private String getName(Timeline timeline) throws SQLException{
+		String SELECT_LABEL = "SELECT timelineName FROM timeline_info WHERE _id = ?;";
+		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+		pstmt.setInt(1, timeline.getID());
+		resultSet = pstmt.executeQuery();
+		String oldName = resultSet.getString(1);
+		return oldName;
 	}
 
 	/**
@@ -146,6 +173,8 @@ public class DBHelper implements DBHelperAPI{
 	 * @throws SQLException because there are databases
 	 */
 	private void updateTimelineInfo(Timeline timeline) throws SQLException{
+		System.out.println("Changing timelineName of id: "+timeline.getID()+" to " + timeline.getName());
+		
 		String UPDATE_NAME_LABEL = " UPDATE timeline_info SET timelineName=? WHERE _id=?;";
 		PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
 		pstmt.setString(1, timeline.getName());
@@ -167,6 +196,7 @@ public class DBHelper implements DBHelperAPI{
 			statement.executeUpdate("CREATE TABLE "+tlName
 					+" ("+ID+",eventName TEXT, type TEXT, startDate DATETIME, endDate DATETIME, category TEXT);");
 			writeTimelineInfo(timeline);
+			setTimelineID(timeline);
 		} catch (SQLException e) {
 			if(e.getMessage().contains("already exists")) {
 				System.out.println("A timeline with that name already exists!");
@@ -176,7 +206,7 @@ public class DBHelper implements DBHelperAPI{
 			e.printStackTrace();
 		}
 		close();
-		setTimelineID(timeline);
+		
 		if(timeline.getEvents() == null){
 			return true; // did not save any events, timeline still created
 		}
@@ -204,19 +234,15 @@ public class DBHelper implements DBHelperAPI{
 	 * 
 	 * @param timeline the timeline whose id field is set
 	 */
-	private void setTimelineID(Timeline timeline) {
-		open();
-		try{
+	private void setTimelineID(Timeline timeline) throws SQLException{
 			String SELECT_LABEL = "SELECT _id FROM timeline_info WHERE timelineName = ?;";
 			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+			System.out.println(timeline.getName());
 			pstmt.setString(1, timeline.getName());
 			resultSet = pstmt.executeQuery();
-			int id = resultSet.getInt(1);
+			int id = resultSet.getInt(1); //TODO MUST NAME TIMELINE WHEN EDITING
+			System.out.println(id);
 			timeline.setID(id);
-		}catch(SQLException e){
-			
-		}
-		close();
 	}
 
 	/**	
@@ -254,10 +280,10 @@ public class DBHelper implements DBHelperAPI{
 	 * @return the index of the AxisLabel (there is room for more)
 	 * @throws SQLException because there are databases
 	 */
-	private int getAxisLabel(String timelineName) throws SQLException{
-		String SELECT_LABEL = "SELECT axisLabel FROM timeline_info WHERE timelineName = ?;";
+	private int getAxisLabel(Timeline timeline) throws SQLException{
+		String SELECT_LABEL = "SELECT axisLabel FROM timeline_info WHERE _id = ?;";
 		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
-		pstmt.setString(1, timelineName);
+		pstmt.setInt(1, timeline.getID());
 		resultSet = pstmt.executeQuery();
 		String labelName = resultSet.getString(1);
 		switch(labelName){
@@ -362,8 +388,10 @@ public class DBHelper implements DBHelperAPI{
 					}
 					events.add(event);
 				}
-				int label = getAxisLabel(timelineNames.get(j));
-				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), AxisLabel.values()[label]);
+				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), AxisLabel.YEARS);
+				setTimelineID(timeline);
+				AxisLabel label = AxisLabel.values()[getAxisLabel(timeline)];
+				timeline.setAxisLabel(label);
 				timelines[j] = timeline;
 			}
 			close();
