@@ -397,8 +397,8 @@ public class MainWindowController{
     // Handler for MenuItem[fx:id="newEventMenuItem"] onMenuValidation
     @FXML
     void newEventPressed(Event event) {
-		try {
-			
+		if(timelineMaker.getSelectedTimeline() == null) return;
+    	try {	
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("EventPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 	        EventPropertiesWindowController controller = loader.<EventPropertiesWindowController>getController();
