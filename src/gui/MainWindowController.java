@@ -21,9 +21,11 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -32,19 +34,24 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import model.Category;
 import model.Icon;
 
 
 public class MainWindowController{
 
-	private TimelineMaker timelineMaker;
+    private TimelineMaker timelineMaker;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -160,6 +167,13 @@ public class MainWindowController{
     @FXML // fx:id="toolbarSeparator"
     private Separator toolbarSeparator; // Value injected by FXMLLoader
     
+    @FXML // fx:id="iconComboBox"
+    private ComboBox<String> iconComboBox; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="deleteIcon"
+    private Button deleteIcon; // Value injected by FXMLLoader
+
+    
     private FileChooser fileChooser;
     private Desktop desktop = Desktop.getDesktop();
     
@@ -167,7 +181,7 @@ public class MainWindowController{
     // Handler for MenuItem[fx:id="aboutMenuItem"] onMenuValidation
     @FXML
     void aboutPressed(Event event) {
-        // TODO open about window
+        showDialog(timelineMaker.getAboutText());
     }
 
     // Handler for Button[fx:id="addCategoryButton"] onAction
@@ -199,6 +213,7 @@ public class MainWindowController{
             new File(System.getProperty("user.home"))
         ); 
         fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.png", "*.jpg", "*.gif"),
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("GIF", "*.gif")
@@ -208,6 +223,9 @@ public class MainWindowController{
         if(file != null){
             InputStream is = new FileInputStream(file.getPath());
             timelineMaker.addIcon(new Icon(file.getName(), new Image(is, 50, 50, true, true)));
+            iconComboBox.setItems(FXCollections.observableList(timelineMaker.getImageTitles()));
+            iconComboBox.getSelectionModel().select(file.getName());
+            //iconComboBoxClicked();
         }
         // handle the event here
     }
@@ -217,9 +235,10 @@ public class MainWindowController{
     @FXML
     void deleteCategoryPressed(ActionEvent event) {
         Category selectedCategory = timelineMaker.getSelectedTimeline().getSelectedCategory();
+        if(selectedCategory.getName().equals("DEFAULT")){return;}
         timelineMaker.getSelectedTimeline().deleteCategory(selectedCategory);
         populateListView();
-        //TODO: DELETE CATEGORY FROM DATABASE
+        timelineMaker.deleteCategory(selectedCategory);
     }
     
     // Handler for Button[fx:id="deleteEventButton"] onAction
@@ -234,11 +253,21 @@ public class MainWindowController{
     void deletePressed(Event event) {
         // TODO Might delete
     }
+    
+    @FXML
+    void deleteIconPressed(){
+        String toDelete = iconComboBox.getSelectionModel().getSelectedItem();
+        if(toDelete.equals("None")) return;
+        timelineMaker.deleteIcon(toDelete);
+        populateComboBox();
+        timelineMaker.updateGraphics();
+        //@TODO: SAVE TO DATABASE
+    }
 
     // Handler for Button[fx:id="deleteTimelineButton"] onAction
     @FXML
     void deleteTimelinePressed(ActionEvent event) {
-    	timelineMaker.deleteTimeline();
+           timelineMaker.deleteTimeline();
     }
     
     // Handler for Button[fx:id="editCategoryButton"] onAction
@@ -320,7 +349,24 @@ public class MainWindowController{
     // Handler for MenuItem[fx:id="helpMenuItem"] onMenuValidation
     @FXML
     void helpPressed(Event event) {
-        // TODO show help window
+        showDialog(timelineMaker.getHelpText());
+    }
+    
+    /*
+    * Brings up a new unresizable JavaFX stage with the text in
+    * param String show.
+    */
+    void showDialog(String show){
+        Stage dialog = new Stage();
+        dialog.initStyle(StageStyle.UTILITY);
+        TextArea text = new TextArea(show);
+        text.setMaxWidth(300);
+        text.setWrapText(true);
+        Scene scene = new Scene(new Group(text));
+        dialog.setScene(scene);
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setResizable(false);
+        dialog.show();
     }
 
     // Handler for MenuItem[fx:id="newCategoryMenuItem"] onAction
@@ -411,6 +457,12 @@ public class MainWindowController{
 				categoriesListViewClicked();
 			}
 		});
+       /* iconComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				iconComboBoxClicked();
+			}
+		});*/
     }
 
     private void timelineListViewClicked(){
@@ -422,6 +474,18 @@ public class MainWindowController{
         timelineMaker.getSelectedTimeline()
                 .selectCategory(categoriesListView.getSelectionModel().getSelectedItem());
     }
+    /*
+    private void iconComboBoxClicked(){
+        String selected = iconComboBox.getSelectionModel().getSelectedItem();
+        if(!selected.equals("None")){
+            iconLabel.setText(timelineMaker.getIcon
+                (selected).getName());
+            System.out.println("WHATHNNNFNG");
+            iconLabel.setGraphic(new ImageView(timelineMaker.getIcon
+                (selected).getImage()));
+            iconLabel.toFront();
+        }
+    }*/
     
     public void populateListView() {
         timelinesListView.setItems(FXCollections.observableList(timelineMaker.getTimelineTitles()));
@@ -431,14 +495,23 @@ public class MainWindowController{
             categoriesListView.setItems(FXCollections.observableList(t.getCategoryTitles()));
             categoriesListView.getSelectionModel().select(t.getSelectedCategory().getName());
         }
+        
+    }
+    
+    public void populateComboBox(){
+        iconComboBox.setItems(FXCollections.observableList(timelineMaker.getImageTitles()));
+        if ( timelineMaker.getImageTitles().get(0) != null ) iconComboBox.getSelectionModel().select(
+                    "None");
     }
 
 	public void initData(TimelineMaker timelineMaker) {
                 fileChooser = new FileChooser();
+                deleteIcon = new Button();
 		this.timelineMaker = timelineMaker;
 		timelineMaker.setMainWindow(this);
                 //fileChooser.showOpenDialog(stage);
 		populateListView();
+                populateComboBox();
 		timelineMaker.graphics.setPanel(renderScrollPane);
                 
 	}
