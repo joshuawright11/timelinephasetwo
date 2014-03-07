@@ -82,20 +82,27 @@ public class Category {
 		this.catColor = catColor;
 	}
 
-	/*
-	 * 
+	/**
+	 * Saves the category. Not in use at the moment (the model saves everything).
 	 */
 	public void save() {
 
 	}
 
 	/**
-	 * @param id
+	 * Sets the id of the Category
+	 * 
+	 * @param id the id to set
 	 */
 	public void setID(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Gets the id of this category
+	 * 
+	 * @return The id of this category
+	 */
 	public int getID() {
 		return id;
 	}
