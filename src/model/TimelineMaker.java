@@ -83,6 +83,7 @@ public class TimelineMaker {
 				}
 			}
 			for(Timeline t : timelines){ // sets categories.
+				if(t.getEvents() == null) continue;
 				for(TLEvent e : t.getEvents()){
 					Category toSet = t.getCategory(e.getCategory().getName());
 					if(toSet != null){
