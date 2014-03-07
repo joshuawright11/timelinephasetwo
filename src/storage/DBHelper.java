@@ -107,7 +107,6 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 	
-	//TODO TODO TODO SAVE AS TABLE WITH ID AS NAME
 	@Override
 	public boolean editTimelineInfo(Timeline timeline) {
 		open();
@@ -237,7 +236,7 @@ public class DBHelper implements DBHelperAPI{
 			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
 			pstmt.setString(1, timeline.getName());
 			resultSet = pstmt.executeQuery();
-			int id = resultSet.getInt(1); //TODO MUST NAME TIMELINE WHEN EDITING
+			int id = resultSet.getInt(1);
 			timeline.setID(id);
 	}
 
