@@ -707,9 +707,6 @@ public class DBHelper implements DBHelperAPI{
 		icon.setId(id);
 	}
 
-	/* (non-Javadoc)
-	 * @see storage.DBHelperAPI#removeIcon(model.Icon)
-	 */
 	@Override
 	public boolean removeIcon(Icon icon) {
 		open();
@@ -726,9 +723,6 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see storage.DBHelperAPI#getIcons()
-	 */
 	@Override
 	public ArrayList<Icon> getIcons() {
 		open();

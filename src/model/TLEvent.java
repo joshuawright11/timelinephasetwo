@@ -38,6 +38,7 @@ public class TLEvent{
 		this.name = name;
 		this.startDate = startDate;
 		this.category = category;
+		this.description = description;
 		this.icon = new Icon("None", null, null); //TODO this is kludgy
 		this.setIconIndex(-1);
 	}

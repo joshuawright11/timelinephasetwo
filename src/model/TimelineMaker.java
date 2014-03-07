@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javafx.scene.image.Image;
 
 /**
@@ -388,15 +389,18 @@ public class TimelineMaker {
 	public void editCategory(Category category){
 		database.editCategory(category, selectedTimeline.getName());
 	}
-	private void populateEventIcons(){
-		HashMap<Integer,Icon> iconMap= new HashMap<Integer,Icon>();
-		for(Icon i : icons){
+
+	private void populateEventIcons() {
+		HashMap<Integer, Icon> iconMap = new HashMap<Integer, Icon>();
+		for (Icon i : icons) {
 			iconMap.put(i.getId(), i);
 		}
-		for(Timeline t : timelines){
-			for(TLEvent e : t.getEvents()){
+		for (Timeline t : timelines) {
+			if(t.getEvents() == null) continue;
+			for (TLEvent e : t.getEvents()) {
 				e.setIcon(iconMap.get(e.getIconIndex()));
-				if(e.getIcon() == null) e.setIcon(icons.get(0));
+				if (e.getIcon() == null)
+					e.setIcon(icons.get(0));
 			}
 		}
 	}

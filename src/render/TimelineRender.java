@@ -133,6 +133,7 @@ public class TimelineRender extends Pane {
 	 * @param group
 	 */
 	public TimelineRender(TimelineMaker model, Timeline timeline) {
+		
 		this.model = model;
 		this.timeline = timeline;
 		if (timeline.getAxisLabel() == AxisLabel.DAYS || timeline.getAxisLabel() == AxisLabel.MONTHS || timeline.getAxisLabel() == AxisLabel.YEARS)

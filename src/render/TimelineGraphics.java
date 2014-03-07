@@ -1,5 +1,6 @@
 package render;
 
+import model.TLEvent;
 import model.TimelineMaker;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
