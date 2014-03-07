@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -211,13 +212,16 @@ public class TimelineRender extends Pane {
 		pushDown = 60;
 		eventsToFront();
 		setLayoutY(pushDown);
-	}
-	
+	}	
 	/**
 	 * 
 	 */
 	private void eventsToFront() {
-		for(TLEventLabel label : eventLabels) label.toFront();
+		for(TLEventLabel label : eventLabels){
+                    if(label.getIcon()!= null)
+                        label.setGraphic(new ImageView(label.getIcon()));
+                    label.toFront();
+                }
 	}
 
 	/**
