@@ -302,9 +302,9 @@ public class TimelineMaker {
 	public void addEvent(String title, Date startDate, Date endDate, Object category, String description, Icon icon) {
 		TLEvent event;
 		if (endDate != null) {
-			event = new Duration(title, new Category(""), startDate, endDate, icon.getId(), description);
+			event = new Duration(title, selectedTimeline.getDefaultCategory(), startDate, endDate, icon.getId(), description);
 		} else {
-			event = new Atomic(title, new Category(""), startDate, icon.getId(), description);
+			event = new Atomic(title, selectedTimeline.getDefaultCategory(), startDate, icon.getId(), description);
 		}
 		if (!icon.getName().equals("None") || event.getIcon() == null){
 			event.setIcon(icon);
@@ -361,7 +361,6 @@ public class TimelineMaker {
 	public void updateGraphics() {
 		graphics.clearScreen();
 		graphics.renderTimeline(selectedTimeline);
-
 	}
 
 	/**
@@ -408,4 +407,5 @@ public class TimelineMaker {
 			}
 		}
 	}
+	
 }

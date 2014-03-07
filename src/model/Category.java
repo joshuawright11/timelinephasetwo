@@ -11,7 +11,6 @@ import javafx.scene.paint.*;
 /**
  * Datatype in which to categories.
  * 
- * @author Daniel
  * @author Kayley
  */
 public class Category {
@@ -84,7 +83,7 @@ public class Category {
 	}
 
 	/*
-	 * TODO: Save this category to the database.
+	 * 
 	 */
 	public void save() {
 

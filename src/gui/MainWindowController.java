@@ -380,7 +380,7 @@ public class MainWindowController{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
 			Parent root = (Parent)loader.load();
 	        CategoryPropertiesWindowController controller = loader.<CategoryPropertiesWindowController>getController();
-	        controller.initData(timelineMaker, new Category(""));
+	        controller.initData(timelineMaker, new Category("DEFAULT"));
 		Stage stage = new Stage();
 		stage.setTitle("Edit Category");
 		Scene scene = new Scene(root);
@@ -518,11 +518,10 @@ public class MainWindowController{
 	 * @param timelineMaker The timelinemaker that makes the timeline.
 	 */
 	public void initData(TimelineMaker timelineMaker) {
-                fileChooser = new FileChooser();
-                deleteIcon = new Button();
+        fileChooser = new FileChooser();
+        deleteIcon = new Button();
 		this.timelineMaker = timelineMaker;
 		timelineMaker.setMainWindow(this);
-                //fileChooser.showOpenDialog(stage);
 		populateListView();
                 populateComboBox();
 		timelineMaker.graphics.setPanel(renderScrollPane);
