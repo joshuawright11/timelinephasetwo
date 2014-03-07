@@ -3,12 +3,10 @@
  */
 package storage;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -148,9 +146,12 @@ public class DBHelper implements DBHelperAPI{
 		return true;
 	}
 
+
 	/**
-	 * @throws SQLException 
+	 * Changes the name of a timeline based on unique id
 	 * 
+	 * @param timeline the timeline whose name will be changed
+	 * @throws SQLException because there are databases
 	 */
 	private void changeTimelineName(Timeline timeline) throws SQLException {
 		String oldName = getName(timeline);
@@ -161,8 +162,13 @@ public class DBHelper implements DBHelperAPI{
 		pstmt.execute();
 	}
 
+
 	/**
-	 * @param timeline
+	 * Gets the name of a timeline, based on its unique id
+	 * 
+	 * @param timeline the timeline whose name will be fetched
+	 * @return the name of the timeline
+	 * @throws SQLException because there are databases
 	 */
 	private String getName(Timeline timeline) throws SQLException{
 		String SELECT_LABEL = "SELECT timelineName FROM timeline_info WHERE _id = ?;";
@@ -453,8 +459,13 @@ public class DBHelper implements DBHelperAPI{
 		return null;
 	}
 
+
 	/**
-	 * @return
+	 * Gets the axis color of a timeline from the database based on its unique id
+	 * 
+	 * @param id the id of the timeline whose axis color will be fetched
+	 * @return the Color
+	 * @throws SQLException because there are databases
 	 */
 	private Color getAxisColor(int id) throws SQLException{
 		String SELECT_LABEL = "SELECT axisColor FROM timeline_info WHERE _id = ?;";
@@ -467,7 +478,11 @@ public class DBHelper implements DBHelperAPI{
 	}
 
 	/**
-	 * @return
+	 * Gets the background color of a timeline from the database based on its unique id
+	 * 
+	 * @param id the id of the timeline whose background color will be fetched
+	 * @return the Color
+	 * @throws SQLException because there are databases
 	 */
 	private Color getBackgroundColor(int id) throws SQLException{
 		String SELECT_LABEL = "SELECT backgroundColor FROM timeline_info WHERE _id = ?;";
@@ -562,6 +577,7 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 	
+	@Override
 	public HashMap<Category,String> getCategories(){
 		open();
 		try{
@@ -585,9 +601,6 @@ public class DBHelper implements DBHelperAPI{
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see storage.DBHelperAPI#saveCategory(model.Category, java.lang.String)
-	 */
 	@Override
 	public void saveCategory(Category category, String timelineName) {
 		String INSERT_CATEGORY = "INSERT INTO timeline_categories (categoryName,timelineName,color) VALUES (?,?,?);";
@@ -608,8 +621,10 @@ public class DBHelper implements DBHelperAPI{
 	}
 
 	/**
-	 * @param category
-	 * @throws SQLException 
+	 * Sets the id of a category based on it's database unique id
+	 * 
+	 * @param category the category whose id will be set
+	 * @throws SQLException because there are databases 
 	 */
 	private void setCategoryID(Category category, String timelineName) throws SQLException {
 		String SELECT_LABEL = "SELECT _id FROM timeline_categories WHERE categoryName = ? and timelineName = ?;";
@@ -621,9 +636,6 @@ public class DBHelper implements DBHelperAPI{
 		category.setID(id);
 	}
 
-	/* (non-Javadoc)
-	 * @see storage.DBHelperAPI#removeCategory(model.Category, java.lang.String)
-	 */
 	@Override
 	public boolean removeCategory(Category category, String timelineName) {
 		open();
@@ -642,9 +654,6 @@ public class DBHelper implements DBHelperAPI{
 	}
 
 
-	/* (non-Javadoc)
-	 * @see storage.DBHelperAPI#editCategory(model.Category, java.lang.String)
-	 */
 	@Override
 	public boolean editCategory(Category category, String timelineName) {
 		open();
@@ -670,9 +679,6 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see storage.DBHelperAPI#saveIcon(model.Icon)
-	 */
 	@Override
 	public void saveIcon(Icon icon) {
 		String INSERT_ICON = "INSERT INTO timeline_icons (iconName,icon) VALUES (?,?);";
@@ -696,7 +702,9 @@ public class DBHelper implements DBHelperAPI{
 	}
 
 	/**
-	 * @param icon
+	 * Sets the unique id of an icon based on its database unique id
+	 * 
+	 * @param icon the icon whose id will be set
 	 */
 	private void setIconID(Icon icon) throws SQLException{
 		String SELECT_LABEL = "SELECT _id FROM timeline_icons WHERE iconName = ?;";

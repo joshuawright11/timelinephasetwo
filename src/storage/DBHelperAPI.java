@@ -13,18 +13,24 @@ import model.Timeline;
 
 /**
  * This is the interface for DBHelper. This class is used to access a database with the intent of storing and retrieving timelines.
- * Currently, this only adds and deletes the entire timeline, meaning that to change anything about the timeline means reading the 
- * entire thing to the database. Future development and refactoring of this could involve using each timeline's unique auto incremented
- * _id (used for using the database on android) to identify it so that methods could do specific changes to a timeline without having to
- * remove and read the entire thing. (This would speed up database operations)
+ * It also stores all datatypes such as categories and icons associated with the TimelineMaker as well. Anything stored in the
+ * database must have a unique id in its class, which gets set when it is pulled from the database. This way we can edit all fields
+ * of an object in the databse (the _id column is unique and autoincremented so it can't be cheanged.)
+ * 
+ * The table structure is:
+ * 
+ * timeline_info contains info about timelines (color, axisUnit, etc)
+ * timeline_categories contains category names and what timeline they are associated with
+ * timeline_icons contains all icons with
+ * 
+ * one table for each timeline (called that timeline's name) with all its events and their info in that table
  * 
  * @author Josh Wright
- Created: Jan 29, 2014
- Package: backend
-
- Note: could be updated to have _id as parameters, it will make editing and adding stuff a lot easier (add _id to Timeline and TLEvent).
- *
+ * Created: Jan 29, 2014
+ * Edited: March 7, 2014
+ * Package: storage
  */
+
 public interface DBHelperAPI {
 	
 	/**
@@ -68,26 +74,67 @@ public interface DBHelperAPI {
 	public boolean removeEvent(TLEvent event, String timelineName);
 	
 	/**
-	 * Edit the details of a specified event, in a specified timeline.
-	 * **This will need to be changed if events can be in multiple timelines at once.
+	 * Edits the details of an event, based on its unique id
 	 * 
-	 * @return false if the event did not exist in the database
+	 * @param event The event to edit
+	 * @param timelineName The name of the timeline that event is associated with
+	 * @return whether the event was successfully edited
 	 */
-	
-	public HashMap<Category, String> getCategories();
-	
 	public boolean editEvent(TLEvent event, String timelineName);
 	
+	/**
+	 * Returns a HashMap of category to timeline names
+	 * 
+	 * @return The HashMap
+	 */
+	public HashMap<Category, String> getCategories();
+	
+	/**
+	 * Saves a category to the database based on unique id
+	 * 
+	 * @param category The category to save
+	 * @param timelineName The name of the timeline this category is associated with
+	 */
 	public void saveCategory(Category category, String timelineName);
 	
+	/**
+	 * Removes a category from the database based on unique id
+	 * 
+	 * @param category The category to remove
+	 * @param timelineName The name of the timeline this category is associated with
+	 * @return Whether the category was successfully deleted
+	 */
 	public boolean removeCategory(Category category, String timelineName);
 	
+	/**
+	 * Edits a category in the database, based off of unique id
+	 * 
+	 * @param category The category to edit
+	 * @param timelineName The name of the timeline this category is associated with
+	 * @return Whether the category was successfully edited
+	 */
 	public boolean editCategory(Category category, String timelineName);
 	
+	/**
+	 * Saves an Icon to the database (the image and name)
+	 * 
+	 * @param icon The icon to save
+	 */
 	public void saveIcon(Icon icon);
 	
+	/**
+	 * Removed an icon from the database
+	 * 
+	 * @param icon The icon to remove
+	 * @return Whether the icon was successfully removed
+	 */
 	public boolean removeIcon(Icon icon);
 
+	/**
+	 * Gets an ArrayList of all icons from the database
+	 * 
+	 * @return ArrayList of Icons
+	 */
 	public ArrayList<Icon> getIcons();
 	
 	/**
