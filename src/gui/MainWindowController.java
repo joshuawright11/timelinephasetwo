@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import model.TLEvent;
@@ -263,6 +264,12 @@ public class MainWindowController{
            timelineMaker.selectDefaultTimeline();
            timelineMaker.updateGraphics();
            populateListView();
+           if(timelineMaker.getSelectedTimeline() == null){
+            ArrayList<String> x = new ArrayList<String>();
+            categoriesListView.setItems(FXCollections.observableList(x));
+            return;
+        }
+
     }
     
     // Handler for Button[fx:id="editCategoryButton"] onAction
