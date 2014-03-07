@@ -474,6 +474,7 @@ public class MainWindowController{
     }
     
     private void categoriesListViewClicked(){
+    	if(timelineMaker.getSelectedTimeline() == null) return;
         timelineMaker.getSelectedTimeline()
                 .selectCategory(categoriesListView.getSelectionModel().getSelectedItem());
     }
