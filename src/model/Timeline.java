@@ -61,7 +61,7 @@ public class Timeline implements TimelineAPI{
 	/**
 	 * The Color of the timeline
 	 */
-	private Color color;
+	private Color color = Color.GRAY;
 	/**
 	 * whether the timeline has been changed since its last database sync
 	 */

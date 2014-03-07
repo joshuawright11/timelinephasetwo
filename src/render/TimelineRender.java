@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.Atomic;
+import model.Category;
 import model.Duration;
 import model.TLEvent;
 import model.Timeline;
@@ -243,7 +244,7 @@ public class TimelineRender extends Pane {
 			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			
-			gc.setStroke(color);
+			gc.setStroke(Color.BLUE);
 		    gc.setLineWidth(3);
 			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
@@ -274,7 +275,7 @@ public class TimelineRender extends Pane {
 			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			
-			gc.setStroke(color);
+			gc.setStroke(Color.BLUE);
 		    gc.setLineWidth(3);
 			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
