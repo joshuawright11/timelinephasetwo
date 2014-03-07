@@ -464,6 +464,7 @@ public class DBHelper implements DBHelperAPI{
 			close();
 			return true;
 		}catch(SQLException sql){
+			sql.printStackTrace();
 			close();
 			return false;
 		}
