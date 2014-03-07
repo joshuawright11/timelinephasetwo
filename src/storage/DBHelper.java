@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
 import model.*;
 import model.Timeline.AxisLabel;
 
@@ -65,6 +66,14 @@ public class DBHelper implements DBHelperAPI{
 		open();
 		try {
 			statement.executeUpdate("CREATE TABLE timeline_info ("+ID+", timelineName TEXT, axisLabel TEXT);");
+		} catch (SQLException e) {
+			if(e.getMessage().contains("already exists")) {
+				//it has already been created, no issues
+			}else
+				e.printStackTrace();
+		}
+		try {
+			statement.executeUpdate("CREATE TABLE timeline_categories ("+ID+", categoryName TEXT, timelineName TEXT, color TEXT);");
 		} catch (SQLException e) {
 			if(e.getMessage().contains("already exists")) {
 				//it has already been created, no issues
@@ -351,8 +360,8 @@ public class DBHelper implements DBHelperAPI{
 	public Timeline[] getTimelines() { //this could probably be split up into methods
 		open();
 		try {
-			resultSet = statement.executeQuery("select name from sqlite_master where type = \"table\" "
-					+ "and name != \"sqlite_sequence\" and name != \"timeline_info\";");
+			resultSet = statement.executeQuery("SELECT name from sqlite_master WHERE type = \"table\" "
+					+ "and name != \"sqlite_sequence\" and name != \"timeline_info\" and name != \"timeline_categories\";");
 			ArrayList<String> timelineNames = new ArrayList<String>();
 			int numTimelines = 0;
 			while(resultSet.next()){ // Get all timeline names
@@ -423,7 +432,6 @@ public class DBHelper implements DBHelperAPI{
 			PreparedStatement pstmt = connection.prepareStatement(REMOVE_EVENT_LABEL);
 			pstmt.setInt(1, event.getID());
 			pstmt.executeUpdate();
-			System.out.println("Deleted... hopefully");
 			close();
 			return true;
 		}catch(SQLException sql){
@@ -435,7 +443,6 @@ public class DBHelper implements DBHelperAPI{
 	@Override
 	public boolean editEvent(TLEvent event, String timelineName) {
 		open();
-		System.out.println(timelineName + event.getName() + " " + event.getID());
 		try{
 			String UPDATE_NAME_LABEL = " UPDATE "+timelineName+" SET eventName=? WHERE _id=?;";
 			PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
@@ -474,8 +481,111 @@ public class DBHelper implements DBHelperAPI{
 	}
 	
 	public Category[] getCategories(Timeline timeline){
-		
+		open();
+		try{
+			ResultSet resultSet2 = statement.executeQuery("SELECT * FROM timeline_categories;");
+			ArrayList<Category> categoryNames = new ArrayList<Category>();
+			int numCategories = 0;
+			while(resultSet2.next()){ // Get all timeline names
+				numCategories ++;
+				String name = resultSet2.getString("categoryName");
+				String timelineName = resultSet2.getString("timelineName");
+				Color color = Color.web(resultSet2.getString("color"));
+				Category category = new Category(name, color);
+				categoryNames.add(category);
+			}
+			close();
+			return categoryNames.toArray(new Category[numCategories]);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		close();
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see storage.DBHelperAPI#saveCategory(model.Category, java.lang.String)
+	 */
+	@Override
+	public void saveCategory(Category category, String timelineName) {
+		String INSERT_CATEGORY = "INSERT INTO timeline_categories (categoryName,timelineName,color) VALUES (?,?,?);";
+		open();
+		try{
+			PreparedStatement pstmt = connection.prepareStatement(INSERT_CATEGORY);
+			pstmt.setString(1, category.getName());
+	        pstmt.setString(2, timelineName);
+			pstmt.setString(3, category.getColor().toString());
+			pstmt.executeUpdate();
+			setCategoryID(category, timelineName);
+		}
+		catch(SQLException e){
+			//Already exists?
+			e.printStackTrace();
+		}
+		close();
+	}
+
+	/**
+	 * @param category
+	 * @throws SQLException 
+	 */
+	private void setCategoryID(Category category, String timelineName) throws SQLException {
+		String SELECT_LABEL = "SELECT _id FROM timeline_categories WHERE categoryName = ? and timelineName = ?;";
+		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
+		pstmt.setString(1, category.getName());
+		pstmt.setString(2, timelineName);
+		ResultSet resultSet2 = pstmt.executeQuery();
+		int id = resultSet2.getInt(1);
+		category.setID(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see storage.DBHelperAPI#removeCategory(model.Category, java.lang.String)
+	 */
+	@Override
+	public boolean removeCategory(Category category, String timelineName) {
+		open();
+		try{
+			String REMOVE_CATEGORY_LABEL = "DELETE FROM timeline_categories WHERE _id = ? and timelineName = ?;";
+			PreparedStatement pstmt = connection.prepareStatement(REMOVE_CATEGORY_LABEL);
+			pstmt.setInt(1, category.getID());
+			pstmt.setString(2, timelineName);
+			pstmt.executeUpdate();
+			close();
+			return true;
+		}catch(SQLException sql){
+			close();
+			return false;
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see storage.DBHelperAPI#editCategory(model.Category, java.lang.String)
+	 */
+	@Override
+	public boolean editCategory(Category category, String timelineName) {
+		open();
+		try{
+			String UPDATE_NAME_LABEL = " UPDATE timeline_categories SET categoryName=? WHERE _id=?;";
+			PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
+			pstmt.setString(1, category.getName());
+			pstmt.setInt(2, category.getID());
+			pstmt.executeUpdate();
+			
+			String UPDATE_COLOR_LABEL = " UPDATE "+timelineName+" SET color=? WHERE _id=?;";
+			pstmt = connection.prepareStatement(UPDATE_COLOR_LABEL);
+			pstmt.setString(1, category.getColor().toString());
+			pstmt.setInt(2, category.getID());
+			pstmt.executeUpdate();
+			
+			close();
+			return true;
+		}catch(SQLException sql){
+			sql.printStackTrace();
+			close();
+			return false;
+		}
 	}
 
 }
