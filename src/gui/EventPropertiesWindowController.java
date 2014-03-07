@@ -132,8 +132,9 @@ public class EventPropertiesWindowController{
         dateToLabel.setVisible(false);
         oldEvent = null;
     }
-
-    //Populates the combo box with categories and icons.
+    /**
+    *Populates the combo box with categories and icons.
+    */
     public void initComboBox() {
         categoryComboBox.setItems(FXCollections.observableList(timelineMaker
                 .getSelectedTimeline().getCategoryTitles()));
