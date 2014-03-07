@@ -207,7 +207,7 @@ public class MainWindowController{
                         fileChooser.showOpenDialog(new Stage());
         if(file != null){
             InputStream is = new FileInputStream(file.getPath());
-            timelineMaker.addIcon(new Icon(file.getName(), new Image(is, 50, 50, true, true)));
+            timelineMaker.addIcon(new Icon(file.getName(), new Image(is, 20, 20, true, true)));
         }
         // handle the event here
     }

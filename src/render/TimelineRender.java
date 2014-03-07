@@ -548,7 +548,7 @@ public class TimelineRender extends Pane {
 		Text t = new Text();
 		t.setText(timeline.getName());
 		t.setFont(Font.font(null,FontWeight.BOLD,30));
-		t.setFill(Color.NAVY);
+		t.setFill(color);
 		DropShadow ds = new DropShadow();
 		ds.setOffsetY(2.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
