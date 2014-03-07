@@ -153,11 +153,11 @@ public abstract class TLEventLabel extends Label {
 	private void initDesign(){
 		setLayoutX(xPos);
 		setLayoutY(yPos);
-		Category c = event.getCategory();
-		Color clr = c.getColor();
-		String color = clr.toString();
-		color = color.substring(2);
-		setStyle("-fx-background-color: #" + color);
+//		Category c = event.getCategory();
+//		Color clr = c.getColor();
+//		String color = clr.toString(); //This works fine, I kept textfill because it wont overwrite the stylesheet
+//		color = color.substring(2);
+//		setStyle("-fx-background-color: #" + color);
 		setTextFill(Color.web(event.getCategory().getColor().toString()));
 		uniqueDesign();
 	}
