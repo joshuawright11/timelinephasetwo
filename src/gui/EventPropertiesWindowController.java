@@ -74,7 +74,7 @@ public class EventPropertiesWindowController{
     private AnchorPane eventPropertiesWindowAnchor; // Value injected by FXMLLoader
 
     @FXML // fx:id="iconComboBox"
-    private ComboBox<?> iconComboBox; // Value injected by FXMLLoader
+    private ComboBox<String> iconComboBox; // Value injected by FXMLLoader
 
     @FXML // fx:id="iconLabel"
     private Label iconLabel; // Value injected by FXMLLoader
@@ -105,6 +105,7 @@ public class EventPropertiesWindowController{
     void createPressed(ActionEvent event) {
         Category selectedCategory = timelineMaker.getSelectedTimeline().
                 getCategory(categoryComboBox.getSelectionModel().getSelectedItem());
+        Icon icon = timelineMaker.getIcon(iconComboBox.getSelectionModel().getSelectedItem());
     	String title = titleTextField.getText();
         Date startDate = Date.valueOf(startDateTextField.getText());
         Date endDate = null;
@@ -112,9 +113,8 @@ public class EventPropertiesWindowController{
     	if(durationCheckBox.isSelected()){
     		endDate = Date.valueOf(endDateTextField.getText());
     	}
-    	if(oldEvent != null) timelineMaker.editEvent(oldEvent, title, startDate, endDate, selectedCategory, description);
-    	else timelineMaker.addEvent(title, startDate, endDate, selectedCategory, description);
-        
+    	if(oldEvent != null) timelineMaker.editEvent(oldEvent, title, startDate, endDate, selectedCategory, description, icon);
+    	else timelineMaker.addEvent(title, startDate, endDate, selectedCategory, description, icon);
     	Node  source = (Node)  event.getSource(); 
         Stage stage  = (Stage) source.getScene().getWindow();
         stage.close();
@@ -134,7 +134,7 @@ public class EventPropertiesWindowController{
         oldEvent = null;
     }
 
-    //Populates the combo box with categories.
+    //Populates the combo box with categories and icons.
     public void initComboBox() {
         categoryComboBox.setItems(FXCollections.observableList(timelineMaker
                 .getSelectedTimeline().getCategoryTitles()));
@@ -143,6 +143,15 @@ public class EventPropertiesWindowController{
                 oldEvent.getCategory().getName());
             else categoryComboBox.getSelectionModel().select(
                 timelineMaker.getSelectedTimeline().getDefaultCategory().getName());
+        }
+        
+        iconComboBox.setItems(FXCollections.observableList(timelineMaker.getImageTitles()));
+        if(timelineMaker.getSelectedTimeline() != null){
+            if(oldEvent != null && oldEvent.getIcon() != null)
+                iconComboBox.getSelectionModel().select(
+                    oldEvent.getIcon().getName());
+            else if ( timelineMaker.getImageTitles().get(0) != null ) iconComboBox.getSelectionModel().select(
+                    "None");
         }
     }
 
