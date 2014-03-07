@@ -195,6 +195,15 @@ public class TimelineMaker {
 		if (selectedTimeline != null)
 			updateGraphics();
 	}
+        
+        /*
+        * To be called in the event that a timeline is deleted.
+        */
+        public void selectDefaultTimeline(){
+            if(timelines.size() > 0)
+             selectedTimeline = timelines.get(0);
+            else selectedTimeline = null;
+        }
 
 	/**
 	 * Add a timeline to this model. Update selectedTimeline, selectedTLEvent,
