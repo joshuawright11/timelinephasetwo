@@ -2,8 +2,6 @@ package render;
 
 import java.awt.MouseInfo;
 import java.util.ArrayList;
-
-import model.Category;
 import model.TLEvent;
 import model.TimelineMaker;
 import javafx.application.Platform;
