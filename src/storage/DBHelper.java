@@ -379,15 +379,15 @@ public class DBHelper implements DBHelperAPI{
 					TLEvent event = null;
 					if(type.equals("atomic")){
 						String cat = resultSet.getString("category");
-                        Category category = new Category(cat);
+                        Category category = new Category(cat); //TODO ASSOCIATE WITH CORRECT CATEGORY OBJECT
 						Date startDate = resultSet.getDate("startDate");
-						event = new Atomic(name, category, startDate); // TODO Get category from database. Pretty sure this works...
+						event = new Atomic(name, category, startDate); 
 					}else if(type.equals("duration")){
                         String cat = resultSet.getString("category");
-                        Category category = new Category(cat);
+                        Category category = new Category(cat); //TODO ASSOCIATE WITH CORRECT CATEGORY OBJECT
 						Date startDate = resultSet.getDate("startDate");
 						Date endDate = resultSet.getDate("endDate");
-						event = new Duration(name, category, startDate, endDate); // TODO Get category from database. Pretty sure this works...
+						event = new Duration(name, category, startDate, endDate); 
 					}else{
 						System.out.println("YOU DONE MESSED UP.");
 					}
@@ -467,7 +467,6 @@ public class DBHelper implements DBHelperAPI{
 			
 			String UPDATE_CATEGORY_LABEL = " UPDATE "+timelineName+" SET category=? WHERE _id=?;";
 			pstmt = connection.prepareStatement(UPDATE_CATEGORY_LABEL);
-			System.out.println(event.getCategory());
 			pstmt.setString(1, event.getCategory().getName());
 			pstmt.setInt(2, event.getID());
 			pstmt.executeUpdate();

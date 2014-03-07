@@ -143,6 +143,7 @@ public abstract class TLEventLabel extends Label {
 	private void initDesign(){
 		setLayoutX(xPos);
 		setLayoutY(yPos);
+		setTextFill(Color.web(event.getCategory().getColor().toString()));
 		uniqueDesign();
 	}
 

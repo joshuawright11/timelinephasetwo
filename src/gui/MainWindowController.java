@@ -185,6 +185,7 @@ public class MainWindowController{
     @FXML
     void deleteCategoryPressed(ActionEvent event) {
         Category selectedCategory = timelineMaker.getSelectedTimeline().getSelectedCategory();
+        if(selectedCategory.getName().equals("DEFAULT")){return;}
         timelineMaker.getSelectedTimeline().deleteCategory(selectedCategory);
         populateListView();
         timelineMaker.deleteCategory(selectedCategory);

@@ -62,13 +62,18 @@ public class TimelineMaker {
 			for (Timeline t : database.getTimelines())
 				timelines.add(t);
 			HashMap<Category, String> categories = database.getCategories();
-			
 			for (Timeline t : timelines){ // Very lame. Should have better implementation but don't have time.
 				for(Category c : categories.keySet() ){
-					System.out.println();
 					if(t.getName().equals(categories.get(c))){
 						t.addCategory(c);
-						System.out.println("TIMELINEMAKER 69: Added " + c.getName() + " to " + t.getName());
+					}
+				}
+			}
+			for(Timeline t : timelines){ // sets categories.
+				for(TLEvent e : t.getEvents()){
+					Category toSet = t.getCategory(e.getCategory().getName());
+					if(toSet != null){
+						e.setCategory(toSet);
 					}
 				}
 			}
@@ -262,11 +267,10 @@ public class TimelineMaker {
 				&& selectedTimeline.contains(selectedEvent)) {
 			selectedTimeline.removeEvent(selectedEvent);
 			TLEvent toAdd;
-			if (endDate != null)
-				toAdd = new Duration(title, new Category(""), startDate,
-						endDate);
-			else
-				toAdd = new Atomic(title, new Category(""), startDate);
+			if (endDate != null) 
+				toAdd = new Duration(title, category, startDate, endDate);
+			else 
+				toAdd = new Atomic(title, category, startDate);
 			toAdd.setID(oldEvent.getID());
 			selectedEvent = toAdd;
 			selectedTimeline.addEvent(toAdd);
