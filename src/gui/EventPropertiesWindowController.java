@@ -105,7 +105,7 @@ public class EventPropertiesWindowController{
     void createPressed(ActionEvent event) {
         Category selectedCategory = timelineMaker.getSelectedTimeline().
                 getCategory(categoryComboBox.getSelectionModel().getSelectedItem());
-        System.out.println(selectedCategory.getName());
+        if(selectedCategory == null) System.out.println("WOW!");
     	String title = titleTextField.getText();
         Date startDate = Date.valueOf(startDateTextField.getText());
         Date endDate = null;

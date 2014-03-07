@@ -252,8 +252,8 @@ public class DBHelper implements DBHelperAPI{
 			String SELECT_LABEL = "SELECT _id FROM "+timelineName+" WHERE eventName = ?;";
 			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
 			pstmt.setString(1, event.getName());
-			resultSet = pstmt.executeQuery();
-			int id = resultSet.getInt(1);
+			ResultSet resultSet2 = pstmt.executeQuery();
+			int id = resultSet2.getInt(1);
 			event.setID(id);
 	}
 
@@ -364,7 +364,7 @@ public class DBHelper implements DBHelperAPI{
 				resultSet = statement.executeQuery("select * from "+timelineNames.get(j)+";");
 				ArrayList<TLEvent> events = new ArrayList<TLEvent>();
 				while(resultSet.next()){ // Get all events for the event
-					String name = resultSet.getString("eventName");
+ 					String name = resultSet.getString("eventName");
 					String type = resultSet.getString("type");
 					TLEvent event = null;
 					if(type.equals("atomic")){
@@ -381,6 +381,7 @@ public class DBHelper implements DBHelperAPI{
 					}else{
 						System.out.println("YOU DONE MESSED UP.");
 					}
+					setEventID(event, timelineNames.get(j));
 					events.add(event);
 				}
 				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), AxisLabel.YEARS);
@@ -434,6 +435,7 @@ public class DBHelper implements DBHelperAPI{
 	@Override
 	public boolean editEvent(TLEvent event, String timelineName) {
 		open();
+		System.out.println(timelineName + event.getName() + " " + event.getID());
 		try{
 			String UPDATE_NAME_LABEL = " UPDATE "+timelineName+" SET eventName=? WHERE _id=?;";
 			PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
@@ -457,6 +459,7 @@ public class DBHelper implements DBHelperAPI{
 			
 			String UPDATE_CATEGORY_LABEL = " UPDATE "+timelineName+" SET category=? WHERE _id=?;";
 			pstmt = connection.prepareStatement(UPDATE_CATEGORY_LABEL);
+			System.out.println(event.getCategory());
 			pstmt.setString(1, event.getCategory().getName());
 			pstmt.setInt(2, event.getID());
 			pstmt.executeUpdate();
@@ -468,6 +471,11 @@ public class DBHelper implements DBHelperAPI{
 			close();
 			return false;
 		}
+	}
+	
+	public Category[] getCategories(Timeline timeline){
+		
+		return null;
 	}
 
 }

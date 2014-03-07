@@ -311,7 +311,7 @@ public class Timeline implements TimelineAPI{
             for (Category c : categories)
                 if (c.getName().equals(title))
                     return c;
-            return null;
+            return getDefaultCategory();
         }
         
         public void editCategory(String title, String name, Color color){
