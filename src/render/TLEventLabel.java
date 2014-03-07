@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -58,6 +59,8 @@ public abstract class TLEventLabel extends Label {
 	 */
 	private int xPos;
 	private int yPos;
+        
+        private Image icon;
 	
 	private ContextMenu contextMenu;
 	
@@ -73,9 +76,15 @@ public abstract class TLEventLabel extends Label {
 		this.model = model;
 		this.xPos = xPos;
 		this.yPos = yPos;
+                if(event.getIcon()!=null)
+                    this.icon = event.getIcon().getImage();
 		contextMenu = new ContextMenu();
 		init();
 	}
+        
+        public Image getIcon(){
+            return icon;
+        }
 
 	/**
 	 * Getter for selected
