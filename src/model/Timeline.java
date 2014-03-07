@@ -73,7 +73,11 @@ public class Timeline implements TimelineAPI{
 	
 	private TimelineMaker timelineMaker;
 	
-        
+	/**
+	 * Constructor for name and axisLabel
+	 * 
+	 * @param name Timeline name
+	 */    
     public Timeline(String name){
             this.name = name;
             events = new ArrayList<TLEvent>();
@@ -123,14 +127,22 @@ public class Timeline implements TimelineAPI{
 		
 	}
 
-
+	/*
+	 * Return the unique ID of this event for the database. 
+	 */
 	public int getID(){
 		return id;
 	}
+	/*
+	 * Set the unique ID of this event for the database.
+	 */
 	public void setID(int id){
 		this.id = id;
 	}
 	
+	/*
+	 * Returns true if this timeline contains TLEvent event.
+	 */
 	@Override
 	public boolean contains(TLEvent event) {
 		for (TLEvent e : events)
@@ -154,12 +166,20 @@ public class Timeline implements TimelineAPI{
             throw new Exception("Not found.");
         }
 
+    /**
+     * Adds an event to the ArrayList of TLEvents.
+     * @param event The event to add.
+     */
 	@Override
 	public void addEvent(TLEvent event) {
 		setDirty(true);
 		events.add(event);
 	}
 
+	/**
+	 * Removes an event from the ArrayList of TLEvents.
+	 * @param event The event to delete.
+	 */
 	@Override
 	public boolean removeEvent(TLEvent event) {
 		if(events.contains(event)){
@@ -171,6 +191,9 @@ public class Timeline implements TimelineAPI{
 		}
 	}
 
+	/**
+	 * Removes @param oldEvent and replaces it with @param newEvent from the ArrayList.
+	 */
 	@Override
 	public boolean changeEvent(TLEvent oldEvent, TLEvent newEvent) {
 		if(events.contains(oldEvent)){
@@ -183,27 +206,42 @@ public class Timeline implements TimelineAPI{
 		}
 	}
 
+	/**
+	 * Returns an array representation of all TLEvents.
+	 */
 	@Override
 	public TLEvent[] getEvents() {
 		if(events.isEmpty()) return null;
 		return (TLEvent[])events.toArray(new TLEvent[events.size()]);
 	}
 	
+	/**
+	 * Returns true if the Timeline is dirty, false otherwise.
+	 */
 	@Override
 	public boolean isDirty() {
 		return dirty;
 	}
 
+	/**
+	 * Sets the boolean dirty.
+	 */
 	@Override
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
 
+	/**
+	 * Returns the name of this Timeline.
+	 */
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Returns this Timeline's axis label index.
+	 */
 	@Override
 	public int getAxisLabelIndex() { 
 		for (int i = 0; i < AXIS_LABELS.length; i++)
@@ -212,28 +250,56 @@ public class Timeline implements TimelineAPI{
 		return -1;
 	}
 	
+	/**
+	 * 
+	 * @return The Color BG of this Timeline.
+	 */
 	public Color getColorBG(){
 		return colorBG;
 	}
+	
+	/**
+	 * 
+	 * @return The Color of this Timeline.
+	 */
 	public Color getColorTL(){
 		return colorTL;
 	}
+	/**
+	 * 
+	 * @param colorBG Sets the color of this Timeline's background.
+	 */
 	public void setColorBG(Color colorBG){
 		this.colorBG = colorBG;
 	}
+	/**
+	 * 
+	 * @param colorTL Sets the color of this Timeline.
+	 */
 	public void setColorTL(Color colorTL){
 		this.colorTL = colorTL;
 	}
 	
+	/**
+	 * @return The AxisLabel of this Timeline.
+	 */
 	@Override
 	public AxisLabel getAxisLabel() {
 		return axisLabel;
 	}
 	
+	/**
+	 * 
+	 * @param axisLabel Sets the AxisLabel of this Timeline.
+	 */
 	public void setAxisLabel(AxisLabel axisLabel) {
 		this.axisLabel = axisLabel;
 	}
         
+	/**
+	 * 
+	 * @return the built-in iterator of the ArrayList events.
+	 */
         public Iterator<TLEvent> getEventIterator(){
             return events.iterator();
         }
@@ -290,10 +356,18 @@ public class Timeline implements TimelineAPI{
             return categories.get(0);
         }
         
-        public Iterator getCategoryIterator(){
+        /**
+         * 
+         * @return The default iterator that comes with the categories ArrayList.
+         */
+        public Iterator<Category> getCategoryIterator(){
             return categories.iterator();
         }
         
+        /**
+         * 
+         * @return a String ArrayList of all category titles.
+         */
         public ArrayList<String> getCategoryTitles() {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		for (Category c: categories){
@@ -302,11 +376,20 @@ public class Timeline implements TimelineAPI{
 		return toReturn;
         }
         
+        /**
+         * 
+         * @return The currently selected category.
+         */
         public Category getSelectedCategory(){
             if(selectedCategory == null) selectedCategory = getDefaultCategory();
             return selectedCategory;
         }
         
+        /**
+         * 
+         * @param title The Category to find.
+         * @return the Category that matches up with param title in the list of categories.
+         */
         public Category getCategory(String title){
             for (Category c : categories)
                 if (c.getName().equals(title))
@@ -314,12 +397,22 @@ public class Timeline implements TimelineAPI{
             return getDefaultCategory();
         }
         
+        /**
+         * 
+         * @param title The title of the category to be edited.
+         * @param name The new name of this category.
+         * @param color The new color of this category.
+         */
         public void editCategory(String title, String name, Color color){
             Category c = getCategory(title);
             c.setColor(color);
             c.setName(name);
         }
         
+        /**
+         * 
+         * @param title Changes the selected category to the category that matches this title.
+         */
 	public void selectCategory(String title) {
             selectedCategory = getCategory(title);
 	}

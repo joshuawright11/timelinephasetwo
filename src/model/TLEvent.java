@@ -12,8 +12,8 @@ import storage.DBHelper;
 public class TLEvent{
 	protected String description, name;
         private Date startDate;
-	private Category category;
-	private int id;
+        private Category category;
+        private int id;
         private Icon icon;
         private int iconIndex;
         
@@ -128,11 +128,18 @@ public class TLEvent{
 	public void setID(int id) {
             this.id = id;
 	}
-        
+        /**
+         * 
+         * @return the icon associated with this event
+         */
         public Icon getIcon(){
             return icon;
         }
         
+        /**
+         * 
+         * @param icon sets the icon of this event
+         */
         public void setIcon(Icon icon){
             this.icon = icon;
         }

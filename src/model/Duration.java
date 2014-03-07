@@ -48,9 +48,8 @@ public class Duration extends TLEvent {
         
         /**
          * Saves the event to the database.
-         * TODO: insert the functionality for saving to the database.
+         * 
          */
         public void save(){
-           //
         }
 }
