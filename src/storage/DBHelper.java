@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.scene.paint.Color;
 import model.*;
@@ -480,22 +481,20 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 	
-	public Category[] getCategories(Timeline timeline){
+	public HashMap<String,Category> getCategories(){
 		open();
 		try{
 			ResultSet resultSet2 = statement.executeQuery("SELECT * FROM timeline_categories;");
-			ArrayList<Category> categoryNames = new ArrayList<Category>();
-			int numCategories = 0;
-			while(resultSet2.next()){ // Get all timeline names
-				numCategories ++;
+			HashMap<String, Category> categories = new HashMap<String, Category>();
+			while(resultSet2.next()){ // Get all category info
 				String name = resultSet2.getString("categoryName");
 				String timelineName = resultSet2.getString("timelineName");
 				Color color = Color.web(resultSet2.getString("color"));
 				Category category = new Category(name, color);
-				categoryNames.add(category);
+				categories.put(timelineName, category);
 			}
 			close();
-			return categoryNames.toArray(new Category[numCategories]);
+			return categories;
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

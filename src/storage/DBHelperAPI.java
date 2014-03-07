@@ -3,6 +3,8 @@
  */
 package storage;
 
+import java.util.HashMap;
+
 import model.Category;
 import model.TLEvent;
 import model.Timeline;
@@ -70,7 +72,7 @@ public interface DBHelperAPI {
 	 * @return false if the event did not exist in the database
 	 */
 	
-	public Category[] getCategories();
+	public HashMap<String, Category> getCategories();
 	
 	public boolean editEvent(TLEvent event, String timelineName);
 	
