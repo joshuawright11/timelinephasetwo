@@ -1,5 +1,4 @@
 package gui;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,9 +39,17 @@ import javafx.stage.StageStyle;
 import model.Category;
 import model.Icon;
 
-
+/**
+ * This class is the controller of the MainWindow. This handles all events and
+ * has references for all objects in that window. The MainWindow is the primary window
+ * of the program, everything happens through it. This opens all other windows.
+ *
+ */
 public class MainWindowController{
 
+    /**
+     * The model of the program
+     */
     private TimelineMaker timelineMaker;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -166,8 +173,10 @@ public class MainWindowController{
     private Button deleteIcon; // Value injected by FXMLLoader
 
     
+    /**
+     * The fileChooser for uploading icons
+     */
     private FileChooser fileChooser;
-    private Desktop desktop = Desktop.getDesktop();
     
     // Handler for MenuItem[fx:id="aboutMenuItem"] onAction
     // Handler for MenuItem[fx:id="aboutMenuItem"] onMenuValidation
@@ -218,9 +227,7 @@ public class MainWindowController{
             timelineMaker.addIcon(new Icon(file.getName(), new Image(is, 20, 20, true, true), file.getPath()));
             iconComboBox.setItems(FXCollections.observableList(timelineMaker.getImageTitles()));
             iconComboBox.getSelectionModel().select(file.getName());
-            //iconComboBoxClicked();
         }
-        // handle the event here
     }
 
 
@@ -253,7 +260,6 @@ public class MainWindowController{
         timelineMaker.deleteIcon(toDelete);
         populateComboBox();
         timelineMaker.updateGraphics();
-        //@TODO: SAVE TO DATABASE
     }
 
     // Handler for Button[fx:id="deleteTimelineButton"] onAction

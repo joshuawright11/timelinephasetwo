@@ -10,8 +10,14 @@ import javafx.scene.paint.Color;
 import model.Timeline;
 
 
+/**
+ * This is the driver for the program. Main launches start.
+ */
 public class Driver extends Application {
 	
+	/**
+	 * The model of the program
+	 */
 	TimelineMaker timelineMaker;
 	
 	@Override
@@ -22,7 +28,7 @@ public class Driver extends Application {
 			Parent root = (Parent)loader.load();
 			MainWindowController controller = loader.<MainWindowController>getController();
 			controller.initData(timelineMaker);
-			primaryStage.setTitle("Catchy title");
+			primaryStage.setTitle("Timelord");
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add("gui/MainWindow.css");
 	        primaryStage.setScene(scene);

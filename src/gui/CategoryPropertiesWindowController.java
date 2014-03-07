@@ -20,10 +20,21 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 
+/**
+ * This class is the controller of the CategoryPropertiesWindow. This handles all events and
+ * has references for all objects in that window.
+ *
+ */
 public class CategoryPropertiesWindowController {
 
+    /**
+     * The model of the entire program. For accessing the database and saving different things
+     */
     private TimelineMaker timelineMaker;
 	
+    /**
+     * The category associated with this window (null if addCategory was pressed)
+     */
     private Category category;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -90,6 +101,13 @@ public class CategoryPropertiesWindowController {
     	// nothing?
     }
     
+    /**
+     * Initializes the data for this controller
+     * functions as a constructor
+     * 
+     * @param timelineMaker The TimelineMaker to set
+     * @param category The category to set
+     */
     public void initData(TimelineMaker timelineMaker, Category category) {
 	this.timelineMaker = timelineMaker;
 	if(category != null){

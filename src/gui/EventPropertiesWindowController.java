@@ -24,10 +24,21 @@ import javafx.stage.Stage;
 import model.Timeline;
 import model.*;
 
+/**
+ * This class is the controller of the EventPropertiesWindow. This handles all events and
+ * has references for all objects in that window.
+ *
+ */
 public class EventPropertiesWindowController{
 
+    /**
+     * The model of the entire program
+     */
     private  TimelineMaker timelineMaker;
 	
+    /**
+     * The event this window is associated with
+     */
     private TLEvent oldEvent;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -155,6 +166,13 @@ public class EventPropertiesWindowController{
         }
     }
 
+	/**
+	 * Initializes the data for this Controller.
+	 * As close as we can get to a constructor
+	 * 
+	 * @param timelineMaker The timeline maker to set
+	 * @param event The event to set
+	 */
 	public void initData(TimelineMaker timelineMaker, TLEvent event) {
 		this.timelineMaker = timelineMaker;
 		this.oldEvent = event;
@@ -162,6 +180,11 @@ public class EventPropertiesWindowController{
                 initComboBox();
 	}
 
+	/**
+	 * Loads the data from an event into the fields of this model
+	 * 
+	 * @param event The event to load info from
+	 */
 	private void loadEventInfo(TLEvent event) {
 		titleTextField.setText(event.getName());
 		if(event instanceof Duration){
