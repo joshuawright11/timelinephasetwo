@@ -276,8 +276,8 @@ public class DBHelper implements DBHelperAPI{
 			String SELECT_LABEL = "SELECT _id FROM timeline_info WHERE timelineName = ?;";
 			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
 			pstmt.setString(1, timeline.getName());
-			resultSet = pstmt.executeQuery();
-			int id = resultSet.getInt(1);
+			ResultSet resultSet2 = pstmt.executeQuery();
+			int id = resultSet2.getInt(1);
 			timeline.setID(id);
 	}
 
@@ -397,7 +397,8 @@ public class DBHelper implements DBHelperAPI{
 		open();
 		try {
 			resultSet = statement.executeQuery("SELECT name from sqlite_master WHERE type = \"table\" "
-					+ "and name != \"sqlite_sequence\" and name != \"timeline_info\" and name != \"timeline_categories\";");
+					+ "and name != \"sqlite_sequence\" and name != \"timeline_info\" and name != \"timeline_categories\" "
+					+ "and name != \"timeline_icons\";");
 			ArrayList<String> timelineNames = new ArrayList<String>();
 			int numTimelines = 0;
 			while(resultSet.next()){ // Get all timeline names
