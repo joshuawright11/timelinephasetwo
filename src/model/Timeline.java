@@ -73,20 +73,6 @@ public class Timeline implements TimelineAPI{
 	
 	private TimelineMaker timelineMaker;
 	
-	/**
-	 * Constructor
-	 * 
-	 * @param name Timeline name
-	 */
-	public Timeline(String name, TimelineMaker timelineMaker){
-            this.name = name;
-            categories = new ArrayList<Category>();
-            categories.add(new Category("DEFAULT"));
-            events = new ArrayList<TLEvent>();
-            axisLabel = AxisLabel.YEARS;
-            setDirty(true);
-            this.timelineMaker = timelineMaker;
-	}
         
     public Timeline(String name){
             this.name = name;
@@ -113,7 +99,6 @@ public class Timeline implements TimelineAPI{
 		dirty = true;
 		categories = new ArrayList<Category>();
 		categories.add(new Category("DEFAULT"));
-
 	}
 
 	/**
@@ -256,7 +241,7 @@ public class Timeline implements TimelineAPI{
         public boolean addCategory(Category c){
             if(containsTitle(c)) return false;
             //Replace the default category if it wasn't edited.
-            else if(categories.size() == 1 && getDefaultCategory().getName().equals("")){
+            else if(categories.size() == 1 && getDefaultCategory().getName().equals("DEFAULT")){
                 categories.add(c);
                 deleteCategory(getDefaultCategory());
             }

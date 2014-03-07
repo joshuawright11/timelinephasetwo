@@ -78,6 +78,7 @@ public class CategoryPropertiesWindowController {
 			}
 			timelineMaker.getSelectedTimeline().selectCategory(category.getName());
 			timelineMaker.populateView();
+                        timelineMaker.updateGraphics();
 			Node source = (Node) event.getSource();
 			Stage stage = (Stage) source.getScene().getWindow();
 			stage.close();
@@ -92,9 +93,9 @@ public class CategoryPropertiesWindowController {
     public void initData(TimelineMaker timelineMaker, Category category) {
 	this.timelineMaker = timelineMaker;
 	if(category != null){
-            this.category = timelineMaker.getSelectedTimeline().getDefaultCategory();
+            this.category = category;
             loadCategoryInfo();
-        }
+        }else this.category = null;
     }
 
 	/**

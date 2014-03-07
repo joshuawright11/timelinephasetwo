@@ -128,7 +128,7 @@ public abstract class TLEventLabel extends Label {
 		Text t = new Text();
 		t.setText(event.getName());
 		t.setFont(Font.font("Verdana",20));
-		t.setFill(Color.PURPLE);
+		t.setFill(Color.BLACK);
 		CustomMenuItem name = new CustomMenuItem(t);
 		
 		TextArea test = new TextArea("Put item content here, once it works."
