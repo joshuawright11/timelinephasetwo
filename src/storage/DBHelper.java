@@ -363,7 +363,8 @@ public class DBHelper implements DBHelperAPI{
 					events.add(event);
 				}
 				int label = getAxisLabel(timelineNames.get(j));
-				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), AxisLabel.values()[label]);
+				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), null, AxisLabel.values()[label]);
+				//TODO db color -right now this param is null
 				timelines[j] = timeline;
 			}
 			close();

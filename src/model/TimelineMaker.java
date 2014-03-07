@@ -234,7 +234,7 @@ public class TimelineMaker {
 	 */
 	public void editTimeline(Timeline t, String title, Color color, AxisLabel axisUnit, Font font) {
 		timelines.remove(selectedTimeline);
-		Timeline newTimeline = new Timeline(title, t.getEvents(), axisUnit);
+		Timeline newTimeline = new Timeline(title, t.getEvents(), color, axisUnit);
 		newTimeline.setID(t.getID());
 		timelines.add(newTimeline);
 		//database.removeTimeline(selectedTimeline);
