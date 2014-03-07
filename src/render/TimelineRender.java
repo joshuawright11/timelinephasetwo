@@ -22,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.Atomic;
+import model.Category;
 import model.Duration;
 import model.TLEvent;
 import model.Timeline;
@@ -88,6 +89,10 @@ public class TimelineRender extends Pane {
 	 */
 
 	private AxisLabel axisLabel;
+	/**
+	 * The color of the Timeline. Default Color is Blue.
+	 */
+	private Color color = Color.BLUE;
 	
 	/**
 	 * Use in rendering with an AxisLabel of months
@@ -134,6 +139,7 @@ public class TimelineRender extends Pane {
 			this.axisLabel = timeline.getAxisLabel();
 		else
 			this.axisLabel = AxisLabel.YEARS;
+		this.color = timeline.getColor();
 		atomics = new ArrayList<Atomic>();
 		durations = new ArrayList<Duration>();
 		

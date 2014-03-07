@@ -135,4 +135,5 @@ public class TimelinePropertiesWindowController{
 		axisUnitComboBox.setValue(timeline.getAxisLabel());
 	}
 
+
 }

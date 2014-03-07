@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
 import model.*;
 import model.Timeline.AxisLabel;
 
@@ -363,7 +364,8 @@ public class DBHelper implements DBHelperAPI{
 					events.add(event);
 				}
 				int label = getAxisLabel(timelineNames.get(j));
-				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), AxisLabel.values()[label]);
+				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), Color.GRAY, AxisLabel.values()[label]);
+				//TODO db color -right now this param is default Gray, and when you create a Timeline, this automatically overrides the color chooser
 				timelines[j] = timeline;
 			}
 			close();

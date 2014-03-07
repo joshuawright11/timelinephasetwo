@@ -58,7 +58,10 @@ public class Timeline implements TimelineAPI{
 	 * The units to render the timeline in
 	 */
 	private AxisLabel axisLabel;
-	
+	/**
+	 * The Color of the timeline
+	 */
+	private Color color = Color.GRAY;
 	/**
 	 * whether the timeline has been changed since its last database sync
 	 */
@@ -115,7 +118,7 @@ public class Timeline implements TimelineAPI{
 	 * @param events TLEvents in timeline
 	 * @param axisLabel Unit to render timeline in
 	 */
-	public Timeline(String name, TLEvent[] events, AxisLabel axisLabel) {
+	public Timeline(String name, TLEvent[] events, Color color, AxisLabel axisLabel) {
             categories = new ArrayList<Category>();
             categories.add(new Category(""));
 
@@ -125,8 +128,11 @@ public class Timeline implements TimelineAPI{
 		else
 			this.events = new ArrayList<TLEvent>();
 		this.axisLabel = axisLabel;
+		this.color = color;
 		dirty = true;
+		
 	}
+
 
 	public int getID(){
 		return id;
@@ -214,6 +220,10 @@ public class Timeline implements TimelineAPI{
 			if (AXIS_LABELS[i] == axisLabel)
 				return i;
 		return -1;
+	}
+	
+	public Color getColor(){
+		return color;
 	}
 	
 	@Override

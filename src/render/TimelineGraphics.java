@@ -4,6 +4,7 @@ import model.TimelineMaker;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import model.Timeline;
 
 /**
@@ -47,6 +48,10 @@ public class TimelineGraphics{
 	 */
 	public void renderTimeline(Timeline timeline) {
 		Pane render = new TimelineRender(model, timeline);
+		Color c = timeline.getColor();
+		String color = c.toString();
+		color = color.substring(2);
+		scrollPane.setStyle("-fx-background-color: #"+ color);
 		scrollPane.setContent(render);
 	}
 
