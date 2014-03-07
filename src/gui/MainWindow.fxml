@@ -107,6 +107,8 @@
         <Separator id="iconSeparator" fx:id="iconsSeparator" prefWidth="165.0" AnchorPane.bottomAnchor="183.0" AnchorPane.rightAnchor="-2.0" />
         <Label id="eventLabel" fx:id="iconsLabel" font="$x1" prefHeight="40.0" prefWidth="149.0" text="Icons" textAlignment="LEFT" AnchorPane.bottomAnchor="147.0" AnchorPane.rightAnchor="0.0" />
         <Button id="addEvent" fx:id="addIconImageButton" mnemonicParsing="false" onAction="#addIconImagePressed" prefWidth="134.0" text="Add Icon Image" AnchorPane.bottomAnchor="126.0" AnchorPane.rightAnchor="15.0" />
+        <Button id="deleteIcon" fx:id="deleteIcon" mnemonicParsing="false" text="Delete Icon Image" onAction="#deleteIconPressed" AnchorPane.bottomAnchor="100" AnchorPane.rightAnchor="15.0" prefWidth="134"/>
+        <ComboBox id="iconComboBox" fx:id="iconComboBox" AnchorPane.bottomAnchor="70" AnchorPane.rightAnchor="15.0" prefWidth="134.0"/>
       </children>
     </AnchorPane>
   </children>
