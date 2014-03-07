@@ -198,8 +198,8 @@ public class TimelineMaker {
 	 * Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param t the timeline to be added
 	 */
-	public void addTimeline(String title, Color color, AxisLabel axisUnit, Font font) {
-		Timeline t = new Timeline(title, axisUnit);
+	public void addTimeline(String title, Color colorTL, Color colorBG, AxisLabel axisUnit, Font font) {
+		Timeline t = new Timeline(title,  axisUnit, colorTL, colorBG);
 		selectedTimeline = t;
 		selectedEvent = null;
 		timelines.add(selectedTimeline);
@@ -232,9 +232,9 @@ public class TimelineMaker {
  Update selectedTimeline, selectedTLEvent, graphics, and database.
 	 * @param t the new timeline
 	 */
-	public void editTimeline(Timeline t, String title, Color color, AxisLabel axisUnit, Font font) {
+	public void editTimeline(Timeline t, String title, Color colorTL, Color colorBG, AxisLabel axisUnit, Font font) {
 		timelines.remove(selectedTimeline);
-		Timeline newTimeline = new Timeline(title, t.getEvents(), color, axisUnit);
+		Timeline newTimeline = new Timeline(title, t.getEvents(),colorTL, colorBG, axisUnit);
 		newTimeline.setID(t.getID());
 		timelines.add(newTimeline);
 		//database.removeTimeline(selectedTimeline);

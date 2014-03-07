@@ -61,7 +61,11 @@ public class Timeline implements TimelineAPI{
 	/**
 	 * The Color of the timeline
 	 */
-	private Color color = Color.GRAY;
+	private Color colorTL;
+	/**
+	 * The Color of the Background
+	 */
+	private Color colorBG;
 	/**
 	 * whether the timeline has been changed since its last database sync
 	 */
@@ -100,8 +104,10 @@ public class Timeline implements TimelineAPI{
 	 * @param name Timeline name
 	 * @param axisLabel Unit to render timeline in
 	 */
-	public Timeline(String name, AxisLabel axisLabel) {
+	public Timeline(String name, AxisLabel axisLabel, Color colorTL, Color colorBG) {
 		this.name = name;
+		this.colorBG = colorBG;
+		this.colorTL = colorTL;
 		events = new ArrayList<TLEvent>();
 		this.axisLabel = axisLabel;
 		this.events = new ArrayList<TLEvent>();
@@ -118,7 +124,7 @@ public class Timeline implements TimelineAPI{
 	 * @param events TLEvents in timeline
 	 * @param axisLabel Unit to render timeline in
 	 */
-	public Timeline(String name, TLEvent[] events, Color color, AxisLabel axisLabel) {
+	public Timeline(String name, TLEvent[] events, Color colorTL, Color colorBG, AxisLabel axisLabel) {
             categories = new ArrayList<Category>();
             categories.add(new Category(""));
 
@@ -128,7 +134,8 @@ public class Timeline implements TimelineAPI{
 		else
 			this.events = new ArrayList<TLEvent>();
 		this.axisLabel = axisLabel;
-		this.color = color;
+		this.colorBG = colorBG;
+		this.colorTL = colorTL;
 		dirty = true;
 		
 	}
@@ -222,8 +229,11 @@ public class Timeline implements TimelineAPI{
 		return -1;
 	}
 	
-	public Color getColor(){
-		return color;
+	public Color getColorBG(){
+		return colorBG;
+	}
+	public Color getColorTL(){
+		return colorTL;
 	}
 	
 	@Override

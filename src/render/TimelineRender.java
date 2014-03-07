@@ -138,7 +138,7 @@ public class TimelineRender extends Pane {
 			this.axisLabel = timeline.getAxisLabel();
 		else
 			this.axisLabel = AxisLabel.YEARS;
-		this.color = timeline.getColor();
+		this.color = timeline.getColorTL();
 		atomics = new ArrayList<Atomic>();
 		durations = new ArrayList<Duration>();
 		
@@ -244,7 +244,7 @@ public class TimelineRender extends Pane {
 			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			
-			gc.setStroke(Color.BLUE);
+			gc.setStroke(color);
 		    gc.setLineWidth(3);
 			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
@@ -275,7 +275,7 @@ public class TimelineRender extends Pane {
 			canvas.setLayoutY(pushDown);
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			
-			gc.setStroke(Color.BLUE);
+			gc.setStroke(color);
 		    gc.setLineWidth(3);
 			gc.strokeLine(0, 10, unitWidth, 10);
 			gc.strokeLine(0, 0, 0, 20);
@@ -304,7 +304,7 @@ public class TimelineRender extends Pane {
 			GraphicsContext gc = canvas.getGraphicsContext2D();
 			
 		    gc.setLineWidth(3);
-		    gc.setStroke(Color.web("#1FABD5"));
+		    gc.setStroke(color);
 			gc.strokeLine(0, 23, 0, pushDown-56);
 			gc.strokeLine(unitWidth, 23, unitWidth, pushDown-56);
 		    

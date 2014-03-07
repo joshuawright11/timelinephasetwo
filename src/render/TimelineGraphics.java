@@ -48,7 +48,7 @@ public class TimelineGraphics{
 	 */
 	public void renderTimeline(Timeline timeline) {
 		Pane render = new TimelineRender(model, timeline);
-		Color c = timeline.getColor();
+		Color c = timeline.getColorBG();
 		String color = c.toString();
 		color = color.substring(2);
 		scrollPane.setStyle("-fx-background-color: #"+ color);
