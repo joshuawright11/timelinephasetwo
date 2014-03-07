@@ -394,10 +394,11 @@ public class DBHelper implements DBHelperAPI{
 					setEventID(event, timelineNames.get(j));
 					events.add(event);
 				}
-				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), AxisLabel.YEARS);
+				Timeline timeline = new Timeline(timelineNames.get(j), events.toArray(new TLEvent[events.size()]), Color.GRAY, AxisLabel.YEARS);
 				setTimelineID(timeline);
 				AxisLabel label = AxisLabel.values()[getAxisLabel(timeline)];
 				timeline.setAxisLabel(label);
+				//TODO db color
 				timelines[j] = timeline;
 			}
 			close();

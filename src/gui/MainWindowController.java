@@ -38,6 +38,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import model.Category;
 import model.Icon;
 
@@ -239,7 +240,7 @@ public class MainWindowController{
     // Handler for Button[fx:id="deleteTimelineButton"] onAction
     @FXML
     void deleteTimelinePressed(ActionEvent event) {
-    	timelineMaker.deleteTimeline();
+           timelineMaker.deleteTimeline();
     }
     
     // Handler for Button[fx:id="editCategoryButton"] onAction
