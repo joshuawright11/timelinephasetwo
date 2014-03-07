@@ -9,7 +9,6 @@ import model.Duration;
 import model.TLEvent;
 import model.TimelineMaker;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

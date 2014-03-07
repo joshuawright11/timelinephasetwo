@@ -21,6 +21,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,11 +33,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Category;
@@ -168,7 +172,7 @@ public class MainWindowController{
     // Handler for MenuItem[fx:id="aboutMenuItem"] onMenuValidation
     @FXML
     void aboutPressed(Event event) {
-        // TODO open about window
+        showDialog(timelineMaker.getAboutText());
     }
 
     // Handler for Button[fx:id="addCategoryButton"] onAction
@@ -200,6 +204,7 @@ public class MainWindowController{
             new File(System.getProperty("user.home"))
         ); 
         fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.png", "*.jpg", "*.gif"),
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("GIF", "*.gif")
@@ -321,7 +326,24 @@ public class MainWindowController{
     // Handler for MenuItem[fx:id="helpMenuItem"] onMenuValidation
     @FXML
     void helpPressed(Event event) {
-        // TODO show help window
+        showDialog(timelineMaker.getHelpText());
+    }
+    
+    /*
+    * Brings up a new unresizable JavaFX stage with the text in
+    * param String show.
+    */
+    void showDialog(String show){
+        Stage dialog = new Stage();
+        dialog.initStyle(StageStyle.UTILITY);
+        TextArea text = new TextArea(show);
+        text.setMaxWidth(300);
+        text.setWrapText(true);
+        Scene scene = new Scene(new Group(text));
+        dialog.setScene(scene);
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setResizable(false);
+        dialog.show();
     }
 
     // Handler for MenuItem[fx:id="newCategoryMenuItem"] onAction
