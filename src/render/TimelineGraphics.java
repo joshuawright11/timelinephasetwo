@@ -47,6 +47,7 @@ public class TimelineGraphics{
 	 * @param timeline the timeline to render
 	 */
 	public void renderTimeline(Timeline timeline) {
+		if(timeline == null) return;
 		Pane render = new TimelineRender(model, timeline);
 		Color c = timeline.getColorBG();
 		String color = c.toString();

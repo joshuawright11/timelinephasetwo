@@ -27,7 +27,7 @@ import javafx.stage.WindowEvent;
  * 
  * @author Josh Wright
  * Created: February 15, 2014
- * Last Edited: March 15, 2014
+ * Last Edited: March 7, 2014
  * 
  * Some ContextMenu code ripped from Oracle's documentation on ContextMenus
  */
