@@ -6,8 +6,10 @@ import storage.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.Timeline.AxisLabel;
+
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -46,7 +48,6 @@ public class TimelineMaker {
 	 * The graphics object for displaying timelines in this application.
 	 */
 	public TimelineGraphics graphics;
-	int idCounter;
 
 	/**
 	 * Constructor. Create a new TimelineMaker application model with database,
@@ -60,11 +61,23 @@ public class TimelineMaker {
 		try {
 			for (Timeline t : database.getTimelines())
 				timelines.add(t);
+			HashMap<Category, String> categories = database.getCategories();
+			
+			for (Timeline t : timelines){ // Very lame. Should have better implementation but don't have time.
+				for(Category c : categories.keySet() ){
+					System.out.println();
+					if(t.getName().equals(categories.get(c))){
+						t.addCategory(c);
+						System.out.println("TIMELINEMAKER 69: Added " + c.getName() + " to " + t.getName());
+					}
+				}
+			}
 			selectedTimeline = timelines.get(0);
 			selectedEvent = null;
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Your database is empty.");
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Error loading from Database.");
 		}
 
@@ -272,10 +285,6 @@ public class TimelineMaker {
 
 	}
 
-	public int getUniqueID() {
-		return idCounter++;
-	}
-
 	/**
 	 * @param mainWindow
 	 *            the mainWindow to set
@@ -288,4 +297,13 @@ public class TimelineMaker {
 		return timelines.size();
 	}
 
+	public void addCategory(Category category){
+		database.saveCategory(category, selectedTimeline.getName());
+	}
+	public void deleteCategory(Category category){
+		database.removeCategory(category, selectedTimeline.getName());
+	}
+	public void editCategory(Category category){
+		database.editCategory(category, selectedTimeline.getName());
+	}
 }

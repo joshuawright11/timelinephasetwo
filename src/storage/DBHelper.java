@@ -481,17 +481,19 @@ public class DBHelper implements DBHelperAPI{
 		}
 	}
 	
-	public HashMap<String,Category> getCategories(){
+	public HashMap<Category,String> getCategories(){
 		open();
 		try{
 			ResultSet resultSet2 = statement.executeQuery("SELECT * FROM timeline_categories;");
-			HashMap<String, Category> categories = new HashMap<String, Category>();
+			HashMap<Category, String> categories = new HashMap<Category, String>();
 			while(resultSet2.next()){ // Get all category info
+				int id = resultSet2.getInt(1);
 				String name = resultSet2.getString("categoryName");
 				String timelineName = resultSet2.getString("timelineName");
 				Color color = Color.web(resultSet2.getString("color"));
 				Category category = new Category(name, color);
-				categories.put(timelineName, category);
+				category.setID(id);
+				categories.put(category, timelineName);
 			}
 			close();
 			return categories;
@@ -567,16 +569,16 @@ public class DBHelper implements DBHelperAPI{
 		open();
 		try{
 			String UPDATE_NAME_LABEL = " UPDATE timeline_categories SET categoryName=? WHERE _id=?;";
-			PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
-			pstmt.setString(1, category.getName());
-			pstmt.setInt(2, category.getID());
-			pstmt.executeUpdate();
+			PreparedStatement pstmt2 = connection.prepareStatement(UPDATE_NAME_LABEL);
+			pstmt2.setString(1, category.getName());
+			pstmt2.setInt(2, category.getID());
+			pstmt2.executeUpdate();
 			
-			String UPDATE_COLOR_LABEL = " UPDATE "+timelineName+" SET color=? WHERE _id=?;";
-			pstmt = connection.prepareStatement(UPDATE_COLOR_LABEL);
-			pstmt.setString(1, category.getColor().toString());
-			pstmt.setInt(2, category.getID());
-			pstmt.executeUpdate();
+			String UPDATE_COLOR_LABEL = " UPDATE timeline_categories SET color=? WHERE _id=?;";
+			pstmt2 = connection.prepareStatement(UPDATE_COLOR_LABEL);
+			pstmt2.setString(1, category.getColor().toString());
+			pstmt2.setInt(2, category.getID());
+			pstmt2.executeUpdate();
 			
 			close();
 			return true;

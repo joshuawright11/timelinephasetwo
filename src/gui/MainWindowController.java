@@ -187,7 +187,7 @@ public class MainWindowController{
         Category selectedCategory = timelineMaker.getSelectedTimeline().getSelectedCategory();
         timelineMaker.getSelectedTimeline().deleteCategory(selectedCategory);
         populateListView();
-        //TODO: DELETE CATEGORY FROM DATABASE
+        timelineMaker.deleteCategory(selectedCategory);
     }
     
     // Handler for Button[fx:id="deleteEventButton"] onAction

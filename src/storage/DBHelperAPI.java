@@ -72,7 +72,7 @@ public interface DBHelperAPI {
 	 * @return false if the event did not exist in the database
 	 */
 	
-	public HashMap<String, Category> getCategories();
+	public HashMap<Category, String> getCategories();
 	
 	public boolean editEvent(TLEvent event, String timelineName);
 	

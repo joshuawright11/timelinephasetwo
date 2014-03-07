@@ -79,7 +79,6 @@ public class Timeline implements TimelineAPI{
             axisLabel = AxisLabel.YEARS;
             setDirty(true);
             this.timelineMaker = timelineMaker;
-            id = timelineMaker.getUniqueID();
 	}
         
     public Timeline(String name){
