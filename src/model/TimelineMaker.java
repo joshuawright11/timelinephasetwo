@@ -56,6 +56,7 @@ public class TimelineMaker {
         
         private final String help_text = "\tHow to use this Timeline Maker:  \n"
                 + "*Use the buttons on the left to create, edit, or delete timelines. Timelines may have titles and background colors, and they may be displayed in a number of different units.\n"
+                + "*IMPORTANT: Timeline dates are in year-month-day form. You have to include the dashes.\n"
                 + "*Each timeline has a set of events. Create events with the \"add\" button.\n"
                 + "*To edit and delete events, select them on the rendered timeline and then proceed to delete them.\"\n"
                 + "*Each timeline also has a set of categories. There must be at least one category, the default category, which may be edited. Each category has a name and a color associated with it.\"\n"
