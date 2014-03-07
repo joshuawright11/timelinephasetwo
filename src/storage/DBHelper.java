@@ -130,8 +130,7 @@ public class DBHelper implements DBHelperAPI{
 	private void changeTimelineName(Timeline timeline) throws SQLException {
 		String oldName = getName(timeline);
 		String newName = timeline.getName();
-		System.out.println("Oldname was: "+oldName);
-		System.out.println("Newname is: "+timeline.getName());		
+		if(oldName.equals(newName)) return;
 		String SELECT_LABEL = "ALTER TABLE \""+oldName+"\" RENAME TO \""+newName+"\";";
 		PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
 		pstmt.execute();
@@ -173,7 +172,6 @@ public class DBHelper implements DBHelperAPI{
 	 * @throws SQLException because there are databases
 	 */
 	private void updateTimelineInfo(Timeline timeline) throws SQLException{
-		System.out.println("Changing timelineName of id: "+timeline.getID()+" to " + timeline.getName());
 		
 		String UPDATE_NAME_LABEL = " UPDATE timeline_info SET timelineName=? WHERE _id=?;";
 		PreparedStatement pstmt = connection.prepareStatement(UPDATE_NAME_LABEL);
@@ -237,11 +235,9 @@ public class DBHelper implements DBHelperAPI{
 	private void setTimelineID(Timeline timeline) throws SQLException{
 			String SELECT_LABEL = "SELECT _id FROM timeline_info WHERE timelineName = ?;";
 			PreparedStatement pstmt = connection.prepareStatement(SELECT_LABEL);
-			System.out.println(timeline.getName());
 			pstmt.setString(1, timeline.getName());
 			resultSet = pstmt.executeQuery();
 			int id = resultSet.getInt(1); //TODO MUST NAME TIMELINE WHEN EDITING
-			System.out.println(id);
 			timeline.setID(id);
 	}
 
