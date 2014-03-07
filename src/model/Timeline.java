@@ -77,12 +77,11 @@ public class Timeline implements TimelineAPI{
 	public Timeline(String name, TimelineMaker timelineMaker){
             this.name = name;
             categories = new ArrayList<Category>();
-            categories.add(new Category(""));
+            categories.add(new Category("DEFAULT"));
             events = new ArrayList<TLEvent>();
             axisLabel = AxisLabel.YEARS;
             setDirty(true);
             this.timelineMaker = timelineMaker;
-            id = timelineMaker.getUniqueID();
 	}
         
     public Timeline(String name){
@@ -91,7 +90,7 @@ public class Timeline implements TimelineAPI{
             axisLabel = AxisLabel.YEARS;
             setDirty(true);
             categories = new ArrayList<Category>();
-            categories.add(new Category(""));
+            categories.add(new Category("DEFAULT"));
     }
 	
 	/**
@@ -106,11 +105,11 @@ public class Timeline implements TimelineAPI{
 		this.axisLabel = axisLabel;
 		this.events = new ArrayList<TLEvent>();
 		dirty = true;
-                categories = new ArrayList<Category>();
-             categories.add(new Category(""));
+		categories = new ArrayList<Category>();
+		categories.add(new Category("DEFAULT"));
 
 	}
-	
+
 	/**
 	 * Constructor for name, events, and axisLabel
 	 * 
@@ -120,10 +119,9 @@ public class Timeline implements TimelineAPI{
 	 */
 	public Timeline(String name, TLEvent[] events, Color color, AxisLabel axisLabel) {
             categories = new ArrayList<Category>();
-            categories.add(new Category(""));
-
+            categories.add(new Category("DEFAULT"));
 		this.name = name;
-		if(events != null)
+		if (events != null)
 			this.events = new ArrayList<TLEvent>(Arrays.asList(events));
 		else
 			this.events = new ArrayList<TLEvent>();
@@ -230,6 +228,10 @@ public class Timeline implements TimelineAPI{
 	public AxisLabel getAxisLabel() {
 		return axisLabel;
 	}
+	
+	public void setAxisLabel(AxisLabel axisLabel) {
+		this.axisLabel = axisLabel;
+	}
         
         public Iterator<TLEvent> getEventIterator(){
             return events.iterator();
@@ -317,7 +319,7 @@ public class Timeline implements TimelineAPI{
             for (Category c : categories)
                 if (c.getName().equals(title))
                     return c;
-            return null;
+            return getDefaultCategory();
         }
         
         public void editCategory(String title, String name, Color color){

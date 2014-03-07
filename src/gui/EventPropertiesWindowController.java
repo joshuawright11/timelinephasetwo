@@ -105,7 +105,6 @@ public class EventPropertiesWindowController{
         Category selectedCategory = timelineMaker.getSelectedTimeline().
                 getCategory(categoryComboBox.getSelectionModel().getSelectedItem());
         Icon icon = timelineMaker.getIcon(iconComboBox.getSelectionModel().getSelectedItem());
-        System.out.println(selectedCategory.getName());
     	String title = titleTextField.getText();
         Date startDate = Date.valueOf(startDateTextField.getText());
         Date endDate = null;

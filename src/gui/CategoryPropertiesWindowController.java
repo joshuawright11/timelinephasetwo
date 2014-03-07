@@ -63,29 +63,27 @@ public class CategoryPropertiesWindowController {
     }
 
     // Handler for Button[fx:id="createButton"] onAction
-    @FXML
-    void createButtonPressed(ActionEvent event) {
-        String title = categoryNameTextField.getText();
-        Color color = renderColorColorPicker.getValue();        
-        if(!title.equals("")){
-                if(category == null){
-                    category = new Category(title, color);
-                    timelineMaker.getSelectedTimeline().addCategory(category);
-                }
-                else{
-                    timelineMaker.getSelectedTimeline().editCategory(category.getName(), title, color);
-                }
-	        timelineMaker.getSelectedTimeline().selectCategory(category.getName());
-	        timelineMaker.populateView();
-	        Node  source = (Node)  event.getSource(); 
-	        Stage stage  = (Stage) source.getScene().getWindow();
-	        stage.close();
-        }
-        
-        
-        //TODO: Save the new category to the database.
-    }
+	@FXML
+	void createButtonPressed(ActionEvent event) {
+		String title = categoryNameTextField.getText();
+		Color color = renderColorColorPicker.getValue();
+		if (!title.equals("")) {
+			if (category == null) {
+				category = new Category(title, color);
+				if (timelineMaker.getSelectedTimeline().addCategory(category))
+					timelineMaker.addCategory(category);
+			} else {
+				timelineMaker.getSelectedTimeline().editCategory(category.getName(), title, color);
+				timelineMaker.editCategory(category);
+			}
+			timelineMaker.getSelectedTimeline().selectCategory(category.getName());
+			timelineMaker.populateView();
+			Node source = (Node) event.getSource();
+			Stage stage = (Stage) source.getScene().getWindow();
+			stage.close();
+		}
 
+	}
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
     	// nothing?
