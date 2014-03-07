@@ -732,8 +732,7 @@ public class DBHelper implements DBHelperAPI{
 			while(resultSet2.next()){ // Get all category info
 				int id = resultSet2.getInt(1);
 				String name = resultSet2.getString("iconName");
-				Blob image = resultSet2.getBlob("icon");
-				InputStream is = image.getBinaryStream();
+				InputStream is = resultSet2.getBinaryStream("icon");
 				Icon icon = new Icon(name, new Image(is, 50, 50, true, true), ""); // path is no longer necessary
 				icon.setId(id);
 				icons.add(icon);

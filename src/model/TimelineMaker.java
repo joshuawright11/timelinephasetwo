@@ -126,10 +126,14 @@ public class TimelineMaker {
 
         
         public void addIcon(Icon i){
-            if(i != null) icons.add(i);
+            if(i != null){
+            	icons.add(i);
+            	database.saveIcon(i);
+            }
         }
         
         public boolean deleteIcon(String icon){
+        	//TODO GET THIS WORKING
             //The user is not allowed to delete the only category!
             if(icons.size() <= 1) return false;
             Icon ico = new Icon(null, null, null);
