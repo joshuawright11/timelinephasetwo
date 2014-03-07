@@ -131,9 +131,9 @@ public interface DBHelperAPI {
 	public boolean removeIcon(Icon icon);
 
 	/**
-	 * Gets a list of all the 
+	 * Gets an ArrayList of all icons from the database
 	 * 
-	 * @return
+	 * @return ArrayList of Icons
 	 */
 	public ArrayList<Icon> getIcons();
 	
