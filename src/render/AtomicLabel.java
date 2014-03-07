@@ -38,7 +38,6 @@ public class AtomicLabel extends TLEventLabel {
 			setId("atomic-label");
 		}
 	}
-
 	@Override
 	public void uniqueDesign() {
 		setId("atomic-label");

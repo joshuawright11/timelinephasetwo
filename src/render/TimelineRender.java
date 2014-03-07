@@ -221,7 +221,7 @@ public class TimelineRender extends Pane {
 		setLayoutY(pushDown);
 	}	
 	/**
-	 * 
+	 * Sets the icon graphics of all event labels and displays them.
 	 */
 	private void eventsToFront() {
 		for(TLEventLabel label : eventLabels){
