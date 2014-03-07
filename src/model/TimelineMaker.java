@@ -163,6 +163,28 @@ public class TimelineMaker {
             if(i != null) icons.add(i);
         }
         
+        public boolean deleteIcon(String icon){
+            //The user is not allowed to delete the only category!
+            if(icons.size() <= 1) return false;
+            Icon ico = new Icon(null, null);
+            for(Icon i: icons)
+                if(i.getName().equals(icon)){
+                    ico = i;
+                    break;
+                }
+            for(Timeline t: timelines){
+                Iterator<TLEvent> eventIterator = t.getEventIterator();
+                TLEvent e;
+                while(eventIterator.hasNext()){
+                    e = eventIterator.next();
+                    if(e.getIcon() == ico)
+                        e.setIcon(null);
+                }
+            }
+            return icons.remove(ico);
+        }
+
+        
 	/**
 	 * Retrieve a list of the names of all the timelines.
 	 * @return timelines
@@ -186,6 +208,8 @@ public class TimelineMaker {
 				return t;
 		return null;
 	}
+        
+        
         
         public Timeline getSelectedTimeline(){
             return selectedTimeline;

@@ -25,6 +25,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -35,6 +36,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -49,7 +51,7 @@ import model.Icon;
 
 public class MainWindowController{
 
-	private TimelineMaker timelineMaker;
+    private TimelineMaker timelineMaker;
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -165,6 +167,13 @@ public class MainWindowController{
     @FXML // fx:id="toolbarSeparator"
     private Separator toolbarSeparator; // Value injected by FXMLLoader
     
+    @FXML // fx:id="iconComboBox"
+    private ComboBox<String> iconComboBox; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="deleteIcon"
+    private Button deleteIcon; // Value injected by FXMLLoader
+
+    
     private FileChooser fileChooser;
     private Desktop desktop = Desktop.getDesktop();
     
@@ -214,6 +223,9 @@ public class MainWindowController{
         if(file != null){
             InputStream is = new FileInputStream(file.getPath());
             timelineMaker.addIcon(new Icon(file.getName(), new Image(is, 50, 50, true, true)));
+            iconComboBox.setItems(FXCollections.observableList(timelineMaker.getImageTitles()));
+            iconComboBox.getSelectionModel().select(file.getName());
+            //iconComboBoxClicked();
         }
         // handle the event here
     }
@@ -239,6 +251,16 @@ public class MainWindowController{
     @FXML
     void deletePressed(Event event) {
         // TODO Might delete
+    }
+    
+    @FXML
+    void deleteIconPressed(){
+        String toDelete = iconComboBox.getSelectionModel().getSelectedItem();
+        if(toDelete.equals("None")) return;
+        timelineMaker.deleteIcon(toDelete);
+        populateComboBox();
+        timelineMaker.updateGraphics();
+        //@TODO: SAVE TO DATABASE
     }
 
     // Handler for Button[fx:id="deleteTimelineButton"] onAction
@@ -434,6 +456,12 @@ public class MainWindowController{
 				categoriesListViewClicked();
 			}
 		});
+       /* iconComboBox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				iconComboBoxClicked();
+			}
+		});*/
     }
 
     private void timelineListViewClicked(){
@@ -445,6 +473,18 @@ public class MainWindowController{
         timelineMaker.getSelectedTimeline()
                 .selectCategory(categoriesListView.getSelectionModel().getSelectedItem());
     }
+    /*
+    private void iconComboBoxClicked(){
+        String selected = iconComboBox.getSelectionModel().getSelectedItem();
+        if(!selected.equals("None")){
+            iconLabel.setText(timelineMaker.getIcon
+                (selected).getName());
+            System.out.println("WHATHNNNFNG");
+            iconLabel.setGraphic(new ImageView(timelineMaker.getIcon
+                (selected).getImage()));
+            iconLabel.toFront();
+        }
+    }*/
     
     public void populateListView() {
         timelinesListView.setItems(FXCollections.observableList(timelineMaker.getTimelineTitles()));
@@ -454,14 +494,23 @@ public class MainWindowController{
             categoriesListView.setItems(FXCollections.observableList(t.getCategoryTitles()));
             categoriesListView.getSelectionModel().select(t.getSelectedCategory().getName());
         }
+        
+    }
+    
+    public void populateComboBox(){
+        iconComboBox.setItems(FXCollections.observableList(timelineMaker.getImageTitles()));
+        if ( timelineMaker.getImageTitles().get(0) != null ) iconComboBox.getSelectionModel().select(
+                    "None");
     }
 
 	public void initData(TimelineMaker timelineMaker) {
                 fileChooser = new FileChooser();
+                deleteIcon = new Button();
 		this.timelineMaker = timelineMaker;
 		timelineMaker.setMainWindow(this);
                 //fileChooser.showOpenDialog(stage);
 		populateListView();
+                populateComboBox();
 		timelineMaker.graphics.setPanel(renderScrollPane);
                 
 	}
