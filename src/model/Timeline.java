@@ -73,21 +73,6 @@ public class Timeline implements TimelineAPI{
 	
 	private TimelineMaker timelineMaker;
 	
-	/**
-	 * Constructor
-	 * 
-	 * @param name Timeline name
-	 */
-	public Timeline(String name, TimelineMaker timelineMaker){
-            this.name = name;
-            categories = new ArrayList<Category>();
-            categories.add(new Category(""));
-            events = new ArrayList<TLEvent>();
-            axisLabel = AxisLabel.YEARS;
-            setDirty(true);
-            this.timelineMaker = timelineMaker;
-            id = timelineMaker.getUniqueID();
-	}
         
     public Timeline(String name){
             this.name = name;
@@ -95,7 +80,7 @@ public class Timeline implements TimelineAPI{
             axisLabel = AxisLabel.YEARS;
             setDirty(true);
             categories = new ArrayList<Category>();
-            categories.add(new Category(""));
+            categories.add(new Category("DEFAULT"));
     }
 	
 	/**
@@ -112,11 +97,10 @@ public class Timeline implements TimelineAPI{
 		this.axisLabel = axisLabel;
 		this.events = new ArrayList<TLEvent>();
 		dirty = true;
-                categories = new ArrayList<Category>();
-             categories.add(new Category(""));
-
+		categories = new ArrayList<Category>();
+		categories.add(new Category("DEFAULT"));
 	}
-	
+
 	/**
 	 * Constructor for name, events, and axisLabel
 	 * 
@@ -126,10 +110,9 @@ public class Timeline implements TimelineAPI{
 	 */
 	public Timeline(String name, TLEvent[] events, Color colorTL, Color colorBG, AxisLabel axisLabel) {
             categories = new ArrayList<Category>();
-            categories.add(new Category(""));
-
+            categories.add(new Category("DEFAULT"));
 		this.name = name;
-		if(events != null)
+		if (events != null)
 			this.events = new ArrayList<TLEvent>(Arrays.asList(events));
 		else
 			this.events = new ArrayList<TLEvent>();
@@ -235,10 +218,20 @@ public class Timeline implements TimelineAPI{
 	public Color getColorTL(){
 		return colorTL;
 	}
+	public void setColorBG(Color colorBG){
+		this.colorBG = colorBG;
+	}
+	public void setColorTL(Color colorTL){
+		this.colorTL = colorTL;
+	}
 	
 	@Override
 	public AxisLabel getAxisLabel() {
 		return axisLabel;
+	}
+	
+	public void setAxisLabel(AxisLabel axisLabel) {
+		this.axisLabel = axisLabel;
 	}
         
         public Iterator<TLEvent> getEventIterator(){
@@ -254,7 +247,7 @@ public class Timeline implements TimelineAPI{
         public boolean addCategory(Category c){
             if(containsTitle(c)) return false;
             //Replace the default category if it wasn't edited.
-            else if(categories.size() == 1 && getDefaultCategory().getName().equals("")){
+            else if(categories.size() == 1 && getDefaultCategory().getName().equals("DEFAULT")){
                 categories.add(c);
                 deleteCategory(getDefaultCategory());
             }
@@ -301,15 +294,6 @@ public class Timeline implements TimelineAPI{
             return categories.iterator();
         }
         
-                /**
-         * Method to get the number of categories known.
-         * 
-         * @return An int representing the number of categories known.
-         */
-        public int catSize(){
-            return categories.size();
-        }
-        
         public ArrayList<String> getCategoryTitles() {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		for (Category c: categories){
@@ -327,7 +311,7 @@ public class Timeline implements TimelineAPI{
             for (Category c : categories)
                 if (c.getName().equals(title))
                     return c;
-            return null;
+            return getDefaultCategory();
         }
         
         public void editCategory(String title, String name, Color color){

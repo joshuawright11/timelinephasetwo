@@ -5,8 +5,8 @@
 package model;
 
 import java.sql.Date;
-import javafx.scene.image.Image;
 
+import javafx.scene.image.Image;
 import storage.DBHelper;
 
 public class TLEvent{
@@ -15,6 +15,7 @@ public class TLEvent{
 	private Category category;
 	private int id;
         private Icon icon;
+        private int iconIndex;
         
         /**
          * Constructor
@@ -22,6 +23,7 @@ public class TLEvent{
          * @param name The name of the Event to be constructed.
          */
         public TLEvent(String name){
+        	this.setIconIndex(-1);
             this.name = name;
             category = new Category("Default");
         }
@@ -32,10 +34,13 @@ public class TLEvent{
      * @param startDate The int value of start of the event.
      * @param category The category of the event.
      */
-	public TLEvent(String name, Date startDate, Category category){
+	public TLEvent(String name, Date startDate, Category category, int iconIndex, String description){
 		this.name = name;
 		this.startDate = startDate;
 		this.category = category;
+		this.description = description;
+		this.icon = new Icon("None", null, null); //TODO this is kludgy
+		this.setIconIndex(-1);
 	}
         /**
          * Method to return the description of the TLEvent.
@@ -131,4 +136,16 @@ public class TLEvent{
         public void setIcon(Icon icon){
             this.icon = icon;
         }
+		/**
+		 * @return the iconIndex
+		 */
+		public int getIconIndex() {
+			return iconIndex;
+		}
+		/**
+		 * @param iconIndex the iconIndex to set
+		 */
+		public void setIconIndex(int iconIndex) {
+			this.iconIndex = iconIndex;
+		}
 }

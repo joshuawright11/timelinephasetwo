@@ -29,8 +29,8 @@ public class Driver {
 
 	public static void main(String[] args) {
 		DBHelper helper = new DBHelper("timeline.db");
-		TLEvent event1 = new Atomic("one", new Category(""), new Date(((long)1000)*60*60*24));
-		TLEvent event2 = new Duration("two", new Category(""), new Date(((long)1000)*60*60*24),new Date(((long)1000)*60*60*24*2));
+		TLEvent event1 = new Atomic("one", new Category(""), new Date(((long)1000)*60*60*24), -1, "");
+		TLEvent event2 = new Duration("two", new Category(""), new Date(((long)1000)*60*60*24),new Date(((long)1000)*60*60*24*2), -1, "");
 		Timeline test1 = new Timeline("Test1", AxisLabel.DAYS,Color.BLUE,Color.GRAY);
 		Timeline test2 = new Timeline("Test2", AxisLabel.YEARS,Color.BLUE,Color.GRAY);
 		test1.addEvent(event1);

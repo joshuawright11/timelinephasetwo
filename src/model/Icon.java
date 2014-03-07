@@ -13,20 +13,28 @@ import javafx.scene.image.Image;
  * @author Kayley Lane
  */
 public class Icon {
-    String name;
-    Image icon;
+    /*
+    * The name of the image, seperate from its entire path.
+    */
+    private String name;
     
-    public Icon(String name, Image icon){
+    /*
+    * The image associated with this icon.
+    */
+    private Image icon;
+    
+    private int id;
+    
+    private String path;
+        
+    /*
+    * Constructor. The parameters of an individual icon will not be changed.
+    */
+    public Icon(String name, Image icon, String path){
         this.name = name;
         this.icon = icon;
-    }
-    
-    public Icon changeName(String name){
-        return new Icon(name, icon);
-    }
-    
-    public Icon changeIcon(Image icon){
-        return new Icon(name, icon);
+        this.path = path;
+        this.setId(-1);
     }
     
     public String getName(){
@@ -36,4 +44,24 @@ public class Icon {
     public Image getImage(){
         return icon;
     }
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getPath(){
+		return path;
+	}
+       
+    
 }

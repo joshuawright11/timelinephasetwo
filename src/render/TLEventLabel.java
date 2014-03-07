@@ -2,8 +2,6 @@ package render;
 
 import java.awt.MouseInfo;
 import java.util.ArrayList;
-
-import model.Category;
 import model.TLEvent;
 import model.TimelineMaker;
 import javafx.application.Platform;
@@ -14,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -28,7 +27,7 @@ import javafx.stage.WindowEvent;
  * 
  * @author Josh Wright
  * Created: February 15, 2014
- * Last Edited: March 15, 2014
+ * Last Edited: March 7, 2014
  * 
  * Some ContextMenu code ripped from Oracle's documentation on ContextMenus
  */
@@ -59,6 +58,8 @@ public abstract class TLEventLabel extends Label {
 	 */
 	private int xPos;
 	private int yPos;
+        
+        private Image icon;
 	
 	private ContextMenu contextMenu;
 	
@@ -74,9 +75,15 @@ public abstract class TLEventLabel extends Label {
 		this.model = model;
 		this.xPos = xPos;
 		this.yPos = yPos;
+                if(event.getIcon()!=null)
+                    this.icon = event.getIcon().getImage();
 		contextMenu = new ContextMenu();
 		init();
 	}
+        
+        public Image getIcon(){
+            return icon;
+        }
 
 	/**
 	 * Getter for selected
@@ -119,11 +126,11 @@ public abstract class TLEventLabel extends Label {
 		Text t = new Text();
 		t.setText(event.getName());
 		t.setFont(Font.font("Verdana",20));
-		t.setFill(Color.PURPLE);
+		t.setFill(Color.BLACK);
 		CustomMenuItem name = new CustomMenuItem(t);
 		
-		TextArea test = new TextArea("Put item content here, once it works."
-				+ " This needs resizing work.");
+		TextArea test = new TextArea();
+		test.setText(event.getDescription());
 		test.setPrefWidth(200);
 		test.setEditable(false);
 		test.setWrapText(true);
@@ -144,11 +151,12 @@ public abstract class TLEventLabel extends Label {
 	private void initDesign(){
 		setLayoutX(xPos);
 		setLayoutY(yPos);
-		Category c = event.getCategory();
-		Color clr = c.getColor();
-		String color = clr.toString();
-		color = color.substring(2);
-		setStyle("-fx-background-color: #" + color);
+//		Category c = event.getCategory();
+//		Color clr = c.getColor();
+//		String color = clr.toString(); //This works fine, I kept textfill because it wont overwrite the stylesheet
+//		color = color.substring(2);
+//		setStyle("-fx-background-color: #" + color);
+		setTextFill(Color.web(event.getCategory().getColor().toString()));
 		uniqueDesign();
 	}
 

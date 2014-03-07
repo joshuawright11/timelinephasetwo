@@ -140,6 +140,8 @@ public class TimelinePropertiesWindowController{
 	private void loadTimelineInfo(Timeline timeline) {
 		titleTextField.setText(timeline.getName());
 		axisUnitComboBox.setValue(timeline.getAxisLabel());
+		colorBackgroundChooser.setValue(timeline.getColorBG());
+		colorTimelineChooser.setValue(timeline.getColorTL());
 	}
 
 

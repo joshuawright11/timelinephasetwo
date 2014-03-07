@@ -3,6 +3,11 @@
  */
 package storage;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import model.Category;
+import model.Icon;
 import model.TLEvent;
 import model.Timeline;
 
@@ -68,8 +73,23 @@ public interface DBHelperAPI {
 	 * 
 	 * @return false if the event did not exist in the database
 	 */
+	
+	public HashMap<Category, String> getCategories();
+	
 	public boolean editEvent(TLEvent event, String timelineName);
+	
+	public void saveCategory(Category category, String timelineName);
+	
+	public boolean removeCategory(Category category, String timelineName);
+	
+	public boolean editCategory(Category category, String timelineName);
+	
+	public void saveIcon(Icon icon);
+	
+	public boolean removeIcon(Icon icon);
 
+	public ArrayList<Icon> getIcons();
+	
 	/**
 	 * Returns an array of all timelines currently in the database. The timelines have their events and any additional info built into them
 	 * 

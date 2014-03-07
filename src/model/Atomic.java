@@ -1,5 +1,6 @@
 package model;
 import java.sql.Date;
+
 import javax.swing.ImageIcon;
 /**
  * Extension of class TLEvent to represent atomic (single date) events
@@ -11,8 +12,8 @@ import javax.swing.ImageIcon;
  */
 public class Atomic extends TLEvent {
         
-	public Atomic(String name, Category category, Date startDate){
-            super(name, startDate, category);
+	public Atomic(String name, Category category, Date startDate, int iconIndex, String description){
+            super(name, startDate, category, iconIndex, description);
 	}        
        /**
          * Saves the event to the database.
