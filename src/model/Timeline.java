@@ -288,15 +288,6 @@ public class Timeline implements TimelineAPI{
             return categories.iterator();
         }
         
-                /**
-         * Method to get the number of categories known.
-         * 
-         * @return An int representing the number of categories known.
-         */
-        public int catSize(){
-            return categories.size();
-        }
-        
         public ArrayList<String> getCategoryTitles() {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		for (Category c: categories){

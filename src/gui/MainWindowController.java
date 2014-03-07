@@ -178,6 +178,7 @@ public class MainWindowController{
     // Handler for Button[fx:id="addCategoryButton"] onAction
     @FXML
     void addCategoryPressed(ActionEvent event) {
+        if(timelineMaker.getSelectedTimeline() == null) return;
 		try {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
 		Parent root = (Parent)loader.load();
@@ -225,6 +226,7 @@ public class MainWindowController{
     // Handler for Button[fx:id="deleteCategoryButton"] onAction
     @FXML
     void deleteCategoryPressed(ActionEvent event) {
+        if(timelineMaker.getSelectedTimeline() == null) return;
         Category selectedCategory = timelineMaker.getSelectedTimeline().getSelectedCategory();
         timelineMaker.getSelectedTimeline().deleteCategory(selectedCategory);
         populateListView();
@@ -256,12 +258,17 @@ public class MainWindowController{
     // Handler for Button[fx:id="deleteTimelineButton"] onAction
     @FXML
     void deleteTimelinePressed(ActionEvent event) {
+        if(timelineMaker == null) return;
            timelineMaker.deleteTimeline();
+           timelineMaker.selectDefaultTimeline();
+           timelineMaker.updateGraphics();
+           populateListView();
     }
     
     // Handler for Button[fx:id="editCategoryButton"] onAction
     @FXML
     void editCategoryPressed(ActionEvent event) {
+        if(timelineMaker.getSelectedTimeline() == null) return;
         Category selectedCategory = timelineMaker.getSelectedTimeline().getSelectedCategory();
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("CategoryPropertiesWindow.fxml"));
