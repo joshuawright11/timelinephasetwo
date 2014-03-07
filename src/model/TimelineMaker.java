@@ -56,10 +56,12 @@ public class TimelineMaker {
         
         private final String help_text = "\tHow to use this Timeline Maker:  \n"
                 + "*Use the buttons on the left to create, edit, or delete timelines. Timelines may have titles and background colors, and they may be displayed in a number of different units.\n"
+                + "*IMPORTANT: Timeline dates are in year-month-day form. You have to include the dashes.\n"
                 + "*Each timeline has a set of events. Create events with the \"add\" button.\n"
                 + "*To edit and delete events, select them on the rendered timeline and then proceed to delete them.\"\n"
                 + "*Each timeline also has a set of categories. There must be at least one category, the default category, which may be edited. Each category has a name and a color associated with it.\"\n"
-                + "*Image icons may be added to timeline events. Upload images using the right side-bar and set them in the event editing window.\n";
+                + "*Image icons may be added to timeline events. Upload images using the right side-bar and set them in the event editing window.\n" 
+                + "*Double click events for surprises!";
         
         private final String about_text = "\tCredits: \n\n"
                 +"@Authors Andrew.Sutton, Josh Wright, Kayley Lane, Conner Vick, Brian Williamson\n\n"
@@ -109,6 +111,11 @@ public class TimelineMaker {
 
 	}
 
+	/**
+	 * 
+	 * @param t The icon to be returned
+	 * @return The icon with a name matching String t
+	 */
         public Icon getIcon(String t){
             for(Icon i: icons){
                 if(i.getName().equals(t)) return i;
@@ -116,6 +123,10 @@ public class TimelineMaker {
             return icons.get(0);
         }
         
+        /**
+         * 
+         * @return An ArrayList representation of all the icon names.
+         */
 	public ArrayList<String> getImageTitles() {
             ArrayList<String> iconTitles = new ArrayList<String>();
             for(Icon i: icons){
@@ -124,7 +135,10 @@ public class TimelineMaker {
             return iconTitles;
 	}
 
-        
+        /**
+         * 
+         * @param i Icon to be added to the list of icons and to the database.
+         */
         public void addIcon(Icon i){
             if(i != null){
             	icons.add(i);
@@ -132,6 +146,11 @@ public class TimelineMaker {
             }
         }
         
+        /**
+         * Deletes an icon from the list of icons and the database.
+         * @param icon the name of the icon to be deleted
+         * @return success
+         */
         public boolean deleteIcon(String icon){
         	//TODO GET THIS WORKING
             //The user is not allowed to delete the only category!
@@ -182,6 +201,10 @@ public class TimelineMaker {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @return the currently selected timeline.
+	 */
 	public Timeline getSelectedTimeline() {
 		return selectedTimeline;
 	}
@@ -201,9 +224,9 @@ public class TimelineMaker {
 			updateGraphics();
 	}
         
-        /*
-        * To be called in the event that a timeline is deleted.
-        */
+        /**
+         * Selects the default timeline in the case that an event is deleted.
+         */
         public void selectDefaultTimeline(){
             if(timelines.size() > 0)
              selectedTimeline = timelines.get(0);
@@ -267,6 +290,9 @@ public class TimelineMaker {
 		updateGraphics();
 	}
 
+	/**
+	 * Populates the list view of the main window.
+	 */
 	public void populateView() {
 		mainWindow.populateListView();
 	}
@@ -371,28 +397,56 @@ public class TimelineMaker {
 		this.mainWindow = mainWindow;
 	}
                 
+	/**
+	 * 
+	 * @return the size of the timelines array.
+	 */
         public int timeSize(){
             return timelines.size();
         }
         
+        /**
+         * 
+         * @return the final string help_text.
+         */
         public String getHelpText(){
             return help_text;
         }
 
+        /**
+         * 
+         * @return the final string about_text.
+         */
         public String getAboutText(){
             return about_text;
         }
 
+        /**
+         * 
+         * @param category saves this category to the database.
+         */
 	public void addCategory(Category category){
 		database.saveCategory(category, selectedTimeline.getName());
 	}
+	/**
+	 * 
+	 * @param category removes this category from the database.
+	 */
 	public void deleteCategory(Category category){
 		database.removeCategory(category, selectedTimeline.getName());
 	}
+	/**
+	 * 
+	 * @param category edits this category in the database.
+	 */
 	public void editCategory(Category category){
 		database.editCategory(category, selectedTimeline.getName());
 	}
 
+	/**
+	 * An attempt at associating the events with their icons on start-up.
+	 * Intended to load the events with their icons from the database.
+	 */
 	private void populateEventIcons() {
 		HashMap<Integer, Icon> iconMap = new HashMap<Integer, Icon>();
 		for (Icon i : icons) {
