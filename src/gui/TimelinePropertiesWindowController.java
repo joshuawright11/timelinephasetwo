@@ -120,7 +120,7 @@ public class TimelinePropertiesWindowController{
     }
 
 	/**
-	 * 
+	 * Initializes all the labels to the Combo box
 	 */
 	private void initComboBox() {
 		AxisLabel[] labels = Timeline.AxisLabel.values();
@@ -129,6 +129,11 @@ public class TimelinePropertiesWindowController{
 		axisUnitComboBox.setValue(labels[0]);
 	}
 
+	/**
+	 * Initializes the timeline
+	 * @param timelineMaker The timelinemaker stored here.
+	 * @param timeline The timeline stored here.
+	 */
 	public void initData(TimelineMaker timelineMaker, Timeline timeline) {
 		this.timelineMaker = timelineMaker;
 		if(timeline != null){
@@ -137,6 +142,10 @@ public class TimelinePropertiesWindowController{
 		}
 	}
 
+	/**
+	 * Loads the information into the timeline.
+	 * @param timeline  The timeline that information is loaded to.
+	 */
 	private void loadTimelineInfo(Timeline timeline) {
 		titleTextField.setText(timeline.getName());
 		axisUnitComboBox.setValue(timeline.getAxisLabel());

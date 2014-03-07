@@ -733,7 +733,7 @@ public class DBHelper implements DBHelperAPI{
 				int id = resultSet2.getInt(1);
 				String name = resultSet2.getString("iconName");
 				InputStream is = resultSet2.getBinaryStream("icon");
-				Icon icon = new Icon(name, new Image(is, 50, 50, true, true), ""); // path is no longer necessary
+				Icon icon = new Icon(name, new Image(is, 20, 20, true, true), ""); // path is no longer necessary
 				icon.setId(id);
 				icons.add(icon);
 			}

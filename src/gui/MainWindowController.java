@@ -490,6 +490,9 @@ public class MainWindowController{
         }
     }*/
     
+    /**
+     * Populates the list view with the timelines and categories.
+     */
     public void populateListView() {
         timelinesListView.setItems(FXCollections.observableList(timelineMaker.getTimelineTitles()));
         Timeline t = timelineMaker.getSelectedTimeline();
@@ -501,12 +504,19 @@ public class MainWindowController{
         
     }
     
+    /**
+     *  Populates the ComboBox with images
+     */
     public void populateComboBox(){
         iconComboBox.setItems(FXCollections.observableList(timelineMaker.getImageTitles()));
         if ( timelineMaker.getImageTitles().get(0) != null ) iconComboBox.getSelectionModel().select(
                     "None");
     }
 
+	/**
+	 * Initializes the Main window.
+	 * @param timelineMaker The timelinemaker that makes the timeline.
+	 */
 	public void initData(TimelineMaker timelineMaker) {
                 fileChooser = new FileChooser();
                 deleteIcon = new Button();
