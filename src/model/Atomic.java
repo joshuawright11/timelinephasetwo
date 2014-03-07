@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 public class Atomic extends TLEvent {
         
 	public Atomic(String name, Category category, Date startDate, int iconIndex, String description){
-            super(name, startDate, category);
+            super(name, startDate, category, iconIndex, description);
 	}        
        /**
          * Saves the event to the database.

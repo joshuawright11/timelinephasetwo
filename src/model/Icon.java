@@ -25,8 +25,6 @@ public class Icon {
     
     private int id;
     
-    private int index;
-    
     private String path;
         
     /*
@@ -36,7 +34,6 @@ public class Icon {
         this.name = name;
         this.icon = icon;
         this.path = path;
-        this.setIndex(-1);
         this.setId(-1);
     }
     
@@ -47,20 +44,6 @@ public class Icon {
     public Image getImage(){
         return icon;
     }
-
-	/**
-	 * @return the index
-	 */
-	public int getIndex() {
-		return index;
-	}
-
-	/**
-	 * @param index the index to set
-	 */
-	public void setIndex(int index) {
-		this.index = index;
-	}
 
 	/**
 	 * @return the id

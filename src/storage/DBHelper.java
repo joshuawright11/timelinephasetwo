@@ -232,7 +232,7 @@ public class DBHelper implements DBHelperAPI{
 		try {
 			statement.executeUpdate("CREATE TABLE "+tlName
 					+" ("+ID+",eventName TEXT, type TEXT, startDate DATETIME, endDate DATETIME, "
-							+ "category TEXT, icon INTEGER, desciption TEXT);");
+							+ "category TEXT, icon INTEGER, description TEXT);");
 			writeTimelineInfo(timeline);
 			setTimelineID(timeline);
 		} catch (SQLException e) {
@@ -351,7 +351,7 @@ public class DBHelper implements DBHelperAPI{
                 pstmt.setString(2, "atomic");
 		pstmt.setDate(3, event.getStartDate());
 		pstmt.setString(4, event.getCategory().getName());
-		pstmt.setInt(5, event.getIcon().getIndex());
+		pstmt.setInt(5, event.getIcon().getId());
 		pstmt.setString(6, event.getDescription());
 		pstmt.executeUpdate();
 	}
@@ -374,7 +374,7 @@ public class DBHelper implements DBHelperAPI{
 		pstmt.setDate(3, event.getStartDate());
 		pstmt.setDate(4, event.getEndDate());
 		pstmt.setString(5, event.getCategory().getName());
-		pstmt.setInt(6, event.getIcon().getIndex());
+		pstmt.setInt(6, event.getIcon().getId());
 		pstmt.setString(7, event.getDescription());
 		pstmt.executeUpdate();
 	}
@@ -543,7 +543,7 @@ public class DBHelper implements DBHelperAPI{
 			
 			String UPDATE_ICON_LABEL = " UPDATE "+timelineName+" SET icon=? WHERE _id=?;";
 			pstmt = connection.prepareStatement(UPDATE_ICON_LABEL);
-			pstmt.setInt(1, event.getIcon().getIndex());
+			pstmt.setInt(1, event.getIcon().getId());
 			pstmt.setInt(2, event.getID());
 			pstmt.executeUpdate();
 			

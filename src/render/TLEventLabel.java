@@ -129,8 +129,8 @@ public abstract class TLEventLabel extends Label {
 		t.setFill(Color.BLACK);
 		CustomMenuItem name = new CustomMenuItem(t);
 		
-		TextArea test = new TextArea("Put item content here, once it works."
-				+ " This needs resizing work.");
+		TextArea test = new TextArea();
+		test.setText(event.getDescription());
 		test.setPrefWidth(200);
 		test.setEditable(false);
 		test.setWrapText(true);

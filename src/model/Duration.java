@@ -29,7 +29,7 @@ public class Duration extends TLEvent {
 	 * @param iconIndex 
 	 */
 	public Duration(String name, Category category, Date startDate, Date endDate, int iconIndex, String description){
-		super(name, startDate, category);
+		super(name, startDate, category, iconIndex, description);
 		this.endDate = endDate;
 	}
 	
