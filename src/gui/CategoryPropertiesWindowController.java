@@ -99,7 +99,8 @@ public class CategoryPropertiesWindowController {
     }
 
 	/**
-	 * @param category2
+	 * Loads the the Category info. Only runs on editCategory, where it
+	 * loads the info from the saved category.
 	 */
 	private void loadCategoryInfo() {
             categoryNameTextField.setText(category.getName());
