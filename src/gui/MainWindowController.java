@@ -282,6 +282,7 @@ public class MainWindowController {
 		Category selectedCategory = timelineMaker.getSelectedTimeline()
 				.getSelectedCategory();
 		timelineMaker.getSelectedTimeline().deleteCategory(selectedCategory);
+		timelineMaker.deleteCategory(selectedCategory);
 		populateListView();
 	}
 
