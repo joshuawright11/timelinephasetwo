@@ -68,7 +68,7 @@ public class TLEvent {
 		this.category = category;
 		this.description = description;
 		this.icon = new Icon("None", null, null); // TODO this is kludgy
-		this.setIconIndex(-1);
+		this.iconIndex = iconIndex;
 	}
 
 	/**
